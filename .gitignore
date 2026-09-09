@@ -1,0 +1,7 @@
+# Make Apps SDK local secrets (never commit)
+general/common.json
+makecomapp.privatedir/
+.env
+node_modules/
+*.log
+.DS_Store
