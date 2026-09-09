@@ -12,8 +12,16 @@ from Zapier; the **implementation** is re-expressed in Make's declarative
 
 ## Status
 
-🚧 Scaffolding. Design/spec is in place; the JSON/IML modules are built and
-tested iteratively against the live DocSpring API once the Make app exists.
+✅ **All modules built and validated** against the live DocSpring API (via the
+Make API v2 — see `DESIGN.md` for the method). Confirmed working: the Connection,
+**Find Template**, **Find Submission**, **Generate PDF**, **Combine PDFs**,
+**Create Data Request**, **Create Signing Link**, and the **Watch Events** instant
+trigger (attach → deliver → flatten → detach). Next: submit for Make app
+verification to list it publicly.
+
+Known follow-up: enum template fields render as free text (DocSpring still
+validates the value); the dropdown fix needs a custom IML function, which requires
+an "apps edit" token permission not currently granted. See `DESIGN.md`.
 
 ## Requirements
 

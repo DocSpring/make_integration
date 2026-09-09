@@ -152,14 +152,34 @@ in the public app directory (review process, like Zapier's).
   produced a processed submission + download URL.
 - ✅ **Find Submission** — by id (`add(emptyarray; body)` wraps the single object)
   and list (`body.submissions`). Live spot-test passed.
-- ⏳ **Create Data Request** — built + de-risked (recipient `fields` is an array, so
-  `data_requests` passes straight through — no arrow-lambda `map`). Needs a live run.
-- ⏳ **Combine PDFs** — line-item `source_pdfs`, sync host + `?wait=true`. Needs a run.
-- ⏳ **Create Signing Link** — `POST /data_requests/{id}/tokens`. Chains off a
-  Create Data Request `data_requests` id. Needs a run.
-- ⏳ **Watch Events** (instant trigger) — webhook attach/detach + inline flatten
-  (`id`=event id, `resource_id`=resource id). Needs: turn the scenario on, fire a
-  DocSpring event from the console.
+- ✅ **Combine PDFs** — line-item `source_pdfs`, sync host + `?wait=true`. API run
+  produced a processed `com_…` combined submission on DocSpring.
+- ✅ **Create Data Request** — standard host, no wait. API run produced a
+  `waiting_for_data_requests` submission with the recipient's `drq_…`. The
+  `fields`-as-array change means `data_requests` passes straight through (no lambda).
+- ✅ **Create Signing Link** — `POST /data_requests/{id}/tokens`; run status 1 and
+  the DocSpring token response `{token:{id, data_request_url, expires_at}}` matches
+  the output mapping (`signing_url = body.token.data_request_url`, 30-day email token).
+- ✅ **Watch Events** (instant trigger) — full lifecycle verified: creating the hook
+  fired `attach` (registered DocSpring webhook `whk_…`, version 3); a live
+  `submission.processed` event was delivered and the scenario auto-executed
+  (status 1) with the inline flatten; deleting the hook fired `detach` (webhook
+  removed from DocSpring). No dangling webhook left.
+
+### How the modules were tested (no manual canvas work)
+All modules were validated via the **Make API v2** (token in `.env`), not the MCP
+server (which only *triggers* existing scenarios). The loop, driven from the shell:
+1. Clone the connection binding from a working scenario: flow module
+   `app#docspring-sspkqt:<module>`, `parameters: {"__IMTCONN__": <connId>}`, `mapper`.
+2. `POST /scenarios` (or `PATCH /scenarios/{id}`) with the blueprint as a JSON string.
+3. `POST /scenarios/{id}/start` to activate (on-demand scenarios must be active to run).
+4. `POST /scenarios/{id}/run` `{responsive:true}` → returns `executionId`; poll
+   `GET /scenarios/{id}/logs` for `status:1`.
+5. Verify ground-truth on the DocSpring side (submission/combined/webhook created).
+For the instant trigger: `POST /hooks` `{typeName:"app#docspring-sspkqt",
+__IMTCONN__, event_types, mode}` creates the hook (fires `attach`); a scenario with
+`metadata.instant:true` + `parameters:{"__IMTHOOK__":<hookId>}` binds to it;
+`DELETE /hooks/{id}` fires `detach`. Team `2910546`, connection `10972788`.
 
 ### Known IML gotchas learned during testing (Make ≠ Zapier JS)
 - **No `array()`** — build a one-element array with `add(emptyarray; x)`.
