@@ -4,11 +4,6 @@
     "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
     "response": {
         "iterate": "{{keys(body.properties)}}",
-        "output": {
-            "name": "{{item}}",
-            "label": "{{item}}",
-            "type": "{{if(get(body.properties; item).enum; \"select\"; if(get(body.properties; item).type = \"integer\"; \"number\"; if(get(body.properties; item).type = \"number\"; \"number\"; if(get(body.properties; item).type = \"boolean\"; \"boolean\"; \"text\"))))}}",
-            "options": "{{get(body.properties; item).enum}}"
-        }
+        "output": { "name": "{{item}}", "label": "{{item}}", "type": "text" }
     }
 }
