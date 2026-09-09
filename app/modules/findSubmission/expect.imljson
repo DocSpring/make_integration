@@ -1,0 +1,6 @@
+[
+    { "name": "submission_id", "type": "text", "label": "Submission ID", "help": "Look up a specific submission (sub_...). Overrides the filters below." },
+    { "name": "type", "type": "select", "label": "Mode", "options": [ { "label": "Live", "value": "live" }, { "label": "Test", "value": "test" } ] },
+    { "name": "created_after", "type": "date", "label": "Created After" },
+    { "name": "created_before", "type": "date", "label": "Created Before" }
+]

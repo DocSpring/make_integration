@@ -1,0 +1,9 @@
+[
+    { "name": "id", "type": "text", "label": "Submission ID" },
+    { "name": "state", "type": "text", "label": "State" },
+    { "name": "download_url", "type": "text", "label": "Download URL" },
+    { "name": "permanent_download_url", "type": "text", "label": "Permanent Download URL" },
+    { "name": "expires_at", "type": "date", "label": "Expires At" },
+    { "name": "test", "type": "boolean", "label": "Test Mode" },
+    { "name": "pdf_hash", "type": "text", "label": "PDF Hash" }
+]

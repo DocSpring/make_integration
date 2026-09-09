@@ -1,0 +1,28 @@
+{
+    "url": "{{if(parameters.submission_id; \"/submissions/\" + parameters.submission_id; \"/submissions\")}}",
+    "method": "GET",
+    "qs": {
+        "limit": 20,
+        "type": "{{parameters.type}}",
+        "created_after": "{{parameters.created_after}}",
+        "created_before": "{{parameters.created_before}}",
+        "include_data": true
+    },
+    "response": {
+        "iterate": "{{if(parameters.submission_id; array(body); body.submissions)}}",
+        "output": {
+            "id": "{{item.id}}",
+            "state": "{{item.state}}",
+            "test": "{{item.test}}",
+            "template_id": "{{item.template_id}}",
+            "download_url": "{{item.download_url}}",
+            "permanent_download_url": "{{item.permanent_download_url}}",
+            "processed_at": "{{item.processed_at}}",
+            "expired": "{{item.expired}}",
+            "expires_at": "{{item.expires_at}}",
+            "error_message": "{{item.error_message}}",
+            "metadata": "{{item.metadata}}",
+            "data": "{{item.data}}"
+        }
+    }
+}

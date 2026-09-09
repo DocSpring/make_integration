@@ -1,0 +1,12 @@
+{
+    "url": "/data_requests/{{parameters.data_request_id}}/tokens",
+    "method": "POST",
+    "body": { "type": "{{parameters.token_type}}" },
+    "response": {
+        "output": {
+            "id": "{{body.token.id}}",
+            "signing_url": "{{body.token.data_request_url}}",
+            "expires_at": "{{body.token.expires_at}}"
+        }
+    }
+}

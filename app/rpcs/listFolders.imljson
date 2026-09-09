@@ -1,0 +1,8 @@
+{
+    "url": "/folders",
+    "method": "GET",
+    "response": {
+        "iterate": "{{body}}",
+        "output": { "label": "{{item.name}}", "value": "{{item.id}}" }
+    }
+}

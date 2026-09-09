@@ -1,0 +1,4 @@
+[
+    { "name": "data_request_id", "type": "text", "label": "Data Request ID", "required": true, "help": "The drq_... id from Create Data Request." },
+    { "name": "token_type", "type": "select", "label": "Link Type", "default": "email", "options": [ { "label": "Email (expires in 30 days)", "value": "email" }, { "label": "API (expires in 1 hour)", "value": "api" } ] }
+]

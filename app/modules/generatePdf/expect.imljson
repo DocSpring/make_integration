@@ -1,0 +1,9 @@
+[
+    { "name": "template_id", "type": "select", "label": "Template", "required": true, "options": "rpc://listTemplates" },
+    { "name": "test", "type": "boolean", "label": "Test PDF?", "default": false, "help": "Test PDFs are free but watermarked." },
+    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF With Passphrase" },
+    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" },
+    { "name": "editable", "type": "boolean", "label": "Editable" },
+    { "name": "version", "type": "text", "label": "Template Version" },
+    { "name": "data", "type": "collection", "label": "Template Data", "spec": "rpc://templateFields", "help": "Fill in the selected template's fields." }
+]

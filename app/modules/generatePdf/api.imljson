@@ -1,0 +1,24 @@
+{
+    "url": "{{if(connection.region = \"self_hosted\"; connection.custom_host; \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"au\"; \"sync.api-au.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v1/templates/{{parameters.template_id}}/submissions",
+    "method": "POST",
+    "qs": { "wait": true },
+    "body": {
+        "data": "{{parameters.data}}",
+        "test": "{{parameters.test}}",
+        "password": "{{parameters.pdf_passphrase}}",
+        "editable": "{{parameters.editable}}",
+        "expires_in": "{{parameters.expires_in}}",
+        "version": "{{parameters.version}}"
+    },
+    "response": {
+        "output": {
+            "id": "{{body.submission.id}}",
+            "state": "{{body.submission.state}}",
+            "download_url": "{{body.submission.download_url}}",
+            "permanent_download_url": "{{body.submission.permanent_download_url}}",
+            "expires_at": "{{body.submission.expires_at}}",
+            "test": "{{body.submission.test}}",
+            "pdf_hash": "{{body.submission.pdf_hash}}"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+[
+    { "name": "source_pdfs", "type": "array", "label": "Source PDFs", "required": true, "spec": [
+        { "name": "type", "type": "select", "label": "Type", "default": "submission", "options": [ { "label": "Submission", "value": "submission" }, { "label": "Template", "value": "template" }, { "label": "Custom File", "value": "custom_file" } ] },
+        { "name": "id", "type": "text", "label": "ID", "required": true },
+        { "name": "template_version", "type": "text", "label": "Template Version" }
+    ] },
+    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF With Passphrase" },
+    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" }
+]

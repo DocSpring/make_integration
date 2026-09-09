@@ -1,0 +1,17 @@
+{
+    "url": "/templates/{{parameters.template_id}}/submissions",
+    "method": "POST",
+    "body": {
+        "data": "{{parameters.data}}",
+        "test": "{{parameters.test}}",
+        "expires_in": "{{parameters.expires_in}}",
+        "data_requests": "{{map(parameters.data_requests; (item) => {email: item.email, name: item.name, auth_type: item.auth_type, fields: if(item.fields; split(item.fields; \",\"); null)})}}"
+    },
+    "response": {
+        "output": {
+            "id": "{{body.submission.id}}",
+            "state": "{{body.submission.state}}",
+            "data_requests": "{{body.submission.data_requests}}"
+        }
+    }
+}

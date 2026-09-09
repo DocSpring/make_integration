@@ -1,0 +1,5 @@
+[
+    { "name": "id", "type": "text", "label": "Token ID" },
+    { "name": "signing_url", "type": "text", "label": "Signing URL" },
+    { "name": "expires_at", "type": "date", "label": "Expires At" }
+]

@@ -1,0 +1,10 @@
+{
+    "output": {
+        "id": "{{body.id}}",
+        "event": "{{body.event}}",
+        "timestamp": "{{body.timestamp}}",
+        "resource_type": "{{body.data.resource.type}}",
+        "resource_id": "{{body.data.id}}",
+        "data": "{{body.data}}"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "url": "/webhooks",
+    "method": "POST",
+    "body": {
+        "webhook": {
+            "url": "{{webhook.url}}",
+            "event_types": "{{parameters.event_types}}",
+            "include_submission_data": true,
+            "version": 3,
+            "name": "Make",
+            "mode": "{{parameters.mode}}"
+        }
+    },
+    "response": {
+        "data": { "externalHookId": "{{body.uid}}" }
+    }
+}

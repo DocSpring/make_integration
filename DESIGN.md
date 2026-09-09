@@ -124,3 +124,29 @@ in the public app directory (review process, like Zapier's).
 - Confirm Make's line-item (array) parameter UX for `source_pdfs` / recipients.
 - Confirm whether Make strips empty values before requests (Zapier's
   `cleanInputData`); if so, handle blanks in IML as the Zapier performs do.
+
+## Implementation decisions (v1, built via SDK API)
+
+- **One "Watch Events" instant trigger**, not 13 discrete triggers. It offers an
+  `event_types` multi-select (all 13 events) + a Mode filter, and subscribes to
+  the chosen events in one DocSpring webhook. This is the idiomatic Make pattern
+  (cf. Stripe's "Watch Events") and far less to maintain than 13 near-identical
+  modules. Output is the flattened envelope (`id` = event id, `resource_id` =
+  the resource's id) + the full `data` object.
+- **Create Signing Link is its own action** (not folded into Create Data
+  Request), because a Make module makes exactly one HTTP request — so minting the
+  30-day `email` token per recipient (`POST /data_requests/{id}/tokens`) is a
+  separate, chainable module (map over Create Data Request's `data_requests`).
+- **Dynamic template fields** via the `templateFields` RPC: `keys(body.properties)`
+  from `GET /templates/{id}/schema` → one `data__<field>` text input per field,
+  bound to the Generate PDF / Create Data Request `data` collection.
+- **Sync host + `?wait=true`** for Generate PDF / Combine PDFs (absolute URL in
+  the module, base auth headers still applied); **standard host, no wait** for
+  Create Data Request.
+
+## Validation status
+- ✅ Find Template + the connection (region base URL + Basic auth IML) — tested
+  live in a Make scenario; returned the Demo template.
+- ⏳ Generate PDF (dynamic fields), Create Data Request, and Watch Events
+  (attach/detach + flatten) — built, need a live spot-test to confirm the more
+  involved IML (RPC-driven fields, webhook subscribe/flatten).

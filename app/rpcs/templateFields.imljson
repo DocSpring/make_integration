@@ -1,0 +1,12 @@
+{
+    "url": "/templates/{{parameters.template_id}}/schema",
+    "method": "GET",
+    "response": {
+        "iterate": "{{keys(body.properties)}}",
+        "output": {
+            "name": "data__{{item}}",
+            "label": "{{item}}",
+            "type": "text"
+        }
+    }
+}

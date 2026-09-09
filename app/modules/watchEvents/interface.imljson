@@ -1,0 +1,7 @@
+[
+    { "name": "id", "type": "text", "label": "Event ID" },
+    { "name": "event", "type": "text", "label": "Event Type" },
+    { "name": "timestamp", "type": "date", "label": "Timestamp" },
+    { "name": "resource_type", "type": "text", "label": "Resource Type" },
+    { "name": "resource_id", "type": "text", "label": "Resource ID" }
+]

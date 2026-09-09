@@ -1,0 +1,18 @@
+[
+    { "name": "event_types", "type": "select", "label": "Events", "multiple": true, "required": true, "options": [
+        { "label": "Submission processed", "value": "submission.processed" },
+        { "label": "Submission failed", "value": "submission.failed" },
+        { "label": "Submission created", "value": "submission.created" },
+        { "label": "Submission expired", "value": "submission.expired" },
+        { "label": "Data request completed", "value": "submission_data_request.completed" },
+        { "label": "Data request viewed", "value": "submission_data_request.viewed" },
+        { "label": "Combined PDF processed", "value": "combined_submission.processed" },
+        { "label": "Combined PDF failed", "value": "combined_submission.failed" },
+        { "label": "Submission batch processed", "value": "submission_batch.processed" },
+        { "label": "Submission batch failed", "value": "submission_batch.failed" },
+        { "label": "Template created", "value": "template.created" },
+        { "label": "Template updated", "value": "template.updated" },
+        { "label": "Template deleted", "value": "template.deleted" }
+    ] },
+    { "name": "mode", "type": "select", "label": "Mode", "options": [ { "label": "Live only", "value": "live" }, { "label": "Test only", "value": "test" } ] }
+]

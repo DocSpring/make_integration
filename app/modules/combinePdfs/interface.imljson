@@ -1,0 +1,6 @@
+[
+    { "name": "id", "type": "text", "label": "Combined Submission ID" },
+    { "name": "state", "type": "text", "label": "State" },
+    { "name": "download_url", "type": "text", "label": "Download URL" },
+    { "name": "expires_at", "type": "date", "label": "Expires At" }
+]
