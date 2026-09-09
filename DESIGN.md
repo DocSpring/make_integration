@@ -145,8 +145,28 @@ in the public app directory (review process, like Zapier's).
   Create Data Request.
 
 ## Validation status
-- ✅ Find Template + the connection (region base URL + Basic auth IML) — tested
-  live in a Make scenario; returned the Demo template.
-- ⏳ Generate PDF (dynamic fields), Create Data Request, and Watch Events
-  (attach/detach + flatten) — built, need a live spot-test to confirm the more
-  involved IML (RPC-driven fields, webhook subscribe/flatten).
+- ✅ **Connection** (region base URL + Basic auth IML) — live in a Make scenario.
+- ✅ **Find Template** — returned the Demo template; also backs the template RPC.
+- ✅ **Generate PDF** — dynamic per-template fields (nested `templateFields` RPC),
+  `omit()` data assembly, sync host + `?wait=true` + explicit auth header. Live run
+  produced a processed submission + download URL.
+- ✅ **Find Submission** — by id (`add(emptyarray; body)` wraps the single object)
+  and list (`body.submissions`). Live spot-test passed.
+- ⏳ **Create Data Request** — built + de-risked (recipient `fields` is an array, so
+  `data_requests` passes straight through — no arrow-lambda `map`). Needs a live run.
+- ⏳ **Combine PDFs** — line-item `source_pdfs`, sync host + `?wait=true`. Needs a run.
+- ⏳ **Create Signing Link** — `POST /data_requests/{id}/tokens`. Chains off a
+  Create Data Request `data_requests` id. Needs a run.
+- ⏳ **Watch Events** (instant trigger) — webhook attach/detach + inline flatten
+  (`id`=event id, `resource_id`=resource id). Needs: turn the scenario on, fire a
+  DocSpring event from the console.
+
+### Known IML gotchas learned during testing (Make ≠ Zapier JS)
+- **No `array()`** — build a one-element array with `add(emptyarray; x)`.
+- **`get(body.properties; item)` inside an RPC `iterate` output fails** — `body`
+  isn't reliably in scope there. This blocks the enum→dropdown fix; `templateFields`
+  currently emits plain text fields (DocSpring still validates enums with a clear 422).
+- **Custom IML *functions* need an "apps edit" permission** the API token lacks, so
+  the JS-function route to schema→fields conversion is gated for now.
+- **Confirmed-valid functions in use:** `if`, `base64`, `switch`, `omit`, `keys`,
+  `join`, `add`.
