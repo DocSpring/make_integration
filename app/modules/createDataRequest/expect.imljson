@@ -1,5 +1,5 @@
 [
-    { "name": "template_id", "type": "select", "label": "Template", "required": true, "options": "rpc://listTemplates" },
+    { "name": "template_id", "type": "select", "label": "Template", "required": true, "options": { "store": "rpc://listTemplates", "nested": "rpc://templateFields" } },
     { "name": "data_requests", "type": "array", "label": "Recipients", "required": true, "spec": [
         { "name": "email", "type": "email", "label": "Email", "required": true },
         { "name": "name", "type": "text", "label": "Name" },
@@ -7,6 +7,5 @@
         { "name": "auth_type", "type": "select", "label": "Authentication", "default": "email_link", "options": [ { "label": "Email link (recommended)", "value": "email_link" }, { "label": "Password", "value": "password" }, { "label": "OAuth", "value": "oauth" }, { "label": "Phone number", "value": "phone_number" } ] }
     ] },
     { "name": "test", "type": "boolean", "label": "Test?", "default": false },
-    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" },
-    { "name": "data", "type": "collection", "label": "Pre-fill Data", "spec": "rpc://templateFields" }
+    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" }
 ]

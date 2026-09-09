@@ -2,17 +2,11 @@
     "url": "{{if(connection.region = \"self_hosted\"; connection.custom_host; \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"au\"; \"sync.api-au.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v1/combined_submissions",
     "method": "POST",
     "qs": { "wait": true },
+    "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
     "body": {
         "source_pdfs": "{{parameters.source_pdfs}}",
         "password": "{{parameters.pdf_passphrase}}",
         "expires_in": "{{parameters.expires_in}}"
     },
-    "response": {
-        "output": {
-            "id": "{{body.combined_submission.id}}",
-            "state": "{{body.combined_submission.state}}",
-            "download_url": "{{body.combined_submission.download_url}}",
-            "expires_at": "{{body.combined_submission.expires_at}}"
-        }
-    }
+    "response": { "output": { "id": "{{body.combined_submission.id}}", "state": "{{body.combined_submission.state}}", "download_url": "{{body.combined_submission.download_url}}", "expires_at": "{{body.combined_submission.expires_at}}" } }
 }

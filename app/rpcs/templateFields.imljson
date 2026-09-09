@@ -1,12 +1,3 @@
-{
-    "url": "/templates/{{parameters.template_id}}/schema",
-    "method": "GET",
-    "response": {
-        "iterate": "{{keys(body.properties)}}",
-        "output": {
-            "name": "data__{{item}}",
-            "label": "{{item}}",
-            "type": "text"
-        }
-    }
-}
+{ "url": "/templates/{{parameters.template_id}}/schema", "method": "GET",
+  "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
+  "response": { "iterate": "{{keys(body.properties)}}", "output": { "name": "{{item}}", "label": "{{item}}", "type": "text" } } }
