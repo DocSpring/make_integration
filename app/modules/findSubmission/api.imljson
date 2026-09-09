@@ -9,7 +9,7 @@
         "include_data": true
     },
     "response": {
-        "iterate": "{{if(parameters.submission_id; array(body); body.submissions)}}",
+        "iterate": "{{if(parameters.submission_id; add(emptyarray; body); body.submissions)}}",
         "output": {
             "id": "{{item.id}}",
             "state": "{{item.state}}",
