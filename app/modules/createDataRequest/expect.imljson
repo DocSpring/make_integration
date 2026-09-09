@@ -3,7 +3,7 @@
     { "name": "data_requests", "type": "array", "label": "Recipients", "required": true, "spec": [
         { "name": "email", "type": "email", "label": "Email", "required": true },
         { "name": "name", "type": "text", "label": "Name" },
-        { "name": "fields", "type": "text", "label": "Fields", "help": "Comma-separated field names this person must fill. Leave blank (single recipient) for all fields." },
+        { "name": "fields", "type": "array", "label": "Fields", "help": "Field names this person must fill. Leave empty (single recipient) for all fields.", "spec": { "type": "text", "label": "Field" } },
         { "name": "auth_type", "type": "select", "label": "Authentication", "default": "email_link", "options": [ { "label": "Email link (recommended)", "value": "email_link" }, { "label": "Password", "value": "password" }, { "label": "OAuth", "value": "oauth" }, { "label": "Phone number", "value": "phone_number" } ] }
     ] },
     { "name": "test", "type": "boolean", "label": "Test?", "default": false },
