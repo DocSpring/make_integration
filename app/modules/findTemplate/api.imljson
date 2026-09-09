@@ -1,0 +1,18 @@
+{
+    "url": "/templates",
+    "method": "GET",
+    "qs": {
+        "query": "{{parameters.query}}",
+        "per_page": 100
+    },
+    "response": {
+        "iterate": "{{body}}",
+        "output": {
+            "id": "{{item.id}}",
+            "name": "{{item.name}}",
+            "template_type": "{{item.template_type}}",
+            "document_state": "{{item.document_state}}",
+            "updated_at": "{{item.updated_at}}"
+        }
+    }
+}

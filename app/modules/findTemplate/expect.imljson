@@ -1,0 +1,3 @@
+[
+    { "name": "query", "type": "text", "label": "Name or ID", "help": "Search templates by name or ID." }
+]

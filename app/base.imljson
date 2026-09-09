@@ -1,0 +1,12 @@
+{
+    "baseUrl": "{{if(connection.region = \"self_hosted\"; connection.custom_host; \"https://\" + switch(connection.region; \"eu\"; \"api-eu.docspring.com\"; \"au\"; \"api-au.docspring.com\"; \"api.docspring.com\"))}}/api/v1",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+        "Accept": "application/json"
+    },
+    "response": {
+        "error": {
+            "message": "[{{statusCode}}] {{if(body.errors; join(body.errors; \", \"); if(body.error; body.error; \"DocSpring API error\"))}}"
+        }
+    }
+}

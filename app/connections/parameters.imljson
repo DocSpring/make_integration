@@ -1,0 +1,23 @@
+[
+    {
+        "name": "region",
+        "type": "select",
+        "label": "Region",
+        "required": true,
+        "default": "us",
+        "options": [
+            { "label": "United States", "value": "us" },
+            { "label": "Europe", "value": "eu" },
+            { "label": "Australia", "value": "au" },
+            { "label": "Self-hosted / Enterprise", "value": "self_hosted" }
+        ]
+    },
+    {
+        "name": "custom_host",
+        "type": "text",
+        "label": "Self-hosted Host",
+        "help": "Only for the Self-hosted / Enterprise region, e.g. docspring.example.com"
+    },
+    { "name": "token_id", "type": "text", "label": "API Token ID", "required": true },
+    { "name": "token_secret", "type": "password", "label": "API Token Secret", "required": true }
+]

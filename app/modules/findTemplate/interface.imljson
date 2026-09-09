@@ -1,0 +1,7 @@
+[
+    { "name": "id", "type": "text", "label": "Template ID" },
+    { "name": "name", "type": "text", "label": "Name" },
+    { "name": "template_type", "type": "text", "label": "Type" },
+    { "name": "document_state", "type": "text", "label": "Document State" },
+    { "name": "updated_at", "type": "date", "label": "Updated At" }
+]
