@@ -130,6 +130,12 @@ Review prerequisites met (see `app-review/prerequisites`):
   (`Jane Doe` / `jane.doe@example.com`). Watch Events kept active (instant trigger).
   Note: the Make plan caps **active** scenarios (~2), so the on-demand demos are
   toggled off but retain their green run logs — sufficient for review.
+- ✅ **Handled-API-error demo** (`DocSpring — Handled API Error`, scenario 6220743):
+  Generate PDF with an invalid enum (`favorite_color: chartreuse`) fails with the
+  clean, service-sourced message `[422] The property '#/favorite_color' value
+  "chartreuse" did not match one of the following values: red, green, blue, ...` —
+  the base `response.error` handler surfaces DocSpring's own text, no raw JSON. The
+  review form's **"Scenario with an API Error"** field requires this link.
 
 The review request is **UI-only** (no API): in the app editor → **Publish**, make
 all 8 modules visible in the **Modules** tab, then the **Review** tab → paste the
