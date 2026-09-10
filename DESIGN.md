@@ -148,6 +148,25 @@ by email. Prepared answers:
 - API docs: **https://docspring.com/docs**.
 - Trademark / third-party T&C compliance: **yes** (our own API).
 
+### Review round 1 (addressed 2026-09-10)
+
+Reviewer (AppBot) feedback addressed in commit `622723b` and re-tested:
+- **Fixed:** signing-link `type` → query string; removed the shut-down AU region;
+  self-hosted URL now prepends `https://` + host field locked (`editable:false`);
+  pagination (cursor on Find a submission, page on Find a template + listTemplates
+  RPC, per_page 50); `response.limit` on both searches (uinteger, default 10);
+  `data` added to the Watch events + Find a submission interfaces; sentence-case
+  labels; third-person descriptions; `actionCrud`; meaningful groups; samples on
+  searches + trigger; Combine PDFs `combined_submission`/`url` source types; dropped
+  the unused listFolders RPC.
+- **Answered (reviewer mistakes, with evidence):** the v3 delivery **does** carry a
+  top-level `id` (event UUID) — captured a live delivery to confirm `{{body.id}}`
+  populates. POST /webhooks returns `uid` at the **top level** (not wrapped), so
+  attach/detach are correct (add-then-remove verified, DELETE → 204). `type` on the
+  tokens endpoint is honoured from both body and query (Rails merges params) — moved
+  to `qs` anyway per guidance. `GET /templates/{id}/schema` is a valid live endpoint
+  returning a JSON Schema (`properties`). Both RPCs declare the connection.
+
 ## Open items (resolve during setup)
 
 - Confirm the Make Apps SDK local file layout + the push mechanism (SDK CLI vs
