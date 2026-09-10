@@ -8,5 +8,8 @@
         "error": {
             "message": "[{{statusCode}}] {{if(body.errors; join(body.errors; \", \"); if(body.error; body.error; \"DocSpring API error\"))}}"
         }
+    },
+    "log": {
+        "sanitize": ["request.headers.authorization"]
     }
 }

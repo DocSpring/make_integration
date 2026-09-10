@@ -2,7 +2,7 @@
     "url": "{{if(parameters.submission_id; \"/submissions/\" + parameters.submission_id; \"/submissions\")}}",
     "method": "GET",
     "qs": {
-        "limit": 20,
+        "limit": "{{parameters.limit}}",
         "type": "{{parameters.type}}",
         "created_after": "{{parameters.created_after}}",
         "created_before": "{{parameters.created_before}}",

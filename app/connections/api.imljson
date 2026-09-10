@@ -10,5 +10,8 @@
         "error": {
             "message": "[{{statusCode}}] Invalid DocSpring API token. Check your Token ID, secret, and region."
         }
+    },
+    "log": {
+        "sanitize": ["request.headers.authorization"]
     }
 }
