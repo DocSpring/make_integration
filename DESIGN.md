@@ -117,6 +117,31 @@ Build as a **private** app first (usable by our org), test every module against
 the DocSpring test account, then submit for **Make app verification** to list it
 in the public app directory (review process, like Zapier's).
 
+### Submission (v1) — checklist status + form answers
+
+Review prerequisites met (see `app-review/prerequisites`):
+- ✅ Universal "Make an API Call" module (typeId 12).
+- ✅ Sensitive-data sanitization: `log.sanitize: ["request.headers.authorization"]`
+  in base **and** connection; token secret is a `password`-type field.
+- ✅ Every module has a label + description + interface; dates are `type:date`.
+- ✅ Base + connection error handling; connection validates via `GET /authentication`.
+- ✅ `limit` parameter on both searches (Find Template, Find Submission).
+- ✅ 8 demo scenarios (one per module) with successful execution logs, clean data
+  (`Jane Doe` / `jane.doe@example.com`). Watch Events kept active (instant trigger).
+  Note: the Make plan caps **active** scenarios (~2), so the on-demand demos are
+  toggled off but retain their green run logs — sufficient for review.
+
+The review request is **UI-only** (no API): in the app editor → **Publish**, make
+all 8 modules visible in the **Modules** tab, then the **Review** tab → paste the
+API-docs link + demo-scenario links → **Request review**. A follow-up form arrives
+by email. Prepared answers:
+- Developer relationship: **we are the vendor** (DocSpring owns the API).
+- Support contact: **support@docspring.com**.
+- Category: **Files & Documents** (where the competing doc-gen apps are listed).
+- Service URL: **https://docspring.com**.
+- API docs: **https://docspring.com/docs**.
+- Trademark / third-party T&C compliance: **yes** (our own API).
+
 ## Open items (resolve during setup)
 
 - Confirm the Make Apps SDK local file layout + the push mechanism (SDK CLI vs
