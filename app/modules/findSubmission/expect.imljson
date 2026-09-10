@@ -1,7 +1,7 @@
 [
     { "name": "submission_id", "type": "text", "label": "Submission ID", "help": "Look up a specific submission (sub_...). Overrides the filters below." },
     { "name": "type", "type": "select", "label": "Mode", "options": [ { "label": "Live", "value": "live" }, { "label": "Test", "value": "test" } ] },
-    { "name": "created_after", "type": "date", "label": "Created After" },
-    { "name": "created_before", "type": "date", "label": "Created Before" },
-    { "name": "limit", "type": "number", "label": "Limit", "default": 20, "help": "Maximum number of submissions to return (ignored when a Submission ID is given)." }
+    { "name": "created_after", "type": "date", "label": "Created after" },
+    { "name": "created_before", "type": "date", "label": "Created before" },
+    { "name": "limit", "type": "uinteger", "label": "Limit", "default": 10, "help": "Maximum number of submissions to return (ignored when a Submission ID is given)." }
 ]

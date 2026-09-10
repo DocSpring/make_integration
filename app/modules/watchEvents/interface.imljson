@@ -1,7 +1,8 @@
 [
     { "name": "id", "type": "text", "label": "Event ID" },
-    { "name": "event", "type": "text", "label": "Event Type" },
+    { "name": "event", "type": "text", "label": "Event type" },
     { "name": "timestamp", "type": "date", "label": "Timestamp" },
-    { "name": "resource_type", "type": "text", "label": "Resource Type" },
-    { "name": "resource_id", "type": "text", "label": "Resource ID" }
+    { "name": "resource_type", "type": "text", "label": "Resource type" },
+    { "name": "resource_id", "type": "text", "label": "Resource ID" },
+    { "name": "data", "type": "collection", "label": "Data", "spec": [] }
 ]

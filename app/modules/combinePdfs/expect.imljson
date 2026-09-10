@@ -1,9 +1,16 @@
 [
     { "name": "source_pdfs", "type": "array", "label": "Source PDFs", "required": true, "spec": [
-        { "name": "type", "type": "select", "label": "Type", "default": "submission", "options": [ { "label": "Submission", "value": "submission" }, { "label": "Template", "value": "template" }, { "label": "Custom File", "value": "custom_file" } ] },
-        { "name": "id", "type": "text", "label": "ID", "required": true },
-        { "name": "template_version", "type": "text", "label": "Template Version" }
+        { "name": "type", "type": "select", "label": "Type", "default": "submission", "options": [
+            { "label": "Submission", "value": "submission" },
+            { "label": "Template", "value": "template" },
+            { "label": "Combined submission", "value": "combined_submission" },
+            { "label": "Custom file", "value": "custom_file" },
+            { "label": "URL", "value": "url" }
+        ] },
+        { "name": "id", "type": "text", "label": "ID", "help": "The submission, template, combined submission, or custom file ID (for every type except URL)." },
+        { "name": "url", "type": "url", "label": "URL", "help": "The PDF URL to include (only when Type is URL)." },
+        { "name": "template_version", "type": "text", "label": "Template version" }
     ] },
-    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF With Passphrase" },
-    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" }
+    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF with passphrase" },
+    { "name": "expires_in", "type": "uinteger", "label": "Expires in (seconds)" }
 ]

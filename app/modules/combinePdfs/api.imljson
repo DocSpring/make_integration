@@ -1,5 +1,5 @@
 {
-    "url": "{{if(connection.region = \"self_hosted\"; connection.custom_host; \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"au\"; \"sync.api-au.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v1/combined_submissions",
+    "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v1/combined_submissions",
     "method": "POST",
     "qs": { "wait": true },
     "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },

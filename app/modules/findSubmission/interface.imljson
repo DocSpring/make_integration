@@ -1,12 +1,14 @@
 [
     { "name": "id", "type": "text", "label": "Submission ID" },
     { "name": "state", "type": "text", "label": "State" },
-    { "name": "test", "type": "boolean", "label": "Test Mode" },
+    { "name": "test", "type": "boolean", "label": "Test mode" },
     { "name": "template_id", "type": "text", "label": "Template ID" },
     { "name": "download_url", "type": "text", "label": "Download URL" },
-    { "name": "permanent_download_url", "type": "text", "label": "Permanent Download URL" },
-    { "name": "processed_at", "type": "date", "label": "Processed At" },
+    { "name": "permanent_download_url", "type": "text", "label": "Permanent download URL" },
+    { "name": "processed_at", "type": "date", "label": "Processed at" },
     { "name": "expired", "type": "boolean", "label": "Expired" },
-    { "name": "expires_at", "type": "date", "label": "Expires At" },
-    { "name": "error_message", "type": "text", "label": "Error Message" }
+    { "name": "expires_at", "type": "date", "label": "Expires at" },
+    { "name": "error_message", "type": "text", "label": "Error message" },
+    { "name": "metadata", "type": "collection", "label": "Metadata", "spec": [] },
+    { "name": "data", "type": "collection", "label": "Data", "spec": [] }
 ]

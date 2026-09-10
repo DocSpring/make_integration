@@ -1,3 +1,14 @@
-{ "url": "/templates", "method": "GET", "qs": { "per_page": 100 },
-  "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
-  "response": { "iterate": "{{body}}", "output": { "label": "{{item.name}}", "value": "{{item.id}}" } } }
+{
+    "url": "/templates",
+    "method": "GET",
+    "qs": { "per_page": 50 },
+    "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
+    "response": {
+        "iterate": "{{body}}",
+        "output": { "label": "{{item.name}}", "value": "{{item.id}}" }
+    },
+    "pagination": {
+        "qs": { "page": "{{pagination.page}}" },
+        "condition": "{{length(body) >= 50}}"
+    }
+}

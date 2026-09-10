@@ -1,4 +1,4 @@
 [
     { "name": "query", "type": "text", "label": "Name or ID", "help": "Search templates by name or ID." },
-    { "name": "limit", "type": "number", "label": "Limit", "default": 100, "help": "Maximum number of templates to return." }
+    { "name": "limit", "type": "uinteger", "label": "Limit", "default": 10, "help": "Maximum number of templates to return." }
 ]

@@ -8,16 +8,16 @@
         "options": [
             { "label": "United States", "value": "us" },
             { "label": "Europe", "value": "eu" },
-            { "label": "Australia", "value": "au" },
             { "label": "Self-hosted / Enterprise", "value": "self_hosted" }
         ]
     },
     {
         "name": "custom_host",
         "type": "text",
-        "label": "Self-hosted Host",
-        "help": "Only for the Self-hosted / Enterprise region, e.g. docspring.example.com"
+        "label": "Self-hosted host",
+        "editable": false,
+        "help": "Only for the Self-hosted / Enterprise region — your full DocSpring URL, e.g. https://docspring.example.com (https:// is added if you omit it). This cannot be changed after the connection is created."
     },
-    { "name": "token_id", "type": "text", "label": "API Token ID", "required": true },
-    { "name": "token_secret", "type": "password", "label": "API Token Secret", "required": true }
+    { "name": "token_id", "type": "text", "label": "API token ID", "required": true },
+    { "name": "token_secret", "type": "password", "label": "API token secret", "required": true }
 ]

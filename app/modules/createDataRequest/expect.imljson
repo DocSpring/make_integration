@@ -6,6 +6,6 @@
         { "name": "fields", "type": "array", "label": "Fields", "help": "Field names this person must fill. Leave empty (single recipient) for all fields.", "spec": { "type": "text", "label": "Field" } },
         { "name": "auth_type", "type": "select", "label": "Authentication", "default": "email_link", "options": [ { "label": "Email link (recommended)", "value": "email_link" }, { "label": "Password", "value": "password" }, { "label": "OAuth", "value": "oauth" }, { "label": "Phone number", "value": "phone_number" } ] }
     ] },
-    { "name": "test", "type": "boolean", "label": "Test?", "default": false },
-    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" }
+    { "name": "test", "type": "boolean", "label": "Test", "default": false },
+    { "name": "expires_in", "type": "uinteger", "label": "Expires in (seconds)" }
 ]

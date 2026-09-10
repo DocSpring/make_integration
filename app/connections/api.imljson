@@ -1,5 +1,5 @@
 {
-    "url": "{{if(parameters.region = \"self_hosted\"; parameters.custom_host; \"https://\" + switch(parameters.region; \"eu\"; \"api-eu.docspring.com\"; \"au\"; \"api-au.docspring.com\"; \"api.docspring.com\"))}}/api/v1/authentication",
+    "url": "{{if(parameters.region = \"self_hosted\"; if(contains(parameters.custom_host; \"://\"); parameters.custom_host; \"https://\" + parameters.custom_host); \"https://\" + switch(parameters.region; \"eu\"; \"api-eu.docspring.com\"; \"api.docspring.com\"))}}/api/v1/authentication",
     "method": "GET",
     "headers": {
         "Authorization": "Basic {{base64(parameters.token_id + \":\" + parameters.token_secret)}}",
@@ -8,7 +8,7 @@
     "response": {
         "valid": "{{body.status = \"success\"}}",
         "error": {
-            "message": "[{{statusCode}}] Invalid DocSpring API token. Check your Token ID, secret, and region."
+            "message": "[{{statusCode}}] Invalid DocSpring API token. Check your token ID, secret, and region."
         }
     },
     "log": {

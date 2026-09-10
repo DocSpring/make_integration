@@ -3,9 +3,10 @@
     "method": "GET",
     "qs": {
         "query": "{{parameters.query}}",
-        "per_page": "{{parameters.limit}}"
+        "per_page": 50
     },
     "response": {
+        "limit": "{{parameters.limit}}",
         "iterate": "{{body}}",
         "output": {
             "id": "{{item.id}}",
@@ -14,5 +15,9 @@
             "document_state": "{{item.document_state}}",
             "updated_at": "{{item.updated_at}}"
         }
+    },
+    "pagination": {
+        "qs": { "page": "{{pagination.page}}" },
+        "condition": "{{length(body) >= 50}}"
     }
 }

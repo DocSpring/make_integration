@@ -2,13 +2,14 @@
     "url": "{{if(parameters.submission_id; \"/submissions/\" + parameters.submission_id; \"/submissions\")}}",
     "method": "GET",
     "qs": {
-        "limit": "{{parameters.limit}}",
+        "limit": 50,
         "type": "{{parameters.type}}",
         "created_after": "{{parameters.created_after}}",
         "created_before": "{{parameters.created_before}}",
         "include_data": true
     },
     "response": {
+        "limit": "{{parameters.limit}}",
         "iterate": "{{if(parameters.submission_id; add(emptyarray; body); body.submissions)}}",
         "output": {
             "id": "{{item.id}}",
@@ -24,5 +25,9 @@
             "metadata": "{{item.metadata}}",
             "data": "{{item.data}}"
         }
+    },
+    "pagination": {
+        "qs": { "cursor": "{{body.next_cursor}}" },
+        "condition": "{{body.next_cursor}}"
     }
 }

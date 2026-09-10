@@ -1,0 +1,7 @@
+[
+    { "label": "PDFs", "modules": ["generatePdf", "combinePdfs"] },
+    { "label": "Data requests", "modules": ["createDataRequest", "createSigningLink"] },
+    { "label": "Search", "modules": ["findTemplate", "findSubmission"] },
+    { "label": "Triggers", "modules": ["watchEvents"] },
+    { "label": "Other", "modules": ["makeApiCall"] }
+]

@@ -1,8 +1,8 @@
 [
     { "name": "template_id", "type": "select", "label": "Template", "required": true, "options": { "store": "rpc://listTemplates", "nested": "rpc://templateFields" } },
-    { "name": "test", "type": "boolean", "label": "Test PDF?", "default": false, "help": "Test PDFs are free but watermarked." },
-    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF With Passphrase" },
-    { "name": "expires_in", "type": "number", "label": "Expires In (seconds)" },
+    { "name": "test", "type": "boolean", "label": "Test PDF", "default": false, "help": "Test PDFs are free but watermarked." },
+    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF with passphrase" },
+    { "name": "expires_in", "type": "uinteger", "label": "Expires in (seconds)" },
     { "name": "editable", "type": "boolean", "label": "Editable" },
-    { "name": "version", "type": "text", "label": "Template Version" }
+    { "name": "version", "type": "text", "label": "Template version" }
 ]

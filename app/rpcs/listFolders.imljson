@@ -1,3 +1,0 @@
-{ "url": "/folders", "method": "GET",
-  "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
-  "response": { "iterate": "{{body}}", "output": { "label": "{{item.name}}", "value": "{{item.id}}" } } }
