@@ -21,12 +21,11 @@ mistakes are easiest to catch module-by-module.
 
 Mirror the Zapier custom auth (`authentication.js` + `lib/regions.js`):
 
-- Parameters: `region` (US / EU / AU / Self-hosted), `custom_host`, `token_id`,
+- Parameters: `region` (US / EU / Self-hosted), `custom_host`, `token_id`,
   `token_secret`.
 - Base URL resolved from region (IML in `general/base`):
   - US `api.docspring.com` / sync `sync.api.docspring.com`
   - EU `api-eu.docspring.com` / sync `sync.api-eu.docspring.com`
-  - AU `api-au.docspring.com` / sync `sync.api-au.docspring.com`
   - Self-hosted → `custom_host` (single origin, validated like `normalizeHost`)
 - `Authorization: Basic base64(token_id:token_secret)` — Make computes the
   header in the connection/base (IML `base64()`).

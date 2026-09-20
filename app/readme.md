@@ -9,7 +9,7 @@ To create a connection you need a **DocSpring API token** (a Token ID and Token 
 1. Sign in to DocSpring and open **Settings → API Tokens**.
 2. Create a token and copy the **Token ID** and **Token Secret**.
 3. In Make, add a DocSpring connection and enter:
-   - **Region** — where your DocSpring account is hosted: United States, Europe, Australia, or **Self-hosted / Enterprise**.
+   - **Region** — where your DocSpring account is hosted: United States, Europe, or **Self-hosted / Enterprise**.
    - **Self-hosted Host** — only for the Self-hosted / Enterprise region, e.g. `docspring.example.com`.
    - **API Token ID** and **API Token Secret** from step 2.
 
