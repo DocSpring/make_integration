@@ -40,9 +40,9 @@ detach IML (the Zapier `performSubscribe` / `performUnsubscribe`):
 
 - **attach** → `POST /api/v1/webhooks` with
   `{ webhook: { url, event_types:[<event>], include_submission_data:true,
-  version:3, mode, template_uids, folder_uids } }`. `version:3` is pinned so the
+  version:3, mode } }`. `version:3` is pinned so the
   delivery shape matches the flattener.
-- **detach** → `DELETE /api/v1/webhooks/{uid}`; tolerate 404.
+- **detach** → `DELETE /api/v1/webhooks/{webhook_id}`; tolerate 404.
 - **payload** → an IML function `flattenDelivery` mirroring `lib/payload.js`:
   the top-level `id` stays the **event** id (uuid, stable across retries); the
   resource's own id is exposed as `resource_id`. (Dedup-correctness — never let
@@ -160,8 +160,8 @@ Reviewer (AppBot) feedback addressed in commit `622723b` and re-tested:
   the unused listFolders RPC.
 - **Answered (reviewer mistakes, with evidence):** the v3 delivery **does** carry a
   top-level `id` (event UUID) — captured a live delivery to confirm `{{body.id}}`
-  populates. POST /webhooks returns `uid` at the **top level** (not wrapped), so
-  attach/detach are correct (add-then-remove verified, DELETE → 204). `type` on the
+  populates. POST /webhooks returns the webhook's ID at the **top level** (not wrapped), so
+  attach/detach are correct (add-then-remove verified; DELETE now returns 200 with the webhook). `type` on the
   tokens endpoint is honoured from both body and query (Rails merges params) — moved
   to `qs` anyway per guidance. `GET /templates/{id}/schema` is a valid live endpoint
   returning a JSON Schema (`properties`). Both RPCs declare the connection.

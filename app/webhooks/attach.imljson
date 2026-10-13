@@ -12,6 +12,6 @@
         }
     },
     "response": {
-        "data": { "externalHookId": "{{body.uid}}" }
+        "data": { "externalHookId": "{{body.id}}" }
     }
 }
