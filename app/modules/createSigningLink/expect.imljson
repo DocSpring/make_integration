@@ -1,4 +1,4 @@
 [
-    { "name": "data_request_id", "type": "text", "label": "Data request ID", "required": true, "help": "The drq_... ID from Create a data request." },
+    { "name": "data_request_id", "type": "text", "label": "Signature request ID", "required": true, "help": "The srq_... ID from Create a signature request." },
     { "name": "token_type", "type": "select", "label": "Link type", "default": "email", "options": [ { "label": "Email (expires in 30 days)", "value": "email" }, { "label": "API (expires in 1 hour)", "value": "api" } ] }
 ]

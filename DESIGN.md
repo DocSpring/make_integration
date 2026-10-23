@@ -55,7 +55,7 @@ Events: `submission.processed` / `.failed` / `.created` / `.expired`,
 `template.created` / `.updated` / `.deleted`.
 
 Scope parameters per event mirror `lib/scopeFields.js`:
-- submission / data-request: Templates + Folders + Mode.
+- submission / signature request: Templates + Folders + Mode.
 - template: Templates + Folders (no Mode — mode-agnostic events).
 - combined / batch: Mode only (not template/folder scopable — the API rejects it).
 
@@ -69,8 +69,8 @@ Scope parameters per event mirror `lib/scopeFields.js`:
   keyed (not "password") → mapped to the API's `password`.
 - **Combine PDFs** — `POST {sync}/api/v1/combined_submissions?wait=true` with a
   line-item `source_pdfs` (`type` + `id` + optional `template_version`).
-- **Create Data Request** — `POST {standard}/api/v1/templates/{id}/submissions`
-  **with no `wait`** (a data-request submission returns immediately in
+- **Create Signature Request** — `POST {standard}/api/v1/templates/{id}/submissions`
+  **with no `wait`** (a signature request submission returns immediately in
   `waiting_for_data_requests`; it doesn't produce a PDF until recipients finish).
   Recipients are a line-item (`email`, `name`, `fields`, `auth_type` — default
   `email_link`). Template pre-fill fields are all **optional**. After creating,
@@ -91,7 +91,7 @@ Scope parameters per event mirror `lib/scopeFields.js`:
 - `template_schema_fields` — `GET /templates/{id}/schema` → Make parameters
   (the `jsonSchemaToZapierFields` logic re-expressed for Make: scalar/enum/list
   → parameter types; nested objects → a JSON "collection"; `data__` namespacing).
-  Optional-variant for Create Data Request (all fields non-required).
+  Optional-variant for Create Signature Request (all fields non-required).
 
 ## IML functions (`functions/`)
 
@@ -104,11 +104,17 @@ Scope parameters per event mirror `lib/scopeFields.js`:
 ## Gotchas carried over
 
 - `version:3` pinned on webhook subscribe.
-- `data__` field namespacing on Generate PDF / Create Data Request.
+- `data__` field namespacing on Generate PDF / Create Signature Request.
 - `pdf_passphrase` field key (not "password").
 - Sync host + `?wait=true` for Generate PDF / Combine PDFs; **standard host, no
-  wait** for Create Data Request.
+  wait** for Create Signature Request.
 - Self-hosted `custom_host` validation (only `[scheme://]host[:port]`).
+- Naming: DocSpring calls data requests **signature requests**, so labels, help
+  and the listing say "signature request". Module IDs (`createDataRequest`),
+  parameter names (`data_requests`, `data_request_id`) and event values
+  (`submission_data_request.*`) keep their names: scenario blueprints store them.
+  The module labels and descriptions live in Make (set through the SDK API), not
+  in this repo, so a rename there is done in Make too.
 
 ## Publishing
 
@@ -182,16 +188,16 @@ Reviewer (AppBot) feedback addressed in commit `622723b` and re-tested:
   (cf. Stripe's "Watch Events") and far less to maintain than 13 near-identical
   modules. Output is the flattened envelope (`id` = event id, `resource_id` =
   the resource's id) + the full `data` object.
-- **Create Signing Link is its own action** (not folded into Create Data
-  Request), because a Make module makes exactly one HTTP request — so minting the
+- **Create Signing Link is its own action** (not folded into Create
+  Signature Request), because a Make module makes exactly one HTTP request — so minting the
   30-day `email` token per recipient (`POST /data_requests/{id}/tokens`) is a
-  separate, chainable module (map over Create Data Request's `data_requests`).
+  separate, chainable module (map over Create Signature Request's `data_requests`).
 - **Dynamic template fields** via the `templateFields` RPC: `keys(body.properties)`
   from `GET /templates/{id}/schema` → one `data__<field>` text input per field,
-  bound to the Generate PDF / Create Data Request `data` collection.
+  bound to the Generate PDF / Create Signature Request `data` collection.
 - **Sync host + `?wait=true`** for Generate PDF / Combine PDFs (absolute URL in
   the module, base auth headers still applied); **standard host, no wait** for
-  Create Data Request.
+  Create Signature Request.
 
 ## Validation status
 - ✅ **Connection** (region base URL + Basic auth IML) — live in a Make scenario.
@@ -203,7 +209,7 @@ Reviewer (AppBot) feedback addressed in commit `622723b` and re-tested:
   and list (`body.submissions`). Live spot-test passed.
 - ✅ **Combine PDFs** — line-item `source_pdfs`, sync host + `?wait=true`. API run
   produced a processed `com_…` combined submission on DocSpring.
-- ✅ **Create Data Request** — standard host, no wait. API run produced a
+- ✅ **Create Signature Request** — standard host, no wait. API run produced a
   `waiting_for_data_requests` submission with the recipient's `drq_…`. The
   `fields`-as-array change means `data_requests` passes straight through (no lambda).
 - ✅ **Create Signing Link** — `POST /data_requests/{id}/tokens`; run status 1 and

@@ -15,7 +15,7 @@ from Zapier; the **implementation** is re-expressed in Make's declarative
 ✅ **All modules built and validated** against the live DocSpring API (via the
 Make API v2 — see `DESIGN.md` for the method). Confirmed working: the Connection,
 **Find Template**, **Find Submission**, **Generate PDF**, **Combine PDFs**,
-**Create Data Request**, **Create Signing Link**, and the **Watch Events** instant
+**Create Signature Request**, **Create Signing Link**, and the **Watch Events** instant
 trigger (attach → deliver → flatten → detach). Next: submit for Make app
 verification to list it publicly.
 

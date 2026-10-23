@@ -21,8 +21,8 @@ Your credentials are sent as HTTP Basic authentication over HTTPS and are never 
 
 - **Generate PDF** — Fill a template's fields and generate a finished PDF. Choose a template, then fill the fields defined by that template (they appear automatically). Optionally generate a watermarked **test** PDF, encrypt it with a passphrase, or set an expiry. Returns the submission ID, state, and download URLs.
 - **Combine PDFs** — Merge several PDFs into a single document. Add one or more **Source PDFs**, each referencing a submission, a template, or a custom file by ID. Returns the combined submission ID and download URL.
-- **Create Data Request** — Create a submission that waits for one or more people to fill out and/or sign it. Choose a template and add **recipients** (email, name, the fields each person may edit, and an authentication method). Returns a submission in the `waiting_for_data_requests` state along with a data request for each recipient. Follow it with **Create Signing Link** to send people their link.
-- **Create Signing Link** — Generate an authenticated link a recipient can use to complete their data request. Provide the **Data Request ID** from *Create Data Request* and choose a link type (an email link that lasts 30 days, or a short-lived API link). Returns the signing URL.
+- **Create Signature Request** — Create a submission that waits for one or more people to fill out and/or sign it. Choose a template and add **recipients** (email, name, the fields each person may edit, and an authentication method). Returns a submission in the `waiting_for_data_requests` state along with a signature request for each recipient. Follow it with **Create Signing Link** to send people their link.
+- **Create Signing Link** — Generate an authenticated link a recipient can use to complete their signature request. Provide the **Signature Request ID** from *Create Signature Request* and choose a link type (an email link that lasts 30 days, or a short-lived API link). Returns the signing URL.
 
 ### Searches
 
@@ -31,7 +31,7 @@ Your credentials are sent as HTTP Basic authentication over HTTPS and are never 
 
 ### Triggers
 
-- **Watch Events** — Starts a scenario the moment a DocSpring event occurs. Choose which events to watch — submission processed / failed / created / expired, data request completed / viewed, combined submission processed / failed, submission batch processed / failed, and template created / updated / deleted — and optionally limit to live or test mode. DocSpring delivers each event to Make as it happens.
+- **Watch Events** — Starts a scenario the moment a DocSpring event occurs. Choose which events to watch — submission processed / failed / created / expired, signature request completed / viewed, combined submission processed / failed, submission batch processed / failed, and template created / updated / deleted — and optionally limit to live or test mode. DocSpring delivers each event to Make as it happens.
 
 ### Universal
 
