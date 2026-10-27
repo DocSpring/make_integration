@@ -2,7 +2,7 @@
 
 The app's version in Make stays 1: Make changes a public app in place.
 
-## API v2 (sc-5981, not uploaded yet)
+## API v2 (sc-5981, uploaded 27 Oct 2026)
 
 The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full set of operations.
 
@@ -25,8 +25,9 @@ The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full
 - IDs in URL paths are encoded, and an ID of `.` or `..` fails before any request.
 - Error details that contain quotes keep their text, such as a dropdown's options:
   `/data/colour: must be one of: "Red", "Blue"`.
-- Create signature request and Check data: a signer's Fields list has the chosen template version's field names,
-  whole (`address/street`, not `address`).
+- Create signature request and Check data: a signer's Fields is a list of field names to type or map, whole
+  (`address/street`, not `address`), as List template fields shows them. Make can't fill a picker inside the
+  Signers list from the module's template.
 - Watch events: with templates chosen, events that can't be limited to templates (combined PDF, batch, custom file
   and folder events) fail before the webhook is created, naming those events. Deleting a hook finds its DocSpring
   webhook past the first 100.

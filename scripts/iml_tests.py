@@ -174,40 +174,45 @@ def check_rpc_condition(rel, request, param):
     return errors
 
 
-# 2. The signer field picker lists the template version's field names from GET /templates/{id}/fields.
-FIELDS = [
-    {"id": 1, "name": "address/street", "type": "string", "static": False},
-    {"id": 2, "name": "address/street", "type": "string", "static": False},
-    {"id": 3, "name": "items/0/name", "type": "string", "static": False},
-    {"id": 4, "name": "logo", "type": "image", "static": True},
-    {"id": 5, "name": "full_name", "type": "combined", "static": False},
-    {"id": 6, "name": "@@date", "type": "date", "static": False},
-    {"id": 7, "name": None, "type": "string", "static": False},
-    {"id": 8, "name": "signature", "type": "signature", "static": False},
-    {"id": 9, "name": "notes#0", "type": "string", "static": False},
-]
-FIELD_NAMES = ["address/street", "items/0/name", "signature", "notes#0"]
+# 2. No field inside an array item takes its options from an RPC: Make calls it with only that item's inputs, so it
+# can't read the module's template (tried 27 Oct 2026: the signer Fields picker asked for template ID "fields").
+# Each signer's Fields is a list of typed field names instead.
+def walk_fields(fields, in_array=False):
+    for field in fields if isinstance(fields, list) else [fields]:
+        if not isinstance(field, dict):
+            continue
+        yield field, in_array
+        spec = field.get("spec")
+        if spec:
+            yield from walk_fields(spec, in_array or field.get("type") == "array")
+        options = field.get("options")
+        if isinstance(options, dict):
+            yield from walk_fields(options.get("nested", []), in_array)
+            for option in options.get("store", []) if isinstance(options.get("store"), list) else []:
+                yield from walk_fields(option.get("nested", []), in_array)
+        elif isinstance(options, list):
+            for option in options:
+                if isinstance(option, dict):
+                    yield from walk_fields(option.get("nested", []), in_array)
 
 
-def test_signer_field_picker():
-    rpc = load("rpcs/templateFieldNames.imljson")
+def test_no_rpc_inside_arrays():
     errors = []
-    if not re.fullmatch(r"/templates/\{\{.*\}\}/fields", rpc.get("url", "")):
-        errors.append(f"rpcs/templateFieldNames.imljson: reads {rpc.get('url')}, not /templates/{{id}}/fields")
-    for version, expected in ((None, "latest"), ("", "latest"), ("draft", "draft"), ("1.2.0", "1.2.0")):
-        got = evaluate(rpc.get("qs", {}).get("version"), {"parameters": {"template_id": "tpl_1", "version": version}})
-        if got != expected:
-            errors.append(f"rpcs/templateFieldNames.imljson: version {version!r} asks for {got!r}, not {expected!r}")
-    iterate = rpc["response"]["iterate"]
-    body = {"template_id": "tpl_1", "version": "1.0.0", "fields": FIELDS}
-    if isinstance(iterate, dict):
-        container = evaluate(iterate["container"], {"body": body})
-        items = [i for i in container if evaluate(iterate.get("condition", "{{true}}"), {"body": body, "item": i})]
-    else:
-        items = evaluate(iterate, {"body": body})
-    values = [evaluate(rpc["response"]["output"]["value"], {"body": body, "item": i}) for i in items]
-    if values != FIELD_NAMES:
-        errors.append(f"rpcs/templateFieldNames.imljson: offers {values}, expected {FIELD_NAMES}")
+    for module in sorted(os.listdir(os.path.join(APP, "modules"))):
+        rel = f"modules/{module}/expect.imljson"
+        if not os.path.exists(os.path.join(APP, rel)):
+            continue
+        for field, in_array in walk_fields(load(rel)):
+            options = field.get("options")
+            store = options.get("store") if isinstance(options, dict) else options
+            if in_array and isinstance(store, str) and store.startswith("rpc://"):
+                errors.append(f"{rel}: {field.get('name')} is inside an array but takes its options from {store}")
+    for module in ("createSignatureRequest", "checkData"):
+        rel = f"modules/{module}/expect.imljson"
+        signers = next(f for f in load(rel) if f.get("name") == "signature_requests")
+        fields = next(f for f in signers["spec"] if f.get("name") == "fields")
+        if fields.get("type") != "array" or fields.get("spec", {}).get("type") != "text":
+            errors.append(f"{rel}: a signer's fields aren't a list of typed names: {fields}")
     return errors
 
 
@@ -295,7 +300,7 @@ def test_detach_paging():
     return errors
 
 
-TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_signer_field_picker,
+TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
          test_watch_events_templates, test_remove_field_ids, test_detach_paging]
 
 

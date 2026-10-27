@@ -90,11 +90,10 @@ spec by `scripts/generate_interfaces.py`.
 - **Create signature request** makes three requests: it creates the submission with `signature_requests`, makes a
   signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
   default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id`
-  and `first_signing_url`. Each signer's `fields` is a multi-select of the template's field names
-  (`rpc://templateFieldNames`, also in Check data): `GET /templates/{id}/fields?version=` with the module's template
-  version (`latest` when it's blank), each field's full `name` once, in the API's order, without static, combined
-  and `@@` fields. Names come from the fields, not the schema, because the schema nests a name like
-  `address/street` under `address`, which a signature request rejects.
+  and `first_signing_url`. Each signer's `fields` is a list of field names to type or map (also in Check data),
+  as List template fields shows them: the full `name`, such as `address/street`, which a signature request needs
+  (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with only
+  that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).
 - **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
 
 ## Watch events
@@ -150,7 +149,7 @@ reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
 It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML
 evaluator that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with
 `/regex/flags`). The tests cover the error message (with and without backslash escapes in IML strings), encoded IDs
-and the `.`/`..` checks in every URL, the signer field picker, the Watch events template check, Remove template
+and the `.`/`..` checks in every URL, that no field inside an array item calls an RPC, the Watch events template check, Remove template
 fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any
 other.
 

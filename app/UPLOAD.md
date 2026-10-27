@@ -136,7 +136,6 @@ creates each RPC Make doesn't list (`POST /{app}/{version}/rpcs`), then sets eve
 | `listTemplates` | List templates | `docspring-sspkqt` | changed | `app/rpcs/listTemplates.imljson` |
 | `listFolders` | List folders | `docspring-sspkqt` | new | `app/rpcs/listFolders.imljson` |
 | `templateFields` | Template fields | `docspring-sspkqt` | changed | `app/rpcs/templateFields.imljson` |
-| `templateFieldNames` | Template field names | `docspring-sspkqt` | new | `app/rpcs/templateFieldNames.imljson` |
 | `templateFieldIds` | Template field IDs | `docspring-sspkqt` | new | `app/rpcs/templateFieldIds.imljson` |
 
 ```bash
@@ -336,10 +335,11 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
   link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
   `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
   didn't re-read the token URL on each repeat, and signer 2 would get signer 1's form: don't publish.
-- The signer Fields picker, with a template whose field names have a `/` (such as `address/street` and
-  `items/0/name`): in Create signature request and in Check data, a signer's Fields list shows those full names (the
-  picker reads the module's Template and Template version from inside the Signers list), and Create signature
-  request with them succeeds. If the list is empty, the picker didn't get the template: see the list below.
+- Signer Fields, with a template whose field names have a `/` (such as `address/street` and `items/0/name`): type
+  those full names in a signer's Fields in Create signature request and in Check data, and both succeed. Fields is a
+  list of names, not a picker: an RPC called from inside the Signers list gets only that item's inputs, so it can't
+  read the module's template (tried 27 Oct 2026: DocSpring was asked for a template with ID `fields`). The live app
+  had a `templateFieldNames` RPC for that picker until then; it was deleted.
 - Errors: Generate PDF with a wrong value for a field. The message reads
   `DocSpring API error 422 invalid_data: ...`, a line per field, `Submission: sub_...` and `Request ID: req_...`.
   Then a dropdown (or radio) field set to a value that isn't one of its options: its line reads
@@ -359,10 +359,6 @@ Make behaviour these files rely on that hasn't been tried yet (each is from Make
 - `templateFields` uses `toArray()` and a `wrapper` to put the fields in one collection, and reads `body.required`
   while iterating. If the collection doesn't appear, the fallback is the old flat list: iterate
   `keys(body.properties)` without the wrapper, and build `data` with `omit(parameters; ...)` in the modules.
-- `templateFieldNames` (the signer Fields picker) is used inside the Signers list, and reads the module's
-  `template_id` and `version`. Make passes a module's parameters to its RPCs, but its docs don't say whether that
-  holds inside an array item. If it doesn't, the picker is empty, and the field names can be typed with Map on.
-  It also uses `distinct(body.fields; 'name')`, which should keep the first field of each name, in order.
 - `createSignatureRequest` runs three requests: the submission, a token request that `repeat`s once per signature
   request (reading the next ID from `temp`), and a request-less output. `detach` uses a `repeat` the same way: each
   list request reads the next page's cursor from `temp`.

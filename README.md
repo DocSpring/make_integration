@@ -22,7 +22,7 @@ Make apps are JSON with IML expressions, stored in Make. This repo keeps a copy 
 app/base.imljson           base URL (region + /api/v2), auth headers, error messages
 app/connections/           the connection: api (the authentication test) and parameters (region, host, token)
 app/modules/<id>/          one folder per module: api, expect (inputs), interface (outputs), samples
-app/rpcs/                  pickers: templates, folders, template fields, field names, field IDs
+app/rpcs/                  pickers: templates, folders, template fields, field IDs
 app/webhooks/              the Watch events webhook: api, parameters, attach, detach
 app/groups.imljson         the module groups shown in Make
 app/readme.md              the app's documentation in Make's listing
@@ -46,7 +46,7 @@ python3 scripts/check.py
 It checks that every file is valid JSON with closed `{{ }}`, that nothing calls `/api/v1`, Make's URL and error
 message limits, each module's sections, every `rpc://` reference, the groups, and that `app/UPLOAD.md` names every
 module and RPC. It also runs `scripts/iml_tests.py`, which runs the app's own expressions (error messages, IDs in
-URLs, the signer field picker, the Watch events checks, detach) with a small IML evaluator, `scripts/iml.py`.
+URLs, no RPC inside an array item, the Watch events checks, detach) with a small IML evaluator, `scripts/iml.py`.
 
 After a change to DocSpring's API v2 responses, regenerate the module outputs and samples from the docspring repo
 checked out next to this one:

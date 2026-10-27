@@ -55,12 +55,14 @@
             },
             {
                 "name": "fields",
-                "type": "select",
+                "type": "array",
                 "label": "Fields",
-                "multiple": true,
                 "required": true,
-                "options": "rpc://templateFieldNames",
-                "help": "The fields this person fills in. Each field can be in only one signer's list."
+                "spec": {
+                    "type": "text",
+                    "label": "Field name"
+                },
+                "help": "The names of the fields this person fills in, as List template fields shows them (such as `address/street`). Each field can be in only one signer's list."
             },
             {
                 "name": "role",
