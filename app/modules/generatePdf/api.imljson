@@ -1,38 +1,50 @@
-{
-    "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/templates/{{parameters.template_id}}/submissions",
-    "method": "POST",
-    "headers": {
-        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
-        "Accept": "application/json",
-        "User-Agent": "docspring-make/2"
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
     },
-    "qs": {
-        "version": "{{parameters.version}}",
-        "wait": "{{parameters.wait}}"
-    },
-    "body": {
-        "data": {
-            "{{...}}": "{{parameters.data}}"
+    {
+        "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/templates/{{encodeURL(trim(parameters.template_id))}}/submissions",
+        "method": "POST",
+        "headers": {
+            "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+            "Accept": "application/json",
+            "User-Agent": "docspring-make/2"
         },
-        "test": "{{if(parameters.test; true; undefined)}}",
-        "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
-        "output_formats": "{{parameters.output_formats}}",
-        "password": "{{parameters.password}}",
-        "expires_in": "{{parameters.expires_in}}",
-        "editable": "{{parameters.editable}}",
-        "field_overrides": "{{parameters.field_overrides}}"
-    },
-    "response": {
-        "valid": {
-            "condition": "{{body.state != 'error' && body.state != 'syntax_error' && body.state != 'image_download_failed' && body.state != 'image_processing_failed'}}",
-            "message": "DocSpring couldn't generate the PDF (state: {{body.state}}): {{body.error_message}}\nSubmission: {{body.id}}"
+        "qs": {
+            "version": "{{parameters.version}}",
+            "wait": "{{parameters.wait}}"
         },
-        "output": "{{body}}"
-    },
-    "log": {
-        "sanitize": [
-            "request.headers.authorization",
-            "request.body.password"
-        ]
+        "body": {
+            "data": {
+                "{{...}}": "{{parameters.data}}"
+            },
+            "test": "{{if(parameters.test; true; undefined)}}",
+            "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
+            "output_formats": "{{parameters.output_formats}}",
+            "password": "{{parameters.password}}",
+            "expires_in": "{{parameters.expires_in}}",
+            "editable": "{{parameters.editable}}",
+            "field_overrides": "{{parameters.field_overrides}}"
+        },
+        "response": {
+            "valid": {
+                "condition": "{{body.state != 'error' && body.state != 'syntax_error' && body.state != 'image_download_failed' && body.state != 'image_processing_failed'}}",
+                "message": "DocSpring couldn't generate the PDF (state: {{body.state}}): {{body.error_message}}\nSubmission: {{body.id}}"
+            },
+            "output": "{{body}}"
+        },
+        "log": {
+            "sanitize": [
+                "request.headers.authorization",
+                "request.body.password"
+            ]
+        }
     }
-}
+]

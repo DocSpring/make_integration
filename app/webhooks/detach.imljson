@@ -14,7 +14,7 @@
     },
     {
         "condition": "{{temp.found}}",
-        "url": "/webhooks/{{webhook.externalHookId}}",
+        "url": "/webhooks/{{encodeURL(webhook.externalHookId)}}",
         "method": "DELETE"
     }
 ]

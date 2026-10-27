@@ -1,6 +1,16 @@
 [
     {
-        "url": "/templates/{{parameters.template_id}}/submissions",
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/submissions",
         "method": "POST",
         "qs": {
             "version": "{{parameters.version}}"
@@ -24,7 +34,7 @@
     },
     {
         "condition": "{{parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
-        "url": "/signature_requests/{{get(temp.signature_request_ids; temp.index)}}/tokens",
+        "url": "/signature_requests/{{encodeURL(get(temp.signature_request_ids; temp.index))}}/tokens",
         "method": "POST",
         "body": {
             "type": "{{parameters.signing_link_type}}"

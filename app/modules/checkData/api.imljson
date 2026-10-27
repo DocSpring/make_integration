@@ -1,17 +1,29 @@
-{
-    "url": "/templates/{{parameters.template_id}}/submissions/validate",
-    "method": "POST",
-    "qs": {
-        "version": "{{parameters.version}}"
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
     },
-    "body": {
-        "data": {
-            "{{...}}": "{{parameters.data}}"
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/submissions/validate",
+        "method": "POST",
+        "qs": {
+            "version": "{{parameters.version}}"
         },
-        "test": "{{if(parameters.test; true; undefined)}}",
-        "signature_requests": "{{parameters.signature_requests}}"
-    },
-    "response": {
-        "output": "{{body}}"
+        "body": {
+            "data": {
+                "{{...}}": "{{parameters.data}}"
+            },
+            "test": "{{if(parameters.test; true; undefined)}}",
+            "signature_requests": "{{parameters.signature_requests}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
     }
-}
+]

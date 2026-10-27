@@ -1,7 +1,19 @@
-{
-    "url": "/submissions/{{parameters.submission_id}}",
-    "method": "DELETE",
-    "response": {
-        "output": "{{body}}"
+[
+    {
+        "condition": "{{trim(parameters.submission_id) = '.' || trim(parameters.submission_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The submission ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/submissions/{{encodeURL(trim(parameters.submission_id))}}",
+        "method": "DELETE",
+        "response": {
+            "output": "{{body}}"
+        }
     }
-}
+]

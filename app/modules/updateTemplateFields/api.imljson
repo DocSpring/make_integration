@@ -1,10 +1,22 @@
-{
-    "url": "/templates/{{parameters.template_id}}/fields",
-    "method": "PUT",
-    "body": {
-        "fields": "{{parameters.fields}}"
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
     },
-    "response": {
-        "output": "{{body}}"
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/fields",
+        "method": "PUT",
+        "body": {
+            "fields": "{{parameters.fields}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
     }
-}
+]

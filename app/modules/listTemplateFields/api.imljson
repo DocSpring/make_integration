@@ -1,12 +1,24 @@
-{
-    "url": "/templates/{{parameters.template_id}}/fields",
-    "method": "GET",
-    "qs": {
-        "version": "{{parameters.version}}"
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
     },
-    "response": {
-        "limit": "{{parameters.limit}}",
-        "iterate": "{{body.fields}}",
-        "output": "{{item}}"
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/fields",
+        "method": "GET",
+        "qs": {
+            "version": "{{parameters.version}}"
+        },
+        "response": {
+            "limit": "{{parameters.limit}}",
+            "iterate": "{{body.fields}}",
+            "output": "{{item}}"
+        }
     }
-}
+]

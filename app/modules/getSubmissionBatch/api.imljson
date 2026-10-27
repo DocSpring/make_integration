@@ -1,10 +1,22 @@
-{
-    "url": "/submissions/batches/{{parameters.submission_batch_id}}",
-    "method": "GET",
-    "qs": {
-        "include_data": "{{parameters.include_data}}"
+[
+    {
+        "condition": "{{trim(parameters.submission_batch_id) = '.' || trim(parameters.submission_batch_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The submission batch ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
     },
-    "response": {
-        "output": "{{body}}"
+    {
+        "url": "/submissions/batches/{{encodeURL(trim(parameters.submission_batch_id))}}",
+        "method": "GET",
+        "qs": {
+            "include_data": "{{parameters.include_data}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
     }
-}
+]

@@ -1,5 +1,6 @@
 {
-    "url": "/templates/{{parameters.template_id}}/schema",
+    "condition": "{{trim(parameters.template_id) != '.' && trim(parameters.template_id) != '..'}}",
+    "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/schema",
     "method": "GET",
     "headers": {
         "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"

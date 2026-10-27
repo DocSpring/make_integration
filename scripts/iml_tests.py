@@ -106,6 +106,8 @@ def test_error_details():
 def test_ids_in_paths():
     errors = []
     for rel, requests in components():
+        if rel == "modules/makeApiCall/api.imljson":
+            continue  # its URL is the path the user enters
         for request in requests:
             url = request.get("url")
             if not isinstance(url, str):
@@ -293,7 +295,7 @@ def test_detach_paging():
     return errors
 
 
-TESTS = [test_error_details]
+TESTS = [test_error_details, test_ids_in_paths, test_id_values]
 
 
 def run():

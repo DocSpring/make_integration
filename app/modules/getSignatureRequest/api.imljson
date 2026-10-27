@@ -1,7 +1,19 @@
-{
-    "url": "/signature_requests/{{parameters.signature_request_id}}",
-    "method": "GET",
-    "response": {
-        "output": "{{body}}"
+[
+    {
+        "condition": "{{trim(parameters.signature_request_id) = '.' || trim(parameters.signature_request_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The signature request ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/signature_requests/{{encodeURL(trim(parameters.signature_request_id))}}",
+        "method": "GET",
+        "response": {
+            "output": "{{body}}"
+        }
     }
-}
+]
