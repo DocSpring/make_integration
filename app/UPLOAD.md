@@ -40,29 +40,62 @@ mk() {
 }
 ```
 
-Run `scripts/check.py` first. It checks that every file is valid JSON and that this guide names every module and RPC.
+`names` prints the name of each component Make lists at a path, one per line. The steps below use it to create what's
+missing and update what's there, so the same steps work on the live app and on an empty testing app:
 
-Recommended: run every step against a testing app first (create an empty app in Make, such as "DocSpring Testing",
-set `MAKE_APP` to its name, create its connection with `POST /{app}/connections` and set `MAKE_CONNECTION` to that
-connection's name, then create its RPCs, webhook and modules as below), test it (see
-[Testing](#testing)), then run the same steps against `docspring-sspkqt`.
+```bash
+names() {  # names <path>
+  mk GET "$1" | python3 -c 'import json, sys
+for value in json.load(sys.stdin).values():
+    if isinstance(value, list):
+        print("\n".join(item["name"] for item in value))'
+}
+```
+
+Run `scripts/check.py` first. It checks every file, runs the IML tests and checks that this guide names every module
+and RPC.
+
+### A testing app first (recommended)
+
+Run every step against a testing app first, test it (see [Testing](#testing)), then run the same steps against
+`docspring-sspkqt`:
+
+1. Create an empty app in Make (Custom apps > Create a new app), such as "DocSpring Testing", and set `MAKE_APP` to
+   its name. Check that its manifest version is 2 like the live app's (`mk GET "/$MAKE_APP/$V"`, `manifestVersion`):
+   the modules rely on manifest 2 leaving empty inputs out of requests.
+2. Create its connection (basic, like the live one) and set `MAKE_CONNECTION` to the name Make gives it:
+
+```bash
+MAKE_CONNECTION=$(BODY='{"type": "basic", "label": "DocSpring"}' mk POST "/$MAKE_APP/connections" |
+  python3 -c 'import json, sys; print(json.load(sys.stdin)["appConnection"]["name"])')
+echo "$MAKE_CONNECTION"
+```
+
+3. Follow steps 1 to 6 and 8. Step 7 is only for the live app.
 
 ## 1. Read what's in Make now
 
 ```bash
 mk GET "/$MAKE_APP/$V/modules"        # module IDs, labels, types, visibility
-mk GET "/$MAKE_APP/$V/rpcs"           # listTemplates and templateFields exist today
-mk GET "/$MAKE_APP/webhooks"          # the Watch events webhook's name
-mk GET "/$MAKE_APP/connections"       # docspring-sspkqt
+mk GET "/$MAKE_APP/$V/rpcs"           # in the live app: listTemplates and templateFields
+mk GET "/$MAKE_APP/webhooks"          # the Watch events webhook
+mk GET "/$MAKE_APP/connections"       # in the live app: docspring-sspkqt
 ```
 
-Set `WEBHOOK` to the webhook's name from that list (the repo never recorded it), and check which webhook
-`watchEvents` uses:
+Set `WEBHOOK` to the Watch events webhook's name. In the live app it's `docspring-sspkqt` (Make named it after the
+app when it was created, in September 2026); check it in the list. A new testing app has no webhook yet: leave
+`WEBHOOK` empty and step 5 creates one.
 
 ```bash
-WEBHOOK=<name from the list>
+WEBHOOK=$(names "/$MAKE_APP/webhooks")   # one name; empty in a new app
+echo "$WEBHOOK"   # more than one name: set WEBHOOK to the one watchEvents uses
+```
+
+In the live app, check that `watchEvents` uses that webhook, and read the live attach:
+
+```bash
 mk GET "/$MAKE_APP/$V/modules/watchEvents"
-mk GET "/webhooks/$WEBHOOK/attach"     # the live attach; it may still read body.uid (see below)
+mk GET "/webhooks/$WEBHOOK/attach"     # it may still read body.uid (see below)
 ```
 
 If the live attach reads `body.uid`, hooks attached with it have no stored webhook ID, and their DocSpring webhooks
@@ -94,10 +127,11 @@ mk POST "/$MAKE_APP/$V/base" app/base.imljson
 
 ## 4. RPCs
 
-Every RPC uses the connection `docspring-sspkqt`, like the modules that call it. Create the new ones, then set each
-one's `api` section (`PUT /{app}/{version}/rpcs/{rpc}/api`). None has a `parameters` section.
+Every RPC uses the app's connection (`docspring-sspkqt` in the live app), like the modules that call it. The script
+creates each RPC Make doesn't list (`POST /{app}/{version}/rpcs`), then sets every RPC's `api` section
+(`PUT /{app}/{version}/rpcs/{rpc}/api`). None has a `parameters` section.
 
-| Make ID | Label | Connection | In Make today | File |
+| Make ID | Label | Connection | In the live app | File |
 |---|---|---|---|---|
 | `listTemplates` | List templates | `docspring-sspkqt` | changed | `app/rpcs/listTemplates.imljson` |
 | `listFolders` | List folders | `docspring-sspkqt` | new | `app/rpcs/listFolders.imljson` |
@@ -106,22 +140,35 @@ one's `api` section (`PUT /{app}/{version}/rpcs/{rpc}/api`). None has a `paramet
 | `templateFieldIds` | Template field IDs | `docspring-sspkqt` | new | `app/rpcs/templateFieldIds.imljson` |
 
 ```bash
-# Create the new RPCs: POST /{app}/{version}/rpcs
-for rpc in "listFolders:List folders" "templateFieldNames:Template field names" "templateFieldIds:Template field IDs"; do
-  BODY="{\"name\": \"${rpc%%:*}\", \"label\": \"${rpc#*:}\", \"connection\": \"$MAKE_CONNECTION\"}" \
-    mk POST "/$MAKE_APP/$V/rpcs"
-done
-# Set each RPC's code: PUT /{app}/{version}/rpcs/{rpc}/api
-for f in app/rpcs/*.imljson; do
-  rpc=$(basename "$f" .imljson)
-  mk PUT "/$MAKE_APP/$V/rpcs/$rpc/api" "$f"
+RPCS=$(names "/$MAKE_APP/$V/rpcs")
+python3 - "$MAKE_CONNECTION" <<'EOF' | while IFS=$'\t' read -r rpc body; do
+import json, sys
+for line in open("app/UPLOAD.md"):
+    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+    if len(cells) == 5 and cells[0].startswith("`") and cells[4].startswith("`app/rpcs/"):
+        name = cells[0].strip("`")
+        print(name, json.dumps({"name": name, "label": cells[1], "connection": sys.argv[1]}), sep="\t")
+EOF
+  grep -qx "$rpc" <<<"$RPCS" || BODY=$body mk POST "/$MAKE_APP/$V/rpcs" </dev/null
+  mk PUT "/$MAKE_APP/$V/rpcs/$rpc/api" "app/rpcs/$rpc.imljson" </dev/null
 done
 ```
 
 ## 5. Webhook
 
-The Watch events webhook stays the same component (a dedicated webhook with attach and detach, bound to the
-connection `docspring-sspkqt`); its sections change.
+The Watch events webhook stays the same component in the live app (a dedicated webhook with attach and detach,
+bound to the connection `docspring-sspkqt`); its sections change. In a new app there's none yet, so this creates a
+dedicated webhook (type `web`, as the live one was created) on the app's connection, and Make names it:
+
+```bash
+if [ -z "$WEBHOOK" ]; then
+  WEBHOOK=$(BODY="{\"label\": \"DocSpring events\", \"type\": \"web\", \"connection\": \"$MAKE_CONNECTION\"}" \
+    mk POST "/$MAKE_APP/webhooks" | python3 -c 'import json, sys; print(json.load(sys.stdin)["appWebhook"]["name"])')
+fi
+echo "$WEBHOOK"
+```
+
+Then set its sections:
 
 | Section | Method + path | File |
 |---|---|---|
@@ -142,10 +189,10 @@ trigger) after this step.
 
 ## 6. Modules
 
-Every module except `watchEvents` uses the connection `docspring-sspkqt`. `watchEvents` uses the webhook from step 5.
-Every module is public (visible) once its sections are in.
+Every module except `watchEvents` uses the app's connection (`docspring-sspkqt` in the live app). `watchEvents` uses
+the webhook from step 5. Every module is public (visible) once its sections are in.
 
-| Make ID | Type (`typeId`) | Label | Description | `crud` | Binding | In Make today |
+| Make ID | Type (`typeId`) | Label | Description | `crud` | Binding | In the live app |
 |---|---|---|---|---|---|---|
 | `generatePdf` | Action (4) | Generate PDF | Generates a PDF from a template with your data, and waits until it's ready. | create | connection `docspring-sspkqt` | changed |
 | `generatePdfBatch` | Action (4) | Generate PDFs in a batch | Generates up to 50 PDFs in one request, and waits until they're ready. | create | connection `docspring-sspkqt` | new |
@@ -181,43 +228,46 @@ The labels are the sc-5981 spec's labels in sentence case, which Make's naming c
 follow Make's third-person style. `watchEvents` is bound to the webhook from step 5 (`"webhook": "$WEBHOOK"` when
 creating it), not to a connection.
 
-This prints a request body per module from the table above, so the table is the only list:
+This prints each module's name and request body from the table above, so the table is the only list:
 
 ```bash
-module_bodies() {  # module_bodies new|changed
-  python3 - "$1" "$MAKE_CONNECTION" <<'EOF'
+module_bodies() {
+  python3 - "$MAKE_CONNECTION" "$WEBHOOK" <<'EOF'
 import json, sys
-want, connection = sys.argv[1], sys.argv[2]
+connection, webhook = sys.argv[1], sys.argv[2]
 types = {"Action (4)": 4, "Search (9)": 9, "Instant trigger (10)": 10, "Universal (12)": 12}
 for line in open("app/UPLOAD.md"):
     cells = [c.strip() for c in line.strip().strip("|").split("|")]
-    if len(cells) != 7 or not cells[0].startswith("`") or not cells[6].startswith(want):
+    if len(cells) != 7 or not cells[0].startswith("`") or cells[1] not in types:
         continue
     body = {"name": cells[0].strip("`"), "typeId": types[cells[1]], "label": cells[2], "description": cells[3]}
     if cells[4] != "-":
         body["crud"] = cells[4]
-    if body["typeId"] != 10:
+    if body["typeId"] == 10:
+        if not webhook:
+            sys.exit("Set WEBHOOK first (steps 1 and 5)")
+        body["webhook"] = webhook
+    else:
         body["connection"] = connection
-    print(json.dumps(body))
+    print(body["name"], json.dumps(body), sep="\t")
 EOF
 }
 ```
 
-**Create each new module** with `POST /{app}/{version}/modules` (Create Module). Its `crud` can only be set here:
-Patch Module changes only the label, description and connection. Searches and the universal module have no `crud`.
+**Create each module Make doesn't list** with `POST /{app}/{version}/modules` (Create Module), and **relabel each one
+it does** with `PATCH /{app}/{version}/modules/{module}` (Patch Module). Patch Module changes only the label,
+description and connection, so a module's type, `crud` and webhook can only be set when it's created. Searches and
+the universal module have no `crud`.
 
 ```bash
-module_bodies new | while IFS= read -r body; do BODY=$body mk POST "/$MAKE_APP/$V/modules"; done
-```
-
-**Relabel each changed module** with `PATCH /{app}/{version}/modules/{module}` (Patch Module), which takes only the
-label, description and connection:
-
-```bash
-module_bodies changed | while IFS= read -r body; do
-  m=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["name"])' "$body")
-  BODY=$(python3 -c 'import json,sys; b=json.loads(sys.argv[1]); print(json.dumps({k: b[k] for k in ("label", "description")}))' "$body") \
-    mk PATCH "/$MAKE_APP/$V/modules/$m"
+MODULES=$(names "/$MAKE_APP/$V/modules")
+module_bodies | while IFS=$'\t' read -r m body; do
+  if grep -qx "$m" <<<"$MODULES"; then
+    BODY=$(python3 -c 'import json, sys; b = json.loads(sys.argv[1]); print(json.dumps({k: b[k] for k in ("label", "description")}))' "$body") \
+      mk PATCH "/$MAKE_APP/$V/modules/$m" </dev/null
+  else
+    BODY=$body mk POST "/$MAKE_APP/$V/modules" </dev/null
+  fi
 done
 ```
 
