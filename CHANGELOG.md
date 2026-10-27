@@ -22,6 +22,15 @@ The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full
   plus `resource_type` and `resource_id`. It offers every API v2 event and can be limited to templates.
 - Find submissions and Find templates use cursor paging up to their Limit.
 - Labels are in sentence case.
+- IDs in URL paths are encoded, and an ID of `.` or `..` fails before any request.
+- Error details that contain quotes keep their text, such as a dropdown's options:
+  `/data/colour: must be one of: "Red", "Blue"`.
+- Create signature request and Check data: a signer's Fields list has the chosen template version's field names,
+  whole (`address/street`, not `address`).
+- Watch events: with templates chosen, events that can't be limited to templates (combined PDF, batch, custom file
+  and folder events) fail before the webhook is created, naming those events. Deleting a hook finds its DocSpring
+  webhook past the first 100.
+- Remove template fields sends field IDs typed in Map mode as numbers.
 
 ### Renamed
 

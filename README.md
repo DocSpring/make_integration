@@ -28,7 +28,8 @@ app/groups.imljson         the module groups shown in Make
 app/readme.md              the app's documentation in Make's listing
 app/UPLOAD.md              how to upload everything with the Make API, and each module's label, type and binding
 app/APP.md                 the app's identifiers and the Make API routes
-scripts/check.py           checks every file before an upload
+scripts/check.py           checks every file before an upload, and runs the IML tests
+scripts/iml_tests.py       runs the app's IML with scripts/iml.py, a small IML evaluator
 scripts/generate_interfaces.py  writes interfaces and samples from DocSpring's OpenAPI spec
 ```
 
@@ -36,7 +37,7 @@ Labels, descriptions, module types and visibility live only in Make; `app/UPLOAD
 
 ## Checks
 
-There's no test framework: Make runs the IML. Before an upload:
+Make runs the IML, so there's no test framework. Before an upload:
 
 ```bash
 python3 scripts/check.py
@@ -44,7 +45,8 @@ python3 scripts/check.py
 
 It checks that every file is valid JSON with closed `{{ }}`, that nothing calls `/api/v1`, Make's URL and error
 message limits, each module's sections, every `rpc://` reference, the groups, and that `app/UPLOAD.md` names every
-module and RPC.
+module and RPC. It also runs `scripts/iml_tests.py`, which runs the app's own expressions (error messages, IDs in
+URLs, the signer field picker, the Watch events checks, detach) with a small IML evaluator, `scripts/iml.py`.
 
 After a change to DocSpring's API v2 responses, regenerate the module outputs and samples from the docspring repo
 checked out next to this one:

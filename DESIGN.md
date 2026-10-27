@@ -42,6 +42,11 @@ only Make's built-in IML functions.
   the day, so date fields are text inputs whose help says `YYYY-MM-DD` and suggests `formatDate()` for a mapped
   date. Find submissions' `created_after` and `created_before` are Make `date` inputs: the API takes timestamps
   (`date-time`) there.
+- **IDs in paths.** Every ID that goes into a URL path goes through `encodeURL(trim(...))`, so an ID such as
+  `../templates/tpl_x` stays one path segment. `encodeURL()` leaves dots alone, and a URL parser turns a `.` or `..`
+  segment into the current or parent path, so each module whose path takes an ID starts with a request-less step
+  that fails first for an ID of `.` or `..` (after trimming): "The submission ID can't be "." or ".."." (a
+  DataError, from `response.valid`). The template field pickers make no request for such an ID.
 - **Lists.** `limit` (up to 100) and `cursor`; responses are `{data, next_cursor}`. The pickers (`listTemplates`,
   `listFolders`) follow `next_cursor` up to 1,000 items. The searches (Find submissions, Find templates, List
   folders) follow it up to their Limit input.
@@ -51,7 +56,10 @@ only Make's built-in IML functions.
 - **An HTTP error** (base `response.error`): `DocSpring API error <status> <code>: <message>`, a line per detail
   (`<pointer or parameter>: <message>`), then `Submission: <id>` (or the batch, combined PDF or template ID) and
   `Request ID: <id>`. The details come from `createJSON(body.error.details)` reshaped with `replace()` and regular
-  expressions; if Make reads those differently, the details show as JSON, never `[object Object]`.
+  expressions; if Make reads those differently, the details show as JSON, never `[object Object]`. The captures skip
+  JSON-escaped characters, so a message with quotes (`must be one of: "Red", "Blue"`) keeps its text, and the quotes
+  and backslashes are unescaped at the end. Every backslash in those regular expressions is inside a character
+  class, so they read the same whether or not IML strings process backslash escapes, which Make doesn't document.
 - **A 201 with a failure state** (`error`, `syntax_error`, `image_download_failed`, `image_processing_failed`, or a
   template `document.state` of `password_required`, `malformed_pdf`, `unknown_error` or `download_failed`): the
   module's `response.valid` fails with the state, `error_message` and the record ID.
@@ -135,9 +143,16 @@ fields as dropdowns.
 
 ## Checks
 
-There's no test framework: Make runs the IML. `scripts/check.py` checks that every file is valid JSON with closed
+Make runs the IML, so there's no test framework. `scripts/check.py` checks that every file is valid JSON with closed
 `{{ }}`, that nothing calls `/api/v1`, Make's URL and error-message limits, each module's sections, every `rpc://`
 reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
+
+It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML
+evaluator that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with
+`/regex/flags`). The tests cover the error message (with and without backslash escapes in IML strings), encoded IDs
+and the `.`/`..` checks in every URL, the signer field picker, the Watch events template check, Remove template
+fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any
+other.
 
 ## Validation status
 

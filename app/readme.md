@@ -56,7 +56,7 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 ### Triggers
 
-- **Watch events**: starts a scenario as soon as something happens in DocSpring. Choose the events (submissions created, processed, failed, declined, updated or expired; signature requests viewed, completed, declined or updated; combined PDFs processed, failed or expired; batches processed or failed; templates created, updated or deleted; custom files created; folders created, updated or deleted), live or test mode, and optionally the templates to watch. Each event has `event_type`, `resource_type`, `resource_id` and the record in `data`.
+- **Watch events**: starts a scenario as soon as something happens in DocSpring. Choose the events (submissions created, processed, failed, declined, updated or expired; signature requests viewed, completed, declined or updated; combined PDFs processed, failed or expired; batches processed or failed; templates created, updated or deleted; custom files created; folders created, updated or deleted), live or test mode, and optionally the templates to watch (for submission, signature request and template events). Each event has `event_type`, `resource_type`, `resource_id` and the record in `data`.
 
 ### Other
 
