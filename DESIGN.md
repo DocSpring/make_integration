@@ -83,7 +83,10 @@ spec by `scripts/generate_interfaces.py`.
   signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
   default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id`
   and `first_signing_url`. Each signer's `fields` is a multi-select of the template's field names
-  (`rpc://templateFieldNames`).
+  (`rpc://templateFieldNames`, also in Check data): `GET /templates/{id}/fields?version=` with the module's template
+  version (`latest` when it's blank), each field's full `name` once, in the API's order, without static, combined
+  and `@@` fields. Names come from the fields, not the schema, because the schema nests a name like
+  `address/street` under `address`, which a signature request rejects.
 - **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
 
 ## Watch events

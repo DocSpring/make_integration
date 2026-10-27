@@ -1,18 +1,21 @@
 {
     "condition": "{{trim(parameters.template_id) != '.' && trim(parameters.template_id) != '..'}}",
-    "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/schema",
+    "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/fields",
     "method": "GET",
     "headers": {
         "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
     },
     "qs": {
-        "version": "{{parameters.version}}"
+        "version": "{{ifempty(parameters.version; 'latest')}}"
     },
     "response": {
-        "iterate": "{{keys(body.properties)}}",
+        "iterate": {
+            "container": "{{distinct(body.fields; 'name')}}",
+            "condition": "{{ifempty(item.name; '') != '' && !item.static && item.type != 'combined' && indexOf(ifempty(item.name; ''); '@@') != 0}}"
+        },
         "output": {
-            "label": "{{item}}",
-            "value": "{{item}}"
+            "label": "{{item.name}}",
+            "value": "{{item.name}}"
         }
     }
 }

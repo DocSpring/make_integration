@@ -31,8 +31,8 @@ From Make's API reference (base above; every path starts `/sdk/apps`). `app/UPLO
   `createSignatureRequest`; Make keeps the old module hidden and deprecated if it won't delete it.
 - 5 RPCs, all on connection `docspring-sspkqt`: `listTemplates` and `listFolders` (`GET /templates`, `GET /folders`,
   cursor paging, up to 1,000 items), `templateFields` (`GET /templates/{id}/schema?version=`, the typed template fields
-  as mappable inputs), `templateFieldNames` (the schema's field names) and `templateFieldIds` (`GET
-  /templates/{id}/fields`).
+  as mappable inputs), `templateFieldNames` (the signer field picker: field names from `GET /templates/{id}/fields`)
+  and `templateFieldIds` (`GET /templates/{id}/fields`).
 - 1 dedicated webhook (Watch events): attach creates a version 4 DocSpring webhook (`POST /webhooks`), detach deletes
   it if it still exists.
 

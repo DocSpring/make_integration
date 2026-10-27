@@ -295,7 +295,7 @@ def test_detach_paging():
     return errors
 
 
-TESTS = [test_error_details, test_ids_in_paths, test_id_values]
+TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_signer_field_picker]
 
 
 def run():
