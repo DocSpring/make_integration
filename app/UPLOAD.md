@@ -330,24 +330,53 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
 - The connection: a valid token connects; a wrong secret says the token isn't valid.
 - Each module once. Generate PDF and Check data with a template that has a date, a number, a checkbox and an image
   field: the Template fields collection shows typed inputs (date fields as text asking for YYYY-MM-DD).
-- Create signature request with two signers: one link per signer in Signing links, and `first_signing_url`.
-- An error: Generate PDF with a wrong value for a field. The message reads
+- Create signature request with two signers: one link per signer in Signing links, and `first_signing_url`. Each
+  link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
+  `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
+  didn't re-read the token URL on each repeat, and signer 2 would get signer 1's form: don't publish.
+- The signer Fields picker, with a template whose field names have a `/` (such as `address/street` and
+  `items/0/name`): in Create signature request and in Check data, a signer's Fields list shows those full names (the
+  picker reads the module's Template and Template version from inside the Signers list), and Create signature
+  request with them succeeds. If the list is empty, the picker didn't get the template: see the list below.
+- Errors: Generate PDF with a wrong value for a field. The message reads
   `DocSpring API error 422 invalid_data: ...`, a line per field, `Submission: sub_...` and `Request ID: req_...`.
+  Then a dropdown (or radio) field set to a value that isn't one of its options: its line reads
+  `/data/<field>: must be one of: "Red", "Blue"`, with the field and every option.
+- IDs: Get submission with the ID `..` fails with `The submission ID can't be "." or ".."`, and the execution log
+  shows no request. With the ID `a/b` it fails with DocSpring's 404 (the request went to `/submissions/a%2Fb`).
+- Remove template fields with a field ID typed in Map mode removes the field (Make sends the ID as a number).
 - Watch events: create a hook (DocSpring gets a version 4 webhook named "Make"), generate a test PDF (the scenario
   runs with `event_type`, `resource_type` and `resource_id`), delete the hook (the DocSpring webhook is deleted).
   Then create a hook, delete its webhook in DocSpring, and delete the hook: Make should delete it without an error.
+  Then a hook with a template and the "Combined PDF processed" event: it fails with "Templates only limit submission,
+  signature request and template events. ... combined_pdf.processed", and DocSpring gets no webhook.
 
-Make behaviour these files rely on that hasn't been tried yet (each is from Make's documentation):
+Make behaviour these files rely on that hasn't been tried yet (each is from Make's documentation, and
+`scripts/iml_tests.py` runs the IML as the docs describe it):
 
 - `templateFields` uses `toArray()` and a `wrapper` to put the fields in one collection, and reads `body.required`
   while iterating. If the collection doesn't appear, the fallback is the old flat list: iterate
   `keys(body.properties)` without the wrapper, and build `data` with `omit(parameters; ...)` in the modules.
+- `templateFieldNames` (the signer Fields picker) is used inside the Signers list, and reads the module's
+  `template_id` and `version`. Make passes a module's parameters to its RPCs, but its docs don't say whether that
+  holds inside an array item. If it doesn't, the picker is empty, and the field names can be typed with Map on.
+  It also uses `distinct(body.fields; 'name')`, which should keep the first field of each name, in order.
 - `createSignatureRequest` runs three requests: the submission, a token request that `repeat`s once per signature
-  request (reading the next ID from `temp`), and a request-less output.
-- The base error message uses `replace()` with regular expressions and `decodeURL('%0A')` for line breaks. If
-  Make doesn't read the regular expressions, the details show as JSON instead (still readable).
-- `detach` makes two requests: it lists the webhooks with the hook's first event and deletes the webhook only if
-  it's in the list.
+  request (reading the next ID from `temp`), and a request-less output. `detach` uses a `repeat` the same way: each
+  list request reads the next page's cursor from `temp`.
+- Request-less steps whose `response.valid` is `false`: the `.`/`..` ID checks at the start of 20 modules, and the
+  template check at the start of `attach`. Make's docs list `valid` as available without a request. If Make ignores
+  it there, the request goes ahead: an ID of `.` or `..` gets DocSpring's 404 (the ID is still encoded), and attach
+  gets DocSpring's 422, which names the events too. To make the checks fail in Make anyway, give each check
+  `"url": "/authentication"`, so `valid` runs on a response.
+- `encodeURL()` encodes `/`, `?` and `#` (Make documents it as encoding special characters in a text for a URL, as
+  JavaScript's `encodeURIComponent` does).
+- The base error message uses `replace()` with regular expressions and `decodeURL('%0A')` for line breaks. The
+  regular expressions keep each backslash inside a character class, so they work whether or not IML strings process
+  backslash escapes. If Make doesn't read the regular expressions, the details show as JSON instead (still readable).
+- `detach` makes up to 21 requests: it lists the webhooks with the hook's first event, 100 a page (up to 20 pages),
+  and deletes the webhook only if it's in the list.
+- Remove template fields' `spec: {"type": "number"}` on a multiple select converts each typed ID to a number.
 - A select's `placeholder` (Move template's "Root folder (/)"), and `null` from `ifempty(...; null)` for the root.
 - Modules give up after Make's 40-second timeout (Make's default). A PDF that takes longer fails in Make, not with
   DocSpring's 504; turning off Wait for the PDF avoids it. Make support can raise the timeout for an app.
