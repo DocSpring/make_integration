@@ -1,0 +1,17 @@
+{
+    "url": "/templates/{{parameters.template_id}}/schema",
+    "method": "GET",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
+    },
+    "qs": {
+        "version": "{{parameters.version}}"
+    },
+    "response": {
+        "iterate": "{{keys(body.properties)}}",
+        "output": {
+            "label": "{{item}}",
+            "value": "{{item}}"
+        }
+    }
+}
