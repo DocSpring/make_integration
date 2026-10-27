@@ -1,0 +1,74 @@
+{
+    "id": "sbb_1234567890abcdef05",
+    "state": "pending",
+    "metadata": {
+        "job_id": 54321
+    },
+    "total_count": 2,
+    "pending_count": 1,
+    "error_count": 0,
+    "completion_percentage": 50,
+    "submissions": [
+        {
+            "id": "sub_1234567890abcdef07",
+            "template_id": "tpl_1234567890abcdef01",
+            "template_type": "pdf",
+            "template_version": null,
+            "batch_id": "sbb_1234567890abcdef05",
+            "source": "api",
+            "state": "processed",
+            "test": false,
+            "editable": false,
+            "data": null,
+            "data_errors": [],
+            "error_message": null,
+            "metadata": {},
+            "has_password": false,
+            "signature_requests": [],
+            "actions": [],
+            "truncated_text": null,
+            "output_formats": [
+                "pdf"
+            ],
+            "files": {},
+            "preview_generated_at": null,
+            "expired": false,
+            "expires_at": null,
+            "processed_at": null,
+            "created_at": "2018-10-20T09:00:00Z",
+            "updated_at": "2018-10-20T09:00:00Z"
+        },
+        {
+            "id": "sub_1234567890abcdef06",
+            "template_id": "tpl_1234567890abcdef01",
+            "template_type": "pdf",
+            "template_version": null,
+            "batch_id": "sbb_1234567890abcdef05",
+            "source": "api",
+            "state": "pending",
+            "test": false,
+            "editable": false,
+            "data": null,
+            "data_errors": [],
+            "error_message": null,
+            "metadata": {},
+            "has_password": false,
+            "signature_requests": [],
+            "actions": [],
+            "truncated_text": null,
+            "output_formats": [
+                "pdf"
+            ],
+            "files": {},
+            "preview_generated_at": null,
+            "expired": false,
+            "expires_at": null,
+            "processed_at": null,
+            "created_at": "2018-10-20T09:00:00Z",
+            "updated_at": "2018-10-20T09:00:00Z"
+        }
+    ],
+    "processed_at": null,
+    "created_at": "2018-10-20T08:59:00Z",
+    "updated_at": "2018-10-20T09:00:00Z"
+}

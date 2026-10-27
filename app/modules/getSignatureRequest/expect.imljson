@@ -1,0 +1,9 @@
+[
+    {
+        "name": "signature_request_id",
+        "type": "text",
+        "label": "Signature request ID",
+        "required": true,
+        "help": "The signature request's ID, such as srq_1234567890abcdef01. Create signature request outputs one for each signer."
+    }
+]

@@ -1,0 +1,91 @@
+[
+    {
+        "name": "valid",
+        "label": "Valid",
+        "type": "boolean"
+    },
+    {
+        "name": "template_id",
+        "label": "Template ID",
+        "type": "text"
+    },
+    {
+        "name": "template_version",
+        "label": "Template version",
+        "type": "text"
+    },
+    {
+        "name": "error",
+        "label": "Error",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "code",
+                "label": "Code",
+                "type": "text"
+            },
+            {
+                "name": "message",
+                "label": "Message",
+                "type": "text"
+            },
+            {
+                "name": "details",
+                "label": "Details",
+                "type": "array",
+                "spec": [
+                    {
+                        "name": "code",
+                        "label": "Code",
+                        "type": "text"
+                    },
+                    {
+                        "name": "message",
+                        "label": "Message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "pointer",
+                        "label": "Pointer",
+                        "type": "text"
+                    },
+                    {
+                        "name": "parameter",
+                        "label": "Parameter",
+                        "type": "text"
+                    },
+                    {
+                        "name": "submission_id",
+                        "label": "Submission ID",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "request_id",
+                "label": "Request ID",
+                "type": "text"
+            },
+            {
+                "name": "submission_id",
+                "label": "Submission ID",
+                "type": "text"
+            },
+            {
+                "name": "submission_batch_id",
+                "label": "Submission batch ID",
+                "type": "text"
+            },
+            {
+                "name": "combined_pdf_id",
+                "label": "Combined PDF ID",
+                "type": "text"
+            },
+            {
+                "name": "template_id",
+                "label": "Template ID",
+                "type": "text"
+            }
+        ]
+    }
+]

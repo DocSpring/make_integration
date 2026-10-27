@@ -1,0 +1,117 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": false,
+        "options": "rpc://listTemplates",
+        "help": "The template for each submission that doesn't name its own."
+    },
+    {
+        "name": "template_version",
+        "type": "select",
+        "label": "Template version",
+        "dynamic": true,
+        "help": "The template version to use: the latest published version (the draft when none has been published), the draft, or a published version number such as 1.2.0, or 1 for the latest 1.x.x (switch on Map to type one).",
+        "options": [
+            {
+                "label": "Latest published version",
+                "value": "latest"
+            },
+            {
+                "label": "Draft",
+                "value": "draft"
+            }
+        ]
+    },
+    {
+        "name": "submissions",
+        "type": "array",
+        "label": "Submissions",
+        "required": true,
+        "help": "Up to 50 PDFs to generate.",
+        "spec": [
+            {
+                "name": "data",
+                "type": "json",
+                "label": "Data",
+                "required": true,
+                "help": "The values of the template's fields as JSON, such as {\"first_name\": \"Jane\"}. Dates are YYYY-MM-DD."
+            },
+            {
+                "name": "metadata",
+                "type": "json",
+                "label": "Metadata",
+                "help": "Your own data about this PDF, as JSON."
+            },
+            {
+                "name": "field_overrides",
+                "type": "json",
+                "label": "Field overrides",
+                "help": "Changes to field settings for this PDF only, as JSON by field name."
+            },
+            {
+                "name": "template_id",
+                "type": "text",
+                "label": "Template ID",
+                "help": "Only when this PDF uses another template."
+            },
+            {
+                "name": "template_version",
+                "type": "text",
+                "label": "Template version",
+                "help": "Only when this PDF uses another template version."
+            }
+        ]
+    },
+    {
+        "name": "test",
+        "type": "boolean",
+        "label": "Test",
+        "help": "Test PDFs are free and have a watermark. A test API token always makes test PDFs."
+    },
+    {
+        "name": "metadata",
+        "type": "array",
+        "label": "Metadata",
+        "help": "Your own data about the batch, such as an ID from your app.",
+        "spec": [
+            {
+                "name": "key",
+                "type": "text",
+                "label": "Key",
+                "required": true
+            },
+            {
+                "name": "value",
+                "type": "text",
+                "label": "Value"
+            }
+        ]
+    },
+    {
+        "name": "output_formats",
+        "type": "select",
+        "label": "Output formats",
+        "multiple": true,
+        "options": [
+            {
+                "label": "PDF",
+                "value": "pdf"
+            },
+            {
+                "label": "PNG image of each page",
+                "value": "png"
+            }
+        ],
+        "help": "What to make. Leave it empty for just the PDF."
+    },
+    {
+        "name": "wait",
+        "type": "boolean",
+        "label": "Wait for the PDFs",
+        "default": true,
+        "advanced": true,
+        "help": "Yes waits until the PDFs is ready. No returns straight away: get it later, or use the Watch events trigger."
+    }
+]

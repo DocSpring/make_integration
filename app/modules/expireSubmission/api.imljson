@@ -1,0 +1,7 @@
+{
+    "url": "/submissions/{{parameters.submission_id}}",
+    "method": "DELETE",
+    "response": {
+        "output": "{{body}}"
+    }
+}

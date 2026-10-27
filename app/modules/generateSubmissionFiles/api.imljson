@@ -1,0 +1,27 @@
+{
+    "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/submissions/{{parameters.submission_id}}/generate_files",
+    "method": "POST",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+        "Accept": "application/json",
+        "User-Agent": "docspring-make/2"
+    },
+    "qs": {
+        "wait": "{{parameters.wait}}"
+    },
+    "body": {
+        "formats": "{{parameters.formats}}"
+    },
+    "response": {
+        "valid": {
+            "condition": "{{body.files.png.state != 'error'}}",
+            "message": "DocSpring couldn't make the page images: {{body.files.png.error_message}}\nSubmission: {{body.id}}"
+        },
+        "output": "{{body}}"
+    },
+    "log": {
+        "sanitize": [
+            "request.headers.authorization"
+        ]
+    }
+}

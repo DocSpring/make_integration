@@ -1,0 +1,7 @@
+{
+    "url": "/combined_pdfs/{{parameters.combined_pdf_id}}",
+    "method": "GET",
+    "response": {
+        "output": "{{body}}"
+    }
+}

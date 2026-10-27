@@ -1,0 +1,9 @@
+[
+    {
+        "name": "combined_pdf_id",
+        "type": "text",
+        "label": "Combined PDF ID",
+        "required": true,
+        "help": "The combined PDF's ID, such as com_1234567890abcdef01."
+    }
+]

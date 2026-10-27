@@ -1,0 +1,7 @@
+{
+    "url": "/signature_requests/{{parameters.signature_request_id}}",
+    "method": "GET",
+    "response": {
+        "output": "{{body}}"
+    }
+}

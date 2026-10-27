@@ -1,0 +1,9 @@
+[
+    {
+        "name": "submission_id",
+        "type": "text",
+        "label": "Submission ID",
+        "required": true,
+        "help": "The submission's ID, such as sub_1234567890abcdef01."
+    }
+]

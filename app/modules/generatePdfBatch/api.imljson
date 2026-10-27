@@ -1,0 +1,32 @@
+{
+    "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/submissions/batches",
+    "method": "POST",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+        "Accept": "application/json",
+        "User-Agent": "docspring-make/2"
+    },
+    "qs": {
+        "wait": "{{parameters.wait}}"
+    },
+    "body": {
+        "template_id": "{{parameters.template_id}}",
+        "template_version": "{{parameters.template_version}}",
+        "test": "{{if(parameters.test; true; undefined)}}",
+        "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
+        "output_formats": "{{parameters.output_formats}}",
+        "submissions": "{{parameters.submissions}}"
+    },
+    "response": {
+        "valid": {
+            "condition": "{{body.state != 'error'}}",
+            "message": "{{body.error_count}} of the batch's {{body.total_count}} PDFs couldn't be generated. Get each one's error with Get submission batch.\nSubmission batch: {{body.id}}"
+        },
+        "output": "{{body}}"
+    },
+    "log": {
+        "sanitize": [
+            "request.headers.authorization"
+        ]
+    }
+}

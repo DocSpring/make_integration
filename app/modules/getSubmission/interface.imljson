@@ -1,0 +1,542 @@
+[
+    {
+        "name": "id",
+        "label": "ID",
+        "type": "text"
+    },
+    {
+        "name": "template_id",
+        "label": "Template ID",
+        "type": "text"
+    },
+    {
+        "name": "template_type",
+        "label": "Template type",
+        "type": "text"
+    },
+    {
+        "name": "template_version",
+        "label": "Template version",
+        "type": "text"
+    },
+    {
+        "name": "batch_id",
+        "label": "Batch ID",
+        "type": "text"
+    },
+    {
+        "name": "source",
+        "label": "Source",
+        "type": "text"
+    },
+    {
+        "name": "state",
+        "label": "State",
+        "type": "text"
+    },
+    {
+        "name": "test",
+        "label": "Test",
+        "type": "boolean"
+    },
+    {
+        "name": "editable",
+        "label": "Editable",
+        "type": "boolean"
+    },
+    {
+        "name": "data",
+        "label": "Data",
+        "type": "collection",
+        "spec": []
+    },
+    {
+        "name": "data_errors",
+        "label": "Data errors",
+        "type": "array",
+        "spec": [
+            {
+                "name": "code",
+                "label": "Code",
+                "type": "text"
+            },
+            {
+                "name": "message",
+                "label": "Message",
+                "type": "text"
+            },
+            {
+                "name": "pointer",
+                "label": "Pointer",
+                "type": "text"
+            },
+            {
+                "name": "parameter",
+                "label": "Parameter",
+                "type": "text"
+            },
+            {
+                "name": "submission_id",
+                "label": "Submission ID",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "error_message",
+        "label": "Error message",
+        "type": "text"
+    },
+    {
+        "name": "metadata",
+        "label": "Metadata",
+        "type": "collection",
+        "spec": []
+    },
+    {
+        "name": "has_password",
+        "label": "Has password",
+        "type": "boolean"
+    },
+    {
+        "name": "signature_requests",
+        "label": "Signature requests",
+        "type": "array",
+        "spec": [
+            {
+                "name": "id",
+                "label": "ID",
+                "type": "text"
+            },
+            {
+                "name": "submission_id",
+                "label": "Submission ID",
+                "type": "text"
+            },
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "email",
+                "label": "Email",
+                "type": "text"
+            },
+            {
+                "name": "fields",
+                "label": "Fields",
+                "type": "array",
+                "spec": {
+                    "type": "text"
+                }
+            },
+            {
+                "name": "metadata",
+                "label": "Metadata",
+                "type": "collection",
+                "spec": []
+            },
+            {
+                "name": "role",
+                "label": "Role",
+                "type": "text"
+            },
+            {
+                "name": "sort_order",
+                "label": "Sort order",
+                "type": "number"
+            },
+            {
+                "name": "state",
+                "label": "State",
+                "type": "text"
+            },
+            {
+                "name": "data",
+                "label": "Data",
+                "type": "collection",
+                "spec": []
+            },
+            {
+                "name": "viewed_at",
+                "label": "Viewed at",
+                "type": "date"
+            },
+            {
+                "name": "completed_at",
+                "label": "Completed at",
+                "type": "date"
+            },
+            {
+                "name": "declined_at",
+                "label": "Declined at",
+                "type": "date"
+            },
+            {
+                "name": "auth_type",
+                "label": "Auth type",
+                "type": "text"
+            },
+            {
+                "name": "auth_second_factor_type",
+                "label": "Auth second factor type",
+                "type": "text"
+            },
+            {
+                "name": "auth_provider",
+                "label": "Auth provider",
+                "type": "text"
+            },
+            {
+                "name": "auth_session_started_at",
+                "label": "Auth session started at",
+                "type": "date"
+            },
+            {
+                "name": "auth_session_id_hash",
+                "label": "Auth session ID hash",
+                "type": "text"
+            },
+            {
+                "name": "auth_user_id_hash",
+                "label": "Auth user ID hash",
+                "type": "text"
+            },
+            {
+                "name": "auth_username_hash",
+                "label": "Auth username hash",
+                "type": "text"
+            },
+            {
+                "name": "auth_phone_number_hash",
+                "label": "Auth phone number hash",
+                "type": "text"
+            },
+            {
+                "name": "ip_address",
+                "label": "IP address",
+                "type": "text"
+            },
+            {
+                "name": "user_agent",
+                "label": "User agent",
+                "type": "text"
+            },
+            {
+                "name": "created_at",
+                "label": "Created at",
+                "type": "date"
+            },
+            {
+                "name": "updated_at",
+                "label": "Updated at",
+                "type": "date"
+            }
+        ]
+    },
+    {
+        "name": "actions",
+        "label": "Actions",
+        "type": "array",
+        "spec": [
+            {
+                "name": "id",
+                "label": "ID",
+                "type": "text"
+            },
+            {
+                "name": "integration_id",
+                "label": "Integration ID",
+                "type": "text"
+            },
+            {
+                "name": "state",
+                "label": "State",
+                "type": "text"
+            },
+            {
+                "name": "action_type",
+                "label": "Action type",
+                "type": "text"
+            },
+            {
+                "name": "result_data",
+                "label": "Result data",
+                "type": "collection",
+                "spec": []
+            },
+            {
+                "name": "error_message",
+                "label": "Error message",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "truncated_text",
+        "label": "Truncated text",
+        "type": "collection",
+        "spec": []
+    },
+    {
+        "name": "output_formats",
+        "label": "Output formats",
+        "type": "array",
+        "spec": {
+            "type": "text"
+        }
+    },
+    {
+        "name": "files",
+        "label": "Files",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "pdf",
+                "label": "PDF",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "state",
+                        "label": "State",
+                        "type": "text"
+                    },
+                    {
+                        "name": "error_message",
+                        "label": "Error message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "download_url",
+                        "label": "Download URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "permanent_url",
+                        "label": "Permanent URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "filename",
+                        "label": "Filename",
+                        "type": "text"
+                    },
+                    {
+                        "name": "content_type",
+                        "label": "Content type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "size",
+                        "label": "Size",
+                        "type": "number"
+                    },
+                    {
+                        "name": "sha256",
+                        "label": "SHA-256",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "audit_trail",
+                "label": "Audit trail",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "state",
+                        "label": "State",
+                        "type": "text"
+                    },
+                    {
+                        "name": "error_message",
+                        "label": "Error message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "download_url",
+                        "label": "Download URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "permanent_url",
+                        "label": "Permanent URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "filename",
+                        "label": "Filename",
+                        "type": "text"
+                    },
+                    {
+                        "name": "content_type",
+                        "label": "Content type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "size",
+                        "label": "Size",
+                        "type": "number"
+                    },
+                    {
+                        "name": "sha256",
+                        "label": "SHA-256",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "preview",
+                "label": "Preview",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "state",
+                        "label": "State",
+                        "type": "text"
+                    },
+                    {
+                        "name": "error_message",
+                        "label": "Error message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "download_url",
+                        "label": "Download URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "permanent_url",
+                        "label": "Permanent URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "filename",
+                        "label": "Filename",
+                        "type": "text"
+                    },
+                    {
+                        "name": "content_type",
+                        "label": "Content type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "size",
+                        "label": "Size",
+                        "type": "number"
+                    },
+                    {
+                        "name": "sha256",
+                        "label": "SHA-256",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "name": "png",
+                "label": "PNG",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "state",
+                        "label": "State",
+                        "type": "text"
+                    },
+                    {
+                        "name": "error_message",
+                        "label": "Error message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "page_count",
+                        "label": "Page count",
+                        "type": "number"
+                    },
+                    {
+                        "name": "pages",
+                        "label": "Pages",
+                        "type": "array",
+                        "spec": [
+                            {
+                                "name": "page",
+                                "label": "Page",
+                                "type": "number"
+                            },
+                            {
+                                "name": "width",
+                                "label": "Width",
+                                "type": "number"
+                            },
+                            {
+                                "name": "height",
+                                "label": "Height",
+                                "type": "number"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "preview_generated_at",
+        "label": "Preview generated at",
+        "type": "date"
+    },
+    {
+        "name": "expired",
+        "label": "Expired",
+        "type": "boolean"
+    },
+    {
+        "name": "expires_at",
+        "label": "Expires at",
+        "type": "date"
+    },
+    {
+        "name": "processed_at",
+        "label": "Processed at",
+        "type": "date"
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "updated_at",
+        "label": "Updated at",
+        "type": "date"
+    }
+]

@@ -1,0 +1,17 @@
+{
+    "url": "/templates/{{parameters.template_id}}/submissions/validate",
+    "method": "POST",
+    "qs": {
+        "version": "{{parameters.version}}"
+    },
+    "body": {
+        "data": {
+            "{{...}}": "{{parameters.data}}"
+        },
+        "test": "{{if(parameters.test; true; undefined)}}",
+        "signature_requests": "{{parameters.signature_requests}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

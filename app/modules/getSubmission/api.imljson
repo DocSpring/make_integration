@@ -1,0 +1,7 @@
+{
+    "url": "/submissions/{{parameters.submission_id}}",
+    "method": "GET",
+    "response": {
+        "output": "{{body}}"
+    }
+}

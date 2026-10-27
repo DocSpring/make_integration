@@ -1,0 +1,128 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "options": {
+            "store": "rpc://listTemplates",
+            "nested": [
+                {
+                    "name": "version",
+                    "type": "select",
+                    "label": "Template version",
+                    "dynamic": true,
+                    "help": "The template version to use: the latest published version (the draft when none has been published), the draft, or a published version number such as 1.2.0, or 1 for the latest 1.x.x (switch on Map to type one).",
+                    "default": "latest",
+                    "options": {
+                        "store": [
+                            {
+                                "label": "Latest published version",
+                                "value": "latest"
+                            },
+                            {
+                                "label": "Draft",
+                                "value": "draft"
+                            }
+                        ],
+                        "nested": "rpc://templateFields?optional=true"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "name": "test",
+        "type": "boolean",
+        "label": "Test",
+        "help": "Test PDFs are free and have a watermark. A test API token always makes test PDFs."
+    },
+    {
+        "name": "signature_requests",
+        "type": "array",
+        "label": "Signers",
+        "help": "The people who fill in and sign the PDF. DocSpring generates the PDF once every signer has finished.",
+        "spec": [
+            {
+                "name": "name",
+                "type": "text",
+                "label": "Name"
+            },
+            {
+                "name": "email",
+                "type": "email",
+                "label": "Email"
+            },
+            {
+                "name": "fields",
+                "type": "select",
+                "label": "Fields",
+                "multiple": true,
+                "required": true,
+                "options": "rpc://templateFieldNames",
+                "help": "The fields this person fills in. Each field can be in only one signer's list."
+            },
+            {
+                "name": "role",
+                "type": "text",
+                "label": "Role",
+                "help": "Which of the template's signers this person is: Signer 1, Signer 2 and so on. Give every signer a role, or none."
+            },
+            {
+                "name": "auth_type",
+                "type": "select",
+                "label": "Authentication",
+                "required": true,
+                "default": "email_link",
+                "options": [
+                    {
+                        "label": "Email link",
+                        "value": "email_link"
+                    },
+                    {
+                        "label": "Password",
+                        "value": "password"
+                    },
+                    {
+                        "label": "OAuth",
+                        "value": "oauth",
+                        "nested": [
+                            {
+                                "name": "auth_provider",
+                                "type": "text",
+                                "label": "Auth provider",
+                                "required": true,
+                                "help": "The service that signed the person in, such as google."
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Phone number",
+                        "value": "phone_number"
+                    },
+                    {
+                        "label": "LDAP",
+                        "value": "ldap"
+                    },
+                    {
+                        "label": "SAML",
+                        "value": "saml"
+                    }
+                ],
+                "help": "How the person was identified before they see the form. Choose Email link when you send them the link by email."
+            },
+            {
+                "name": "prefilled_values_editable",
+                "type": "boolean",
+                "label": "Can change prefilled values",
+                "help": "Let the person change the values that the template fields above already fill in for their fields."
+            },
+            {
+                "name": "ignore_unknown_fields",
+                "type": "boolean",
+                "label": "Ignore unknown fields",
+                "help": "Leave out field names that the template doesn't have, instead of failing."
+            }
+        ]
+    }
+]

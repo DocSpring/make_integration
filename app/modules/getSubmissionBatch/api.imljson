@@ -1,0 +1,10 @@
+{
+    "url": "/submissions/batches/{{parameters.submission_batch_id}}",
+    "method": "GET",
+    "qs": {
+        "include_data": "{{parameters.include_data}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

@@ -1,0 +1,182 @@
+[
+    {
+        "name": "id",
+        "label": "ID",
+        "type": "text"
+    },
+    {
+        "name": "state",
+        "label": "State",
+        "type": "text"
+    },
+    {
+        "name": "source_pdfs",
+        "label": "Source PDFs",
+        "type": "array",
+        "spec": [
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "id",
+                "label": "ID",
+                "type": "text"
+            },
+            {
+                "name": "url",
+                "label": "URL",
+                "type": "text"
+            },
+            {
+                "name": "template_version",
+                "label": "Template version",
+                "type": "text"
+            },
+            {
+                "name": "processed",
+                "label": "Processed",
+                "type": "boolean"
+            }
+        ]
+    },
+    {
+        "name": "metadata",
+        "label": "Metadata",
+        "type": "collection",
+        "spec": []
+    },
+    {
+        "name": "has_password",
+        "label": "Has password",
+        "type": "boolean"
+    },
+    {
+        "name": "delete_custom_files",
+        "label": "Delete custom files",
+        "type": "boolean"
+    },
+    {
+        "name": "error_message",
+        "label": "Error message",
+        "type": "text"
+    },
+    {
+        "name": "files",
+        "label": "Files",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "pdf",
+                "label": "PDF",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "state",
+                        "label": "State",
+                        "type": "text"
+                    },
+                    {
+                        "name": "error_message",
+                        "label": "Error message",
+                        "type": "text"
+                    },
+                    {
+                        "name": "download_url",
+                        "label": "Download URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "permanent_url",
+                        "label": "Permanent URL",
+                        "type": "text"
+                    },
+                    {
+                        "name": "filename",
+                        "label": "Filename",
+                        "type": "text"
+                    },
+                    {
+                        "name": "content_type",
+                        "label": "Content type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "size",
+                        "label": "Size",
+                        "type": "number"
+                    },
+                    {
+                        "name": "sha256",
+                        "label": "SHA-256",
+                        "type": "text"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "actions",
+        "label": "Actions",
+        "type": "array",
+        "spec": [
+            {
+                "name": "id",
+                "label": "ID",
+                "type": "text"
+            },
+            {
+                "name": "integration_id",
+                "label": "Integration ID",
+                "type": "text"
+            },
+            {
+                "name": "state",
+                "label": "State",
+                "type": "text"
+            },
+            {
+                "name": "action_type",
+                "label": "Action type",
+                "type": "text"
+            },
+            {
+                "name": "result_data",
+                "label": "Result data",
+                "type": "collection",
+                "spec": []
+            },
+            {
+                "name": "error_message",
+                "label": "Error message",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "expired",
+        "label": "Expired",
+        "type": "boolean"
+    },
+    {
+        "name": "expires_at",
+        "label": "Expires at",
+        "type": "date"
+    },
+    {
+        "name": "processed_at",
+        "label": "Processed at",
+        "type": "date"
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "updated_at",
+        "label": "Updated at",
+        "type": "date"
+    }
+]
