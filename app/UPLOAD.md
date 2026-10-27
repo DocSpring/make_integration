@@ -1,8 +1,8 @@
 # Uploading the app to Make
 
-How to put this repo's app into Make with the Make API (the SDK Apps endpoints), one component at a time. Nothing
-here has been uploaded yet: the API v2 version (sc-5981) is files only until someone runs these steps with a Make API
-token.
+How to put this repo's app into Make with the Make API (the SDK Apps endpoints), one component at a time. The API v2
+version (sc-5981) was uploaded to the live app with these steps on 27 Oct 2026, with every module still private (not
+visible) until it's tested.
 
 The app is `docspring-sspkqt`, version 1, in Make's US2 zone (`APP.md`). It's public, and only apps Make has approved
 get versioned releases, so **every change is live at once in every scenario that uses it**. Make won't delete a
@@ -119,10 +119,10 @@ mk PUT "/connections/$MAKE_CONNECTION/parameters" app/connections/parameters.iml
 
 | Section | Method + path | File |
 |---|---|---|
-| base | `POST /{app}/{version}/base` (Set App Base) | `app/base.imljson` |
+| base | `PUT /{app}/{version}/base` (Set App Section) | `app/base.imljson` |
 
 ```bash
-mk POST "/$MAKE_APP/$V/base" app/base.imljson
+mk PUT "/$MAKE_APP/$V/base" app/base.imljson
 ```
 
 ## 4. RPCs
@@ -297,7 +297,9 @@ Create signature request has a new module ID, `createSignatureRequest`. The old 
 folder in this repo any more. Make doesn't delete a module from a published app, so:
 
 1. Try `DELETE /{app}/{version}/modules/createDataRequest` (Delete Module). If Make deletes it, you're done.
-2. If Make refuses, replace its code with the new module's, so nothing calls API v1, then hide and deprecate it:
+2. If Make refuses, replace its code with the new module's, so nothing calls API v1, then hide and deprecate it. On 27
+   Oct 2026 Make refused (`IM016`, "Module used in scenarios": a September test scenario in our team uses it), so the
+   live app's `createDataRequest` is now this hidden, deprecated copy:
 
 ```bash
 for s in api expect interface samples; do
