@@ -296,7 +296,7 @@ def test_detach_paging():
 
 
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_signer_field_picker,
-         test_watch_events_templates]
+         test_watch_events_templates, test_remove_field_ids, test_detach_paging]
 
 
 def run():

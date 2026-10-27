@@ -4,12 +4,18 @@
         "method": "GET",
         "qs": {
             "event_type": "{{webhook.eventType}}",
-            "limit": 100
+            "limit": 100,
+            "cursor": "{{temp.cursor}}"
         },
         "response": {
             "temp": {
-                "found": "{{contains(map(body.data; 'id'); webhook.externalHookId)}}"
+                "found": "{{temp.found || contains(map(body.data; 'id'); webhook.externalHookId)}}",
+                "cursor": "{{body.next_cursor}}"
             }
+        },
+        "repeat": {
+            "condition": "{{!temp.found && ifempty(temp.cursor; '') != ''}}",
+            "limit": 20
         }
     },
     {

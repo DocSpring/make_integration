@@ -101,9 +101,9 @@ One instant trigger on a dedicated webhook, as in v1.
   rejects the others with a 422), so with templates chosen, a request-less step first fails with the events that
   can't be: "Templates only limit submission, signature request and template events. Clear Templates, or remove
   these events: combined_pdf.processed, ...".
-- **detach:** lists the webhooks with that event type, and deletes the stored webhook only if it's in the list. Make
-  can't treat an HTTP 404 as success, so this is how detach tolerates a webhook someone already deleted in
-  DocSpring.
+- **detach:** lists the webhooks with that event type, 100 a page (a `repeat` that follows `next_cursor` until it
+  finds the webhook, up to 20 pages), and deletes the stored webhook only if it's in the list. Make can't treat an
+  HTTP 404 as success, so this is how detach tolerates a webhook someone already deleted in DocSpring.
 - **Output:** the version 4 event as delivered (`id` = the event ID, `event_type`, `created_at`, `data` = the v2
   resource) plus `resource_type` (the event name before the first dot) and `resource_id` (`data.id`).
 

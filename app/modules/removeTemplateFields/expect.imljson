@@ -15,7 +15,10 @@
                     "multiple": true,
                     "required": true,
                     "options": "rpc://templateFieldIds",
-                    "help": "The fields to remove from the template's draft."
+                    "help": "The fields to remove from the template's draft. To map or type them, use their IDs (numbers) from List template fields.",
+                    "spec": {
+                        "type": "number"
+                    }
                 }
             ]
         }
