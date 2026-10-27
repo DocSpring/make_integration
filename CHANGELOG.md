@@ -20,36 +20,37 @@ The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full
 - The template and folder pickers page through every template and folder (up to 1,000).
 - Watch events uses version 4 webhooks: each event has `id`, `event_type`, `created_at` and `data` (the v2 record),
   plus `resource_type` and `resource_id`. It offers every API v2 event and can be limited to templates.
-- Find submissions and Find templates use cursor paging up to their Limit.
+- Search submissions and Search templates use cursor paging up to their Limit.
 - Labels are in sentence case.
 - IDs in URL paths are encoded, and an ID of `.` or `..` fails before any request.
 - Error details that contain quotes keep their text, such as a dropdown's options:
   `/data/colour: must be one of: "Red", "Blue"`.
-- Create signature request and Check data: a signer's Fields is a list of field names to type or map, whole
-  (`address/street`, not `address`), as List template fields shows them. Make can't fill a picker inside the
+- Create a signature request and Check data for a template: a signer's Fields is a list of field names to type or map,
+  whole (`address/street`, not `address`), as List template fields shows them. Make can't fill a picker inside the
   Signers list from the module's template.
 - Watch events: with templates chosen, events that can't be limited to templates (combined PDF, batch, custom file
   and folder events) fail before the webhook is created, naming those events. Deleting a hook finds its DocSpring
   webhook past the first 100.
-- Remove template fields sends field IDs typed in Map mode as numbers.
+- Remove fields from a template sends field IDs typed in Map mode as numbers.
 
 ### Renamed
 
-- **Create data request** is **Create signature request**, a new module (`createSignatureRequest`). It takes signers
+- **Create data request** is **Create a signature request**, a new module (`createSignatureRequest`). It takes signers
   (name, email, fields, role, authentication), and creates a signing link for each (email, 7 days; API, 24 hours; or
   none). The old `createDataRequest` module is removed, or hidden and deprecated if Make keeps it.
 - Data requests are signature requests, and combined submissions are combined PDFs, in every input and output.
-- Create signing link: email links last 7 days, API links 24 hours.
+- Create a signing link: email links last 7 days, API links 24 hours.
 
 ### Added
 
-- PDFs: Generate PDFs in a batch, Get submission batch, Check data, Get combined PDF.
-- Submissions: Get submission, Generate submission files, Expire submission.
-- Signature requests: Get signature request.
-- Templates: Get template, Create template, Replace template PDF, Copy template, Move template, Publish template
-  version, Get template page images.
-- Template fields: List template fields, Add template fields, Update template fields, Remove template fields.
-- Folders: List folders, Create folder.
+- PDFs: Generate a batch of PDFs, Get a submission batch, Check data for a template, Get a combined PDF.
+- Submissions: Get a submission, Generate files for a submission, Expire a submission.
+- Signature requests: Get a signature request.
+- Templates: Get a template, Create a template, Replace a template's PDF, Copy a template, Move a template, Publish
+  template version, Get a template's page images.
+- Template fields: List template fields, Add fields to a template, Update fields in a template, Remove fields from a
+  template.
+- Folders: List folders, Create a folder.
 - Watch events: signature request declined and updated, submission declined and updated, combined PDF expired,
   custom file created, and folder created, updated and deleted.
 

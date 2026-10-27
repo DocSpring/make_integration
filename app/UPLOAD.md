@@ -184,8 +184,8 @@ done
 
 Hooks that already exist keep the version 3 DocSpring webhook they were attached with, and its events now arrive in a
 version 3 shape the new `api` section doesn't read. Delete and re-create any such hook in Make (or its scenario's
-trigger) after this step. On 27 Oct 2026 our September test scenario got a new hook this way, and deleting its old hook
-deleted the version 3 webhook in DocSpring.
+trigger) after this step. On 27 Oct 2026 our September test scenario got a new hook this way, and deleting its old
+hook deleted the version 3 webhook in DocSpring.
 
 ## 6. Modules
 
@@ -194,33 +194,33 @@ the webhook from step 5. Every module is public (visible) once its sections are 
 
 | Make ID | Type (`typeId`) | Label | Description | `crud` | Binding | In the live app |
 |---|---|---|---|---|---|---|
-| `generatePdf` | Action (4) | Generate PDF | Generates a PDF from a template with your data, and waits until it's ready. | create | connection `docspring-sspkqt` | changed |
-| `generatePdfBatch` | Action (4) | Generate PDFs in a batch | Generates up to 50 PDFs in one request, and waits until they're ready. | create | connection `docspring-sspkqt` | new |
-| `getSubmissionBatch` | Action (4) | Get submission batch | Returns a batch of submissions by its ID, with each submission's state and files. | read | connection `docspring-sspkqt` | new |
-| `checkData` | Action (4) | Check data | Checks data against a template's fields without generating a PDF, and returns whether it's valid and why not. | read | connection `docspring-sspkqt` | new |
+| `generatePdf` | Action (4) | Generate a PDF | Generates a PDF from a template with your data, and waits until it's ready. | create | connection `docspring-sspkqt` | changed |
+| `generatePdfBatch` | Action (4) | Generate a batch of PDFs | Generates up to 50 PDFs in one request, and waits until they're ready. | create | connection `docspring-sspkqt` | new |
+| `getSubmissionBatch` | Action (4) | Get a submission batch | Returns a batch of submissions by its ID, with each submission's state and files. | read | connection `docspring-sspkqt` | new |
+| `checkData` | Action (4) | Check data for a template | Checks data against a template's fields without generating a PDF, and returns whether it's valid and why not. | read | connection `docspring-sspkqt` | new |
 | `combinePdfs` | Action (4) | Combine PDFs | Merges PDFs from submissions, templates, combined PDFs, custom files or URLs into one PDF. | create | connection `docspring-sspkqt` | changed |
-| `getCombinedPdf` | Action (4) | Get combined PDF | Returns a combined PDF by its ID, with its state and files. | read | connection `docspring-sspkqt` | new |
-| `getSubmission` | Action (4) | Get submission | Returns a submission by its ID, with its data and files. | read | connection `docspring-sspkqt` | new |
-| `findSubmission` | Search (9) | Find submissions | Finds submissions by template, live or test mode and when they were created. | - | connection `docspring-sspkqt` | changed |
-| `generateSubmissionFiles` | Action (4) | Generate submission files | Generates more files for a submission, such as a PNG image of each page. | update | connection `docspring-sspkqt` | new |
-| `expireSubmission` | Action (4) | Expire submission | Expires a submission, which deletes its data and files. This action cannot be undone. | delete | connection `docspring-sspkqt` | new |
-| `createSignatureRequest` | Action (4) | Create signature request | Creates a submission that people fill in and sign, and a signing link for each signer. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
-| `createSigningLink` | Action (4) | Create signing link | Creates a link that opens a signature request's signing form. | create | connection `docspring-sspkqt` | changed |
-| `getSignatureRequest` | Action (4) | Get signature request | Returns a signature request by its ID, with its signer and state. | read | connection `docspring-sspkqt` | new |
-| `findTemplate` | Search (9) | Find templates | Finds templates by name and folder. | - | connection `docspring-sspkqt` | changed |
-| `getTemplate` | Action (4) | Get template | Returns a template by its ID, with its settings and published versions. | read | connection `docspring-sspkqt` | new |
-| `createTemplate` | Action (4) | Create template | Creates a template from a PDF (a URL or a file) or from HTML. | create | connection `docspring-sspkqt` | new |
-| `replaceTemplatePdf` | Action (4) | Replace template PDF | Replaces a template's PDF with a new one from a URL or a file. | update | connection `docspring-sspkqt` | new |
-| `copyTemplate` | Action (4) | Copy template | Copies a template, or one of its published versions. | create | connection `docspring-sspkqt` | new |
-| `moveTemplate` | Action (4) | Move template | Moves a template and its published versions to a folder. | update | connection `docspring-sspkqt` | new |
-| `publishTemplateVersion` | Action (4) | Publish template version | Publishes a template's draft as a new version. | create | connection `docspring-sspkqt` | new |
-| `getTemplatePageImages` | Action (4) | Get template page images | Returns an image of each page of a template's PDF. | read | connection `docspring-sspkqt` | new |
+| `getCombinedPdf` | Action (4) | Get a combined PDF | Returns a combined PDF by its ID, with its state and files. | read | connection `docspring-sspkqt` | new |
+| `getSubmission` | Action (4) | Get a submission | Returns a submission by its ID, with its data and files. | read | connection `docspring-sspkqt` | new |
+| `findSubmission` | Search (9) | Search submissions | Finds submissions by template, live or test mode and when they were created. | - | connection `docspring-sspkqt` | changed |
+| `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission, such as a PNG image of each page. | update | connection `docspring-sspkqt` | new |
+| `expireSubmission` | Action (4) | Expire a submission | Expires a submission, which deletes its data and files. This action cannot be undone. | delete | connection `docspring-sspkqt` | new |
+| `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign, and a signing link for each signer. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
+| `createSigningLink` | Action (4) | Create a signing link | Creates a link that opens a signature request's signing form. | create | connection `docspring-sspkqt` | changed |
+| `getSignatureRequest` | Action (4) | Get a signature request | Returns a signature request by its ID, with its signer and state. | read | connection `docspring-sspkqt` | new |
+| `findTemplate` | Search (9) | Search templates | Finds templates by name and folder. | - | connection `docspring-sspkqt` | changed |
+| `getTemplate` | Action (4) | Get a template | Returns a template by its ID, with its settings and published versions. | read | connection `docspring-sspkqt` | new |
+| `createTemplate` | Action (4) | Create a template | Creates a template from a PDF (a URL or a file) or from HTML. | create | connection `docspring-sspkqt` | new |
+| `replaceTemplatePdf` | Action (4) | Replace a template's PDF | Replaces a template's PDF with a new one from a URL or a file. | update | connection `docspring-sspkqt` | new |
+| `copyTemplate` | Action (4) | Copy a template | Copies a template, or one of its published versions. | create | connection `docspring-sspkqt` | new |
+| `moveTemplate` | Action (4) | Move a template | Moves a template and its published versions to a folder. | update | connection `docspring-sspkqt` | new |
+| `publishTemplateVersion` | Action (4) | Publish a template version | Publishes a template's draft as a new version. | create | connection `docspring-sspkqt` | new |
+| `getTemplatePageImages` | Action (4) | Get a template's page images | Returns an image of each page of a template's PDF. | read | connection `docspring-sspkqt` | new |
 | `listTemplateFields` | Search (9) | List template fields | Lists a template's fields with all their settings. | - | connection `docspring-sspkqt` | new |
-| `addTemplateFields` | Action (4) | Add template fields | Adds fields to a template's draft. | update | connection `docspring-sspkqt` | new |
-| `updateTemplateFields` | Action (4) | Update template fields | Updates fields of a template's draft by their IDs. | update | connection `docspring-sspkqt` | new |
-| `removeTemplateFields` | Action (4) | Remove template fields | Removes fields from a template's draft. | delete | connection `docspring-sspkqt` | new |
+| `addTemplateFields` | Action (4) | Add fields to a template | Adds fields to a template's draft. | update | connection `docspring-sspkqt` | new |
+| `updateTemplateFields` | Action (4) | Update fields in a template | Updates fields of a template's draft by their IDs. | update | connection `docspring-sspkqt` | new |
+| `removeTemplateFields` | Action (4) | Remove fields from a template | Removes fields from a template's draft. | delete | connection `docspring-sspkqt` | new |
 | `listFolders` | Search (9) | List folders | Lists all folders, or the folders in one folder. | - | connection `docspring-sspkqt` | new |
-| `createFolder` | Action (4) | Create folder | Creates a folder. | create | connection `docspring-sspkqt` | new |
+| `createFolder` | Action (4) | Create a folder | Creates a folder. | create | connection `docspring-sspkqt` | new |
 | `watchEvents` | Instant trigger (10) | Watch events | Triggers when an event occurs in DocSpring, such as a PDF being generated or a signature request being completed. | - | webhook `$WEBHOOK` | changed |
 | `makeApiCall` | Universal (12) | Make an API call | Performs an arbitrary authorized API call. | - | connection `docspring-sspkqt` | changed |
 
@@ -293,19 +293,20 @@ for dir in app/modules/*/; do mk POST "/$MAKE_APP/$V/modules/$(basename "$dir")/
 
 ## 7. The old `createDataRequest` module
 
-Create signature request has a new module ID, `createSignatureRequest`. The old `createDataRequest` module has no
+Create a signature request has a new module ID, `createSignatureRequest`. The old `createDataRequest` module has no
 folder in this repo any more. Make doesn't delete a module from a published app, so:
 
 1. Try `DELETE /{app}/{version}/modules/createDataRequest` (Delete Module). If Make deletes it, you're done.
 2. If Make refuses, replace its code with the new module's, so nothing calls API v1, then hide and deprecate it. On 27
-   Oct 2026 Make refused (`IM016`, "Module used in scenarios": a September test scenario in our team uses it), so the
-   live app's `createDataRequest` is now this hidden, deprecated copy:
+   Oct 2026 Make refused (`IM016`, "Module used in scenarios": a September test scenario in our team used it). Once
+   that scenario used the new module, Make still refused (`IM005`, "Can't delete module from public app"), so the live
+   app's `createDataRequest` stays this hidden, deprecated copy:
 
 ```bash
 for s in api expect interface samples; do
   mk PUT "/$MAKE_APP/$V/modules/createDataRequest/$s" "app/modules/createSignatureRequest/$s.imljson"
 done
-BODY='{"label": "Create signature request (deprecated)", "description": "Use Create signature request instead."}' \
+BODY='{"label": "Create a signature request (deprecated)", "description": "Use Create a signature request instead."}' \
   mk PATCH "/$MAKE_APP/$V/modules/createDataRequest"
 mk POST "/$MAKE_APP/$V/modules/createDataRequest/private"     # hidden from new scenarios
 mk POST "/$MAKE_APP/$V/modules/createDataRequest/deprecate"
@@ -330,24 +331,24 @@ The icon (`app/icon.png`, `PUT /{app}/{version}/icon`) hasn't changed.
 With a DocSpring **test** API token on our own account (test PDFs are free), in a Make scenario:
 
 - The connection: a valid token connects; a wrong secret says the token isn't valid.
-- Each module once. Generate PDF and Check data with a template that has a date, a number, a checkbox and an image
-  field: the Template fields collection shows typed inputs (date fields as text asking for YYYY-MM-DD).
-- Create signature request with two signers: one link per signer in Signing links, and `first_signing_url`. Each
+- Each module once. Generate a PDF and Check data for a template with a template that has a date, a number, a checkbox
+  and an image field: the Template fields collection shows typed inputs (date fields as text asking for YYYY-MM-DD).
+- Create a signature request with two signers: one link per signer in Signing links, and `first_signing_url`. Each
   link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
   `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
   didn't re-read the token URL on each repeat, and signer 2 would get signer 1's form: don't publish.
 - Signer Fields, with a template whose field names have a `/` (such as `address/street` and `items/0/name`): type
-  those full names in a signer's Fields in Create signature request and in Check data, and both succeed. Fields is a
-  list of names, not a picker: an RPC called from inside the Signers list gets only that item's inputs, so it can't
-  read the module's template (tried 27 Oct 2026: DocSpring was asked for a template with ID `fields`). The live app
-  had a `templateFieldNames` RPC for that picker until then; it was deleted.
-- Errors: Generate PDF with a wrong value for a field. The message reads
+  those full names in a signer's Fields in Create a signature request and in Check data for a template, and both
+  succeed. Fields is a list of names, not a picker: an RPC called from inside the Signers list gets only that item's
+  inputs, so it can't read the module's template (tried 27 Oct 2026: DocSpring was asked for a template with ID
+  `fields`). The live app had a `templateFieldNames` RPC for that picker until then; it was deleted.
+- Errors: Generate a PDF with a wrong value for a field. The message reads
   `DocSpring API error 422 invalid_data: ...`, a line per field, `Submission: sub_...` and `Request ID: req_...`.
   Then a dropdown (or radio) field set to a value that isn't one of its options: its line reads
   `/data/<field>: must be one of: "Red", "Blue"`, with the field and every option.
-- IDs: Get submission with the ID `..` fails with `The submission ID can't be "." or ".."`, and the execution log
+- IDs: Get a submission with the ID `..` fails with `The submission ID can't be "." or ".."`, and the execution log
   shows no request. With the ID `a/b` it fails with DocSpring's 404 (the request went to `/submissions/a%2Fb`).
-- Remove template fields with a field ID typed in Map mode removes the field (Make sends the ID as a number).
+- Remove fields from a template with a field ID typed in Map mode removes the field (Make sends the ID as a number).
 - Watch events: create a hook (DocSpring gets a version 4 webhook named "Make"), generate a test PDF (the scenario
   runs with `event_type`, `resource_type` and `resource_id`), delete the hook (the DocSpring webhook is deleted).
   Then create a hook, delete its webhook in DocSpring, and delete the hook: Make should delete it without an error.
@@ -375,7 +376,7 @@ Make behaviour these files rely on that hasn't been tried yet (each is from Make
   backslash escapes. If Make doesn't read the regular expressions, the details show as JSON instead (still readable).
 - `detach` makes up to 21 requests: it lists the webhooks with the hook's first event, 100 a page (up to 20 pages),
   and deletes the webhook only if it's in the list.
-- Remove template fields' `spec: {"type": "number"}` on a multiple select converts each typed ID to a number.
-- A select's `placeholder` (Move template's "Root folder (/)"), and `null` from `ifempty(...; null)` for the root.
+- Remove fields from a template' `spec: {"type": "number"}` on a multiple select converts each typed ID to a number.
+- A select's `placeholder` (Move a template's "Root folder (/)"), and `null` from `ifempty(...; null)` for the root.
 - Modules give up after Make's 40-second timeout (Make's default). A PDF that takes longer fails in Make, not with
   DocSpring's 504; turning off Wait for the PDF avoids it. Make support can raise the timeout for an app.

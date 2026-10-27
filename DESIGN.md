@@ -22,10 +22,10 @@ only Make's built-in IML functions.
 
 ## Requests
 
-- **Hosts.** Generate PDF, Generate PDFs in a batch, Combine PDFs, Generate submission files, Create template and
-  Replace template PDF go to the sync host (`sync.api.docspring.com`, `sync.api-eu.docspring.com`, or the self-hosted
-  host) with `?wait=true`, or `wait=false` when the user turns off "Wait for the PDF". They use an absolute URL, so they
-  set the auth headers themselves. Everything else uses the base URL.
+- **Hosts.** Generate a PDF, Generate a batch of PDFs, Combine PDFs, Generate files for a submission, Create a
+  template and Replace a template's PDF go to the sync host (`sync.api.docspring.com`, `sync.api-eu.docspring.com`, or
+  the self-hosted host) with `?wait=true`, or `wait=false` when the user turns off "Wait for the PDF". They use an
+  absolute URL, so they set the auth headers themselves. Everything else uses the base URL.
 - **Bodies** are flat JSON. `version` and `wait` are query parameters.
 - **Empty values.** The app uses manifest 2 processing: an empty input becomes `undefined` and Make leaves it out of
   the request, so the API never gets `""` or `null` for an empty optional value. `test` is sent only when it's true
@@ -34,13 +34,13 @@ only Make's built-in IML functions.
 - **Template data.** Template fields are mappable inputs from the `templateFields` RPC, which reads
   `GET /templates/{id}/schema?version=`. They go in one `data` collection (the RPC's `wrapper`), so a field named
   `test` or `metadata` can't clash with the module's own inputs, and the module sends `data` as the user mapped it.
-  Each field gets its type from the schema (boolean, integer, number or text, so Make sends real booleans and
-  numbers; JSON for objects and arrays such as image fields), `required` from the schema, and help: `YYYY-MM-DD` for
-  a date field, the enum values, the description, or a JSON example. Check data and Create signature request load the same fields as
-  optional.
+  Each field gets its type from the schema (boolean, integer, number or text, so Make sends real booleans and numbers;
+  JSON for objects and arrays such as image fields), `required` from the schema, and help: `YYYY-MM-DD` for a date
+  field, the enum values, the description, or a JSON example. Check data for a template and Create a signature request
+  load the same fields as optional.
 - **Dates.** v2 takes `YYYY-MM-DD` for date fields. Make converts a `date` input to a UTC timestamp, which can move
   the day, so date fields are text inputs whose help says `YYYY-MM-DD` and suggests `formatDate()` for a mapped
-  date. Find submissions' `created_after` and `created_before` are Make `date` inputs: the API takes timestamps
+  date. Search submissions' `created_after` and `created_before` are Make `date` inputs: the API takes timestamps
   (`date-time`) there.
 - **IDs in paths.** Every ID that goes into a URL path goes through `encodeURL(trim(...))`, so an ID such as
   `../templates/tpl_x` stays one path segment. `encodeURL()` leaves dots alone, and a URL parser turns a `.` or `..`
@@ -48,7 +48,7 @@ only Make's built-in IML functions.
   that fails first for an ID of `.` or `..` (after trimming): "The submission ID can't be "." or ".."." (a
   DataError, from `response.valid`). The template field pickers make no request for such an ID.
 - **Lists.** `limit` (up to 100) and `cursor`; responses are `{data, next_cursor}`. The pickers (`listTemplates`,
-  `listFolders`) follow `next_cursor` up to 1,000 items. The searches (Find submissions, Find templates, List
+  `listFolders`) follow `next_cursor` up to 1,000 items. The searches (Search submissions, Search templates, List
   folders) follow it up to their Limit input.
 
 ## Failures
@@ -63,7 +63,7 @@ only Make's built-in IML functions.
 - **A 201 with a failure state** (`error`, `syntax_error`, `image_download_failed`, `image_processing_failed`, or a
   template `document.state` of `password_required`, `malformed_pdf`, `unknown_error` or `download_failed`): the
   module's `response.valid` fails with the state, `error_message` and the record ID.
-- **A 504 `polling_timeout`**: "The PDF wasn't ready in time. Get it later with Get submission (<id>), or use the
+- **A 504 `polling_timeout`**: "The PDF wasn't ready in time. Get it later with Get a submission (<id>), or use the
   submission.processed trigger." (and the combined PDF, batch and template versions). It's a RuntimeError rather
   than Make's default for a 5xx (a connection error, which Make retries), so a retry can't generate a second PDF.
 
@@ -73,12 +73,12 @@ only Make's built-in IML functions.
 
 | Group | Modules |
 |---|---|
-| PDFs | Generate PDF, Generate PDFs in a batch, Get submission batch, Check data, Combine PDFs, Get combined PDF |
-| Submissions | Get submission, Find submissions, Generate submission files, Expire submission |
-| Signature requests | Create signature request, Create signing link, Get signature request |
-| Templates | Find templates, Get template, Create template, Replace template PDF, Copy template, Move template, Publish template version, Get template page images |
-| Template fields | List template fields, Add template fields, Update template fields, Remove template fields |
-| Folders | List folders, Create folder |
+| PDFs | Generate a PDF, Generate a batch of PDFs, Get a submission batch, Check data for a template, Combine PDFs, Get a combined PDF |
+| Submissions | Get a submission, Search submissions, Generate files for a submission, Expire a submission |
+| Signature requests | Create a signature request, Create a signing link, Get a signature request |
+| Templates | Search templates, Get a template, Create a template, Replace a template's PDF, Copy a template, Move a template, Publish a template version, Get a template's page images |
+| Template fields | List template fields, Add fields to a template, Update fields in a template, Remove fields from a template |
+| Folders | List folders, Create a folder |
 | Triggers | Watch events |
 | Other | Make an API call |
 
@@ -87,13 +87,13 @@ spec by `scripts/generate_interfaces.py`.
 
 - **Template pickers.** A template select (`rpc://listTemplates`) nests a version select (`latest` by default, which
   is the latest published version, or the draft when nothing is published), which nests the template fields.
-- **Create signature request** makes three requests: it creates the submission with `signature_requests`, makes a
+- **Create a signature request** makes three requests: it creates the submission with `signature_requests`, makes a
   signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
-  default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id`
-  and `first_signing_url`. Each signer's `fields` is a list of field names to type or map (also in Check data),
-  as List template fields shows them: the full `name`, such as `address/street`, which a signature request needs
-  (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with only
-  that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).
+  default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id` and
+  `first_signing_url`. Each signer's `fields` is a list of field names to type or map (also in Check data for a
+  template), as List template fields shows them: the full `name`, such as `address/street`, which a signature request
+  needs (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with
+  only that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).
 - **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
 
 ## Watch events
@@ -116,8 +116,9 @@ One instant trigger on a dedicated webhook, as in v1.
 
 ## Where this differs from the spec, and why
 
-- **Labels are in sentence case** ("Generate PDFs in a batch", "Find submissions"): Make's naming conventions require
-  it, and the v1 review asked for it.
+- **Labels follow Make's naming conventions**, not the spec's names: an action is a verb and an item with "a" or "an"
+  ("Generate a PDF", "Create a signature request"), a search a plural without one ("Search templates", "List
+  folders"), all in sentence case. The v1 review asked for it. The module IDs keep the spec's names (`findTemplate`).
 - **Signing links are a separate `signing_links` list**, not a `signing_url` added to each signature request. IML
   can't merge a value into each item of a list without custom IML functions. `first_signing_url` and
   `first_signature_request_id` are as specified.
@@ -132,7 +133,7 @@ One instant trigger on a dedicated webhook, as in v1.
 - A module times out after 40 seconds (Make's default; Make support can raise it for an app). A PDF that takes
   longer fails in Make, not with DocSpring's 504; turning off "Wait for the PDF" avoids it.
 - A request URL can be at most 512 characters and an error message 1,024. `scripts/check.py` checks both.
-- A module makes at most 100 requests, 50 of them pages. Create signature request's link loop stops at 100 signers.
+- A module makes at most 100 requests, 50 of them pages. Create a signature request's link loop stops at 100 signers.
 
 ## Custom IML functions: the upgrade path
 
@@ -146,12 +147,11 @@ Make runs the IML, so there's no test framework. `scripts/check.py` checks that 
 `{{ }}`, that nothing calls `/api/v1`, Make's URL and error-message limits, each module's sections, every `rpc://`
 reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
 
-It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML
-evaluator that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with
-`/regex/flags`). The tests cover the error message (with and without backslash escapes in IML strings), encoded IDs
-and the `.`/`..` checks in every URL, that no field inside an array item calls an RPC, the Watch events template check, Remove template
-fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any
-other.
+It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML evaluator
+that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with `/regex/flags`). The
+tests cover the error message (with and without backslash escapes in IML strings), encoded IDs and the `.`/`..` checks
+in every URL, that no field inside an array item calls an RPC, the Watch events template check, Remove template
+fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any other.
 
 ## Validation status
 
@@ -159,7 +159,7 @@ The API v2 version hasn't run in Make yet. `app/UPLOAD.md` ("Testing") lists the
 these files rely on that hasn't been tried.
 
 The v1 app (API v1) was validated live in Make in September 2026: the connection, Find template, Find submission,
-Generate PDF, Combine PDFs, Create signature request, Create signing link and Watch events (attach, delivery,
+Generate a PDF, Combine PDFs, Create a signature request, Create a signing link and Watch events (attach, delivery,
 detach).
 
 ## How modules are tested without the canvas
