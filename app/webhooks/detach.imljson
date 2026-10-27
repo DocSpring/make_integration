@@ -1,4 +1,20 @@
-{
-    "url": "/webhooks/{{webhook.externalHookId}}",
-    "method": "DELETE"
-}
+[
+    {
+        "url": "/webhooks",
+        "method": "GET",
+        "qs": {
+            "event_type": "{{webhook.eventType}}",
+            "limit": 100
+        },
+        "response": {
+            "temp": {
+                "found": "{{contains(map(body.data; 'id'); webhook.externalHookId)}}"
+            }
+        }
+    },
+    {
+        "condition": "{{temp.found}}",
+        "url": "/webhooks/{{webhook.externalHookId}}",
+        "method": "DELETE"
+    }
+]

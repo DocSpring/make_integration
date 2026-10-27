@@ -1,18 +1,130 @@
 [
-    { "name": "event_types", "type": "select", "label": "Events", "multiple": true, "required": true, "options": [
-        { "label": "Submission processed", "value": "submission.processed" },
-        { "label": "Submission failed", "value": "submission.failed" },
-        { "label": "Submission created", "value": "submission.created" },
-        { "label": "Submission expired", "value": "submission.expired" },
-        { "label": "Signature request completed", "value": "submission_data_request.completed" },
-        { "label": "Signature request viewed", "value": "submission_data_request.viewed" },
-        { "label": "Combined PDF processed", "value": "combined_submission.processed" },
-        { "label": "Combined PDF failed", "value": "combined_submission.failed" },
-        { "label": "Submission batch processed", "value": "submission_batch.processed" },
-        { "label": "Submission batch failed", "value": "submission_batch.failed" },
-        { "label": "Template created", "value": "template.created" },
-        { "label": "Template updated", "value": "template.updated" },
-        { "label": "Template deleted", "value": "template.deleted" }
-    ] },
-    { "name": "mode", "type": "select", "label": "Mode", "options": [ { "label": "Live only", "value": "live" }, { "label": "Test only", "value": "test" } ] }
+    {
+        "name": "event_types",
+        "type": "select",
+        "label": "Events",
+        "multiple": true,
+        "required": true,
+        "options": [
+            {
+                "label": "Submission created",
+                "value": "submission.created"
+            },
+            {
+                "label": "Submission processed (PDF generated)",
+                "value": "submission.processed"
+            },
+            {
+                "label": "Submission failed",
+                "value": "submission.failed"
+            },
+            {
+                "label": "Submission declined (a signer declined)",
+                "value": "submission.declined"
+            },
+            {
+                "label": "Submission updated",
+                "value": "submission.updated"
+            },
+            {
+                "label": "Submission expired",
+                "value": "submission.expired"
+            },
+            {
+                "label": "Signature request viewed",
+                "value": "signature_request.viewed"
+            },
+            {
+                "label": "Signature request completed",
+                "value": "signature_request.completed"
+            },
+            {
+                "label": "Signature request declined",
+                "value": "signature_request.declined"
+            },
+            {
+                "label": "Signature request updated",
+                "value": "signature_request.updated"
+            },
+            {
+                "label": "Combined PDF processed",
+                "value": "combined_pdf.processed"
+            },
+            {
+                "label": "Combined PDF failed",
+                "value": "combined_pdf.failed"
+            },
+            {
+                "label": "Combined PDF expired",
+                "value": "combined_pdf.expired"
+            },
+            {
+                "label": "Submission batch processed",
+                "value": "submission_batch.processed"
+            },
+            {
+                "label": "Submission batch failed",
+                "value": "submission_batch.failed"
+            },
+            {
+                "label": "Template created",
+                "value": "template.created"
+            },
+            {
+                "label": "Template updated",
+                "value": "template.updated"
+            },
+            {
+                "label": "Template deleted",
+                "value": "template.deleted"
+            },
+            {
+                "label": "Custom file created",
+                "value": "custom_file.created"
+            },
+            {
+                "label": "Folder created",
+                "value": "folder.created"
+            },
+            {
+                "label": "Folder updated",
+                "value": "folder.updated"
+            },
+            {
+                "label": "Folder deleted",
+                "value": "folder.deleted"
+            }
+        ]
+    },
+    {
+        "name": "mode",
+        "type": "select",
+        "label": "Mode",
+        "options": [
+            {
+                "label": "Live only",
+                "value": "live"
+            },
+            {
+                "label": "Test only",
+                "value": "test"
+            }
+        ],
+        "help": "Only send events for live or test submissions. Leave it empty for both."
+    },
+    {
+        "name": "template_ids",
+        "type": "select",
+        "label": "Templates",
+        "multiple": true,
+        "options": "rpc://listTemplates",
+        "help": "Only send events for these templates. Leave it empty for every template. Only submission, signature request and template events can be limited to templates."
+    },
+    {
+        "name": "include_submission_data",
+        "type": "boolean",
+        "label": "Include submission data",
+        "default": true,
+        "help": "No leaves the field values out of submission and signature request events."
+    }
 ]

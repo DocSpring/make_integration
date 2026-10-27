@@ -2,16 +2,17 @@
     "url": "/webhooks",
     "method": "POST",
     "body": {
-        "webhook": {
-            "url": "{{webhook.url}}",
-            "event_types": "{{parameters.event_types}}",
-            "include_submission_data": true,
-            "version": 3,
-            "name": "Make",
-            "mode": "{{parameters.mode}}"
-        }
+        "url": "{{webhook.url}}",
+        "event_types": "{{parameters.event_types}}",
+        "name": "Make",
+        "mode": "{{parameters.mode}}",
+        "template_ids": "{{parameters.template_ids}}",
+        "include_submission_data": "{{parameters.include_submission_data}}"
     },
     "response": {
-        "data": { "externalHookId": "{{body.id}}" }
+        "data": {
+            "externalHookId": "{{body.id}}",
+            "eventType": "{{first(body.event_types)}}"
+        }
     }
 }

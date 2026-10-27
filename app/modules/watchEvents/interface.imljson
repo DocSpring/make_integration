@@ -1,8 +1,33 @@
 [
-    { "name": "id", "type": "text", "label": "Event ID" },
-    { "name": "event", "type": "text", "label": "Event type" },
-    { "name": "timestamp", "type": "date", "label": "Timestamp" },
-    { "name": "resource_type", "type": "text", "label": "Resource type" },
-    { "name": "resource_id", "type": "text", "label": "Resource ID" },
-    { "name": "data", "type": "collection", "label": "Data", "spec": [] }
+    {
+        "name": "id",
+        "label": "Event ID",
+        "type": "text"
+    },
+    {
+        "name": "event_type",
+        "label": "Event type",
+        "type": "text"
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "resource_type",
+        "label": "Resource type",
+        "type": "text"
+    },
+    {
+        "name": "resource_id",
+        "label": "Resource ID",
+        "type": "text"
+    },
+    {
+        "name": "data",
+        "label": "Data",
+        "type": "collection",
+        "spec": []
+    }
 ]
