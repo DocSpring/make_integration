@@ -6,6 +6,8 @@
   module once.
 - app/UPLOAD.md names every module and RPC, so none is left out of an upload.
 - Nothing calls API v1, and the values Make limits fit (a request URL: 512 characters, an error message: 1024).
+- The IML does what it should, run by scripts/iml.py (scripts/iml_tests.py): error messages, IDs in URLs, the
+  signer field picker, the Watch events checks and detach's paging.
 
 Usage: scripts/check.py
 """
@@ -15,6 +17,8 @@ import json
 import os
 import re
 import sys
+
+import iml_tests
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP = os.path.join(ROOT, "app")
@@ -127,11 +131,13 @@ def main():
         if f"`{name}`" not in upload:
             error(f"app/UPLOAD.md doesn't name `{name}`")
 
+    errors.extend(iml_tests.run())
+
     if errors:
         print("\n".join(errors))
         print(f"\n{len(errors)} problem(s) in {len(files)} files")
         sys.exit(1)
-    print(f"OK: {len(files)} IML files, {len(modules)} modules, {len(rpcs)} RPCs")
+    print(f"OK: {len(files)} IML files, {len(modules)} modules, {len(rpcs)} RPCs, {len(iml_tests.TESTS)} IML tests")
 
 
 if __name__ == "__main__":
