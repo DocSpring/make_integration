@@ -118,7 +118,7 @@
         "label": "Templates",
         "multiple": true,
         "options": "rpc://listTemplates",
-        "help": "Only send events for these templates. Leave it empty for every template. Only submission, signature request and template events can be limited to templates."
+        "help": "Only send events for these templates. Leave it empty for every template. With templates chosen, choose only submission, signature request and template events: other events can't be limited to templates."
     },
     {
         "name": "include_submission_data",

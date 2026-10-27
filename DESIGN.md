@@ -97,7 +97,10 @@ One instant trigger on a dedicated webhook, as in v1.
   (`rpc://listTemplates`), Include submission data (default on).
 - **attach:** `POST /webhooks` with `url`, `event_types`, `name: "Make"`, `mode`, `template_ids` and
   `include_submission_data`, never `version`, so DocSpring sends version 4 events. It stores the webhook's `id` and
-  first event type.
+  first event type. Only submission, signature request and template events can be limited to templates (DocSpring
+  rejects the others with a 422), so with templates chosen, a request-less step first fails with the events that
+  can't be: "Templates only limit submission, signature request and template events. Clear Templates, or remove
+  these events: combined_pdf.processed, ...".
 - **detach:** lists the webhooks with that event type, and deletes the stored webhook only if it's in the list. Make
   can't treat an HTTP 404 as success, so this is how detach tolerates a webhook someone already deleted in
   DocSpring.
