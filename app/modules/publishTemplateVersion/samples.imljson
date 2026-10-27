@@ -1,0 +1,12 @@
+{
+    "version": "0.1.0",
+    "description": "Added the signature fields",
+    "published_at": "2018-10-20T09:00:00Z",
+    "published_by": {
+        "type": "user",
+        "user_id": "usr_1234567890abcdef01",
+        "external_id": null,
+        "name": "Test User 1",
+        "email": null
+    }
+}

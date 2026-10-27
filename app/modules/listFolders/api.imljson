@@ -1,0 +1,19 @@
+{
+    "url": "/folders",
+    "method": "GET",
+    "qs": {
+        "parent_folder_id": "{{parameters.parent_folder_id}}",
+        "limit": "{{if(parameters.limit > 0 && parameters.limit < 100; parameters.limit; 100)}}"
+    },
+    "response": {
+        "limit": "{{parameters.limit}}",
+        "iterate": "{{body.data}}",
+        "output": "{{item}}"
+    },
+    "pagination": {
+        "qs": {
+            "cursor": "{{body.next_cursor}}"
+        },
+        "condition": "{{body.next_cursor}}"
+    }
+}

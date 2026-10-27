@@ -1,9 +1,29 @@
 {
-    "url": "/templates/{{parameters.template_id}}/schema",
+    "condition": "{{trim(parameters.template_id) != '.' && trim(parameters.template_id) != '..'}}",
+    "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/schema",
     "method": "GET",
-    "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
+    },
+    "qs": {
+        "version": "{{parameters.version}}"
+    },
     "response": {
-        "iterate": "{{keys(body.properties)}}",
-        "output": { "name": "{{item}}", "label": "{{item}}", "type": "text" }
+        "iterate": "{{toArray(body.properties)}}",
+        "output": {
+            "name": "{{item.key}}",
+            "label": "{{ifempty(item.value.title; item.key)}}",
+            "type": "{{if(contains(ifempty(item.value.type; 'object'); 'boolean'); 'boolean'; if(contains(ifempty(item.value.type; 'object'); 'integer'); 'integer'; if(contains(ifempty(item.value.type; 'object'); 'number'); 'number'; if(contains(ifempty(item.value.type; 'object'); 'string'); 'text'; 'json'))))}}",
+            "required": "{{if(parameters.optional; false; contains(ifempty(body.required; emptyarray); item.key))}}",
+            "help": "{{if(item.value.format = 'date'; 'A date as YYYY-MM-DD, such as 2026-10-27. To map a date, use formatDate(date; YYYY-MM-DD).'; if(item.value.format = 'date-time'; 'A date and time, such as 2026-10-27T09:30:00Z.'; if(item.value.enum; 'One of: ' + join(item.value.enum; ', '); if(contains(ifempty(item.value.type; 'object'); 'object') || contains(ifempty(item.value.type; 'object'); 'array'); 'JSON, such as {\"url\": \"https://example.com/photo.png\"} for an image field.'; item.value.description))))}}"
+        },
+        "wrapper": [
+            {
+                "name": "data",
+                "type": "collection",
+                "label": "Template fields",
+                "spec": "{{output}}"
+            }
+        ]
     }
 }

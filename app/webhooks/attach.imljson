@@ -1,17 +1,30 @@
-{
-    "url": "/webhooks",
-    "method": "POST",
-    "body": {
-        "webhook": {
-            "url": "{{webhook.url}}",
-            "event_types": "{{parameters.event_types}}",
-            "include_submission_data": true,
-            "version": 3,
-            "name": "Make",
-            "mode": "{{parameters.mode}}"
+[
+    {
+        "condition": "{{length(ifempty(parameters.template_ids; emptyarray)) > 0 && length(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'template.created'; 'template.updated'; 'template.deleted')) > 0}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "Templates only limit submission, signature request and template events. Clear Templates, or remove these events: {{join(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'template.created'; 'template.updated'; 'template.deleted'); ', ')}}",
+                "type": "DataError"
+            }
         }
     },
-    "response": {
-        "data": { "externalHookId": "{{body.id}}" }
+    {
+        "url": "/webhooks",
+        "method": "POST",
+        "body": {
+            "url": "{{webhook.url}}",
+            "event_types": "{{parameters.event_types}}",
+            "name": "Make",
+            "mode": "{{parameters.mode}}",
+            "template_ids": "{{parameters.template_ids}}",
+            "include_submission_data": "{{parameters.include_submission_data}}"
+        },
+        "response": {
+            "data": {
+                "externalHookId": "{{body.id}}",
+                "eventType": "{{first(body.event_types)}}"
+            }
+        }
     }
-}
+]

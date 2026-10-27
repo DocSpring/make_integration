@@ -1,0 +1,69 @@
+[
+    {
+        "name": "template_id",
+        "label": "Template ID",
+        "type": "text"
+    },
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
+    },
+    {
+        "name": "page_count",
+        "label": "Page count",
+        "type": "number"
+    },
+    {
+        "name": "pages",
+        "label": "Pages",
+        "type": "array",
+        "spec": [
+            {
+                "name": "page",
+                "label": "Page",
+                "type": "number"
+            },
+            {
+                "name": "width",
+                "label": "Width",
+                "type": "number"
+            },
+            {
+                "name": "height",
+                "label": "Height",
+                "type": "number"
+            },
+            {
+                "name": "download_url",
+                "label": "Download URL",
+                "type": "text"
+            },
+            {
+                "name": "permanent_url",
+                "label": "Permanent URL",
+                "type": "text"
+            },
+            {
+                "name": "filename",
+                "label": "Filename",
+                "type": "text"
+            },
+            {
+                "name": "content_type",
+                "label": "Content type",
+                "type": "text"
+            },
+            {
+                "name": "size",
+                "label": "Size",
+                "type": "number"
+            },
+            {
+                "name": "sha256",
+                "label": "SHA-256",
+                "type": "text"
+            }
+        ]
+    }
+]

@@ -1,0 +1,707 @@
+[
+    {
+        "name": "id",
+        "label": "ID",
+        "type": "text"
+    },
+    {
+        "name": "name",
+        "label": "Name",
+        "type": "text"
+    },
+    {
+        "name": "description",
+        "label": "Description",
+        "type": "text"
+    },
+    {
+        "name": "template_type",
+        "label": "Template type",
+        "type": "text"
+    },
+    {
+        "name": "ready",
+        "label": "Ready",
+        "type": "boolean"
+    },
+    {
+        "name": "document",
+        "label": "Document",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "filename",
+                "label": "Filename",
+                "type": "text"
+            },
+            {
+                "name": "md5",
+                "label": "MD5",
+                "type": "text"
+            },
+            {
+                "name": "state",
+                "label": "State",
+                "type": "text"
+            },
+            {
+                "name": "error_message",
+                "label": "Error message",
+                "type": "text"
+            },
+            {
+                "name": "field_reimport_state",
+                "label": "Field reimport state",
+                "type": "text"
+            },
+            {
+                "name": "page_count",
+                "label": "Page count",
+                "type": "number"
+            },
+            {
+                "name": "page_dimensions",
+                "label": "Page dimensions",
+                "type": "array",
+                "spec": {
+                    "type": "any"
+                }
+            },
+            {
+                "name": "has_fillable_fields",
+                "label": "Has fillable fields",
+                "type": "boolean"
+            },
+            {
+                "name": "page_processing_statuses",
+                "label": "Page processing statuses",
+                "type": "array",
+                "spec": [
+                    {
+                        "name": "image",
+                        "label": "Image",
+                        "type": "text"
+                    },
+                    {
+                        "name": "fields",
+                        "label": "Fields",
+                        "type": "text"
+                    },
+                    {
+                        "name": "ai_naming",
+                        "label": "AI naming",
+                        "type": "text"
+                    },
+                    {
+                        "name": "ai_error",
+                        "label": "AI error",
+                        "type": "text"
+                    },
+                    {
+                        "name": "detected_boxes",
+                        "label": "Detected boxes",
+                        "type": "array",
+                        "spec": {
+                            "type": "any"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "field_logic_status",
+                "label": "Field logic status",
+                "type": "text"
+            },
+            {
+                "name": "download_url",
+                "label": "Download URL",
+                "type": "text"
+            },
+            {
+                "name": "permanent_url",
+                "label": "Permanent URL",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "parent_folder_id",
+        "label": "Parent folder ID",
+        "type": "text"
+    },
+    {
+        "name": "path",
+        "label": "Path",
+        "type": "text"
+    },
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
+    },
+    {
+        "name": "latest_version",
+        "label": "Latest version",
+        "type": "text"
+    },
+    {
+        "name": "version_published_at",
+        "label": "Version published at",
+        "type": "date"
+    },
+    {
+        "name": "locked",
+        "label": "Locked",
+        "type": "boolean"
+    },
+    {
+        "name": "add_signature_request_submission_id_footers",
+        "label": "Add signature request submission ID footers",
+        "type": "boolean"
+    },
+    {
+        "name": "ai_field_naming_language",
+        "label": "AI field naming language",
+        "type": "text"
+    },
+    {
+        "name": "allow_additional_properties",
+        "label": "Allow additional properties",
+        "type": "boolean"
+    },
+    {
+        "name": "allow_skipping_optional_fields",
+        "label": "Allow skipping optional fields",
+        "type": "boolean"
+    },
+    {
+        "name": "default_form_mode",
+        "label": "Default form mode",
+        "type": "text"
+    },
+    {
+        "name": "editable_submissions",
+        "label": "Editable submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_domains",
+        "label": "Embed domains",
+        "type": "array",
+        "spec": {
+            "type": "text"
+        }
+    },
+    {
+        "name": "embed_edit_allow_settings",
+        "label": "Embed edit allow settings",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_edit_allow_versioning",
+        "label": "Embed edit allow versioning",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_edit_allow_document_replacement",
+        "label": "Embed edit allow document replacement",
+        "type": "boolean"
+    },
+    {
+        "name": "encrypt_pdfs",
+        "label": "Encrypt PDFs",
+        "type": "boolean"
+    },
+    {
+        "name": "has_encrypt_pdfs_password",
+        "label": "Has encrypt PDFs password",
+        "type": "boolean"
+    },
+    {
+        "name": "expire_submissions",
+        "label": "Expire submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "expire_after",
+        "label": "Expire after",
+        "type": "number"
+    },
+    {
+        "name": "expiration_interval",
+        "label": "Expiration interval",
+        "type": "text"
+    },
+    {
+        "name": "merge_audit_trail_pdf",
+        "label": "Merge audit trail PDF",
+        "type": "boolean"
+    },
+    {
+        "name": "parse_dates_using_template_date_format",
+        "label": "Parse dates using template date format",
+        "type": "boolean"
+    },
+    {
+        "name": "public_submissions",
+        "label": "Public submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "public_web_form",
+        "label": "Public web form",
+        "type": "boolean"
+    },
+    {
+        "name": "redirect_url",
+        "label": "Redirect URL",
+        "type": "text"
+    },
+    {
+        "name": "has_slack_webhook_url",
+        "label": "Has slack webhook URL",
+        "type": "boolean"
+    },
+    {
+        "name": "last_changed_at",
+        "label": "Last changed at",
+        "type": "date"
+    },
+    {
+        "name": "last_changed_by",
+        "label": "Last changed by",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "user_id",
+                "label": "User ID",
+                "type": "text"
+            },
+            {
+                "name": "external_id",
+                "label": "External ID",
+                "type": "text"
+            },
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "email",
+                "label": "Email",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "updated_at",
+        "label": "Updated at",
+        "type": "date"
+    },
+    {
+        "name": "defaults",
+        "label": "Defaults",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "typeface",
+                "label": "Typeface",
+                "type": "text"
+            },
+            {
+                "name": "font_size",
+                "label": "Font size",
+                "type": "number"
+            },
+            {
+                "name": "character_spacing",
+                "label": "Character spacing",
+                "type": "number"
+            },
+            {
+                "name": "color",
+                "label": "Color",
+                "type": "text"
+            },
+            {
+                "name": "background_color",
+                "label": "Background color",
+                "type": "text"
+            },
+            {
+                "name": "bold",
+                "label": "Bold",
+                "type": "boolean"
+            },
+            {
+                "name": "uppercase",
+                "label": "Uppercase",
+                "type": "boolean"
+            },
+            {
+                "name": "alignment",
+                "label": "Alignment",
+                "type": "text"
+            },
+            {
+                "name": "opacity",
+                "label": "Opacity",
+                "type": "number"
+            },
+            {
+                "name": "date_format",
+                "label": "Date format",
+                "type": "text"
+            },
+            {
+                "name": "date_time_format",
+                "label": "Date time format",
+                "type": "text"
+            },
+            {
+                "name": "check_color",
+                "label": "Check color",
+                "type": "text"
+            },
+            {
+                "name": "check_character",
+                "label": "Check character",
+                "type": "text"
+            },
+            {
+                "name": "check_background_color",
+                "label": "Check background color",
+                "type": "text"
+            },
+            {
+                "name": "required_field_background_color",
+                "label": "Required field background color",
+                "type": "text"
+            },
+            {
+                "name": "true_text",
+                "label": "True text",
+                "type": "text"
+            },
+            {
+                "name": "false_text",
+                "label": "False text",
+                "type": "text"
+            },
+            {
+                "name": "shape_fill_color",
+                "label": "Shape fill color",
+                "type": "text"
+            },
+            {
+                "name": "shape_border_color",
+                "label": "Shape border color",
+                "type": "text"
+            },
+            {
+                "name": "shape_border_width",
+                "label": "Shape border width",
+                "type": "number"
+            }
+        ]
+    },
+    {
+        "name": "field_dependencies",
+        "label": "Field dependencies",
+        "type": "array",
+        "spec": [
+            {
+                "name": "action",
+                "label": "Action",
+                "type": "text"
+            },
+            {
+                "name": "match",
+                "label": "Match",
+                "type": "text"
+            },
+            {
+                "name": "conditions",
+                "label": "Conditions",
+                "type": "array",
+                "spec": [
+                    {
+                        "name": "field",
+                        "label": "Field",
+                        "type": "text"
+                    },
+                    {
+                        "name": "operator",
+                        "label": "Operator",
+                        "type": "text"
+                    },
+                    {
+                        "name": "value",
+                        "label": "Value",
+                        "type": "any"
+                    },
+                    {
+                        "name": "range_max",
+                        "label": "Range max",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "name": "targets",
+                "label": "Targets",
+                "type": "array",
+                "spec": {
+                    "type": "text"
+                }
+            },
+            {
+                "name": "group",
+                "label": "Group",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "field_groups",
+        "label": "Field groups",
+        "type": "array",
+        "spec": [
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "title",
+                "label": "Title",
+                "type": "text"
+            },
+            {
+                "name": "description",
+                "label": "Description",
+                "type": "text"
+            },
+            {
+                "name": "metadata",
+                "label": "Metadata",
+                "type": "text"
+            },
+            {
+                "name": "min_items",
+                "label": "Min items",
+                "type": "number"
+            },
+            {
+                "name": "max_items",
+                "label": "Max items",
+                "type": "number"
+            },
+            {
+                "name": "allow_additional_items",
+                "label": "Allow additional items",
+                "type": "boolean"
+            }
+        ]
+    },
+    {
+        "name": "predefined_fields",
+        "label": "Predefined fields",
+        "type": "array",
+        "spec": [
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "display_name",
+                "label": "Display name",
+                "type": "text"
+            },
+            {
+                "name": "title",
+                "label": "Title",
+                "type": "text"
+            },
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "option_list",
+                "label": "Option list",
+                "type": "text"
+            },
+            {
+                "name": "required_in_template",
+                "label": "Required in template",
+                "type": "boolean"
+            },
+            {
+                "name": "field_required",
+                "label": "Field required",
+                "type": "boolean"
+            }
+        ]
+    },
+    {
+        "name": "predefined_fields_sample_data",
+        "label": "Predefined fields sample data",
+        "type": "collection",
+        "spec": []
+    },
+    {
+        "name": "html",
+        "label": "HTML",
+        "type": "text"
+    },
+    {
+        "name": "scss",
+        "label": "SCSS",
+        "type": "text"
+    },
+    {
+        "name": "header_html",
+        "label": "Header HTML",
+        "type": "text"
+    },
+    {
+        "name": "footer_html",
+        "label": "Footer HTML",
+        "type": "text"
+    },
+    {
+        "name": "html_engine_options",
+        "label": "HTML engine options",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "format",
+                "label": "Format",
+                "type": "text"
+            },
+            {
+                "name": "width",
+                "label": "Width",
+                "type": "text"
+            },
+            {
+                "name": "height",
+                "label": "Height",
+                "type": "text"
+            },
+            {
+                "name": "scale",
+                "label": "Scale",
+                "type": "number"
+            },
+            {
+                "name": "landscape",
+                "label": "Landscape",
+                "type": "boolean"
+            },
+            {
+                "name": "print_background",
+                "label": "Print background",
+                "type": "boolean"
+            },
+            {
+                "name": "margin_top",
+                "label": "Margin top",
+                "type": "text"
+            },
+            {
+                "name": "margin_bottom",
+                "label": "Margin bottom",
+                "type": "text"
+            },
+            {
+                "name": "margin_left",
+                "label": "Margin left",
+                "type": "text"
+            },
+            {
+                "name": "margin_right",
+                "label": "Margin right",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "embed_edit_token",
+        "label": "Embed edit token",
+        "type": "text"
+    },
+    {
+        "name": "versions",
+        "label": "Versions",
+        "type": "array",
+        "spec": [
+            {
+                "name": "version",
+                "label": "Version",
+                "type": "text"
+            },
+            {
+                "name": "description",
+                "label": "Description",
+                "type": "text"
+            },
+            {
+                "name": "published_at",
+                "label": "Published at",
+                "type": "date"
+            },
+            {
+                "name": "published_by",
+                "label": "Published by",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "type",
+                        "label": "Type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "user_id",
+                        "label": "User ID",
+                        "type": "text"
+                    },
+                    {
+                        "name": "external_id",
+                        "label": "External ID",
+                        "type": "text"
+                    },
+                    {
+                        "name": "name",
+                        "label": "Name",
+                        "type": "text"
+                    },
+                    {
+                        "name": "email",
+                        "label": "Email",
+                        "type": "text"
+                    }
+                ]
+            }
+        ]
+    }
+]

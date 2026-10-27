@@ -1,0 +1,156 @@
+[
+    {
+        "name": "name",
+        "type": "text",
+        "label": "Name"
+    },
+    {
+        "name": "template_type",
+        "type": "select",
+        "label": "Type",
+        "required": true,
+        "default": "pdf",
+        "options": [
+            {
+                "label": "PDF: fields on a PDF",
+                "value": "pdf",
+                "nested": [
+                    {
+                        "name": "document_url",
+                        "type": "url",
+                        "label": "PDF URL",
+                        "help": "An https:// link to the PDF, up to 100 MB. Give a PDF URL or a PDF file."
+                    },
+                    {
+                        "name": "filename",
+                        "type": "filename",
+                        "label": "PDF file name",
+                        "semantic": "file:name",
+                        "help": "The PDF file's name, such as contract.pdf."
+                    },
+                    {
+                        "name": "file_data",
+                        "type": "buffer",
+                        "label": "PDF file data",
+                        "semantic": "file:data",
+                        "help": "The PDF file, up to 7 MB. For a larger file, use a PDF URL."
+                    },
+                    {
+                        "name": "detect_fields",
+                        "type": "boolean",
+                        "label": "Set up the fields with AI",
+                        "help": "Imports the PDF's form fields or detects its fields, then names them with AI, as the Automatically detect fields option does in DocSpring."
+                    },
+                    {
+                        "name": "field_source",
+                        "type": "select",
+                        "label": "Field source",
+                        "advanced": true,
+                        "options": [
+                            {
+                                "label": "Automatic",
+                                "value": "auto"
+                            },
+                            {
+                                "label": "Detect fields on the PDF",
+                                "value": "pdf_detection"
+                            },
+                            {
+                                "label": "Import the PDF's form fields",
+                                "value": "pdf_form_fields"
+                            }
+                        ],
+                        "help": "With Set up the fields with AI: where the fields come from. Automatic imports a fillable PDF's form fields and detects the fields of other PDFs."
+                    },
+                    {
+                        "name": "field_naming",
+                        "type": "select",
+                        "label": "Field names",
+                        "advanced": true,
+                        "options": [
+                            {
+                                "label": "Name them with AI",
+                                "value": "ai"
+                            },
+                            {
+                                "label": "Keep the PDF's names",
+                                "value": "preserve"
+                            }
+                        ],
+                        "help": "With Set up the fields with AI: how the fields are named."
+                    },
+                    {
+                        "name": "field_logic",
+                        "type": "select",
+                        "label": "Conditional logic",
+                        "advanced": true,
+                        "options": [
+                            {
+                                "label": "Set up with AI",
+                                "value": "ai"
+                            },
+                            {
+                                "label": "None",
+                                "value": "none"
+                            }
+                        ],
+                        "help": "With Set up the fields with AI: whether AI reads the whole form and sets up conditional logic and required fields."
+                    }
+                ]
+            },
+            {
+                "label": "HTML: a PDF made from HTML",
+                "value": "html",
+                "nested": [
+                    {
+                        "name": "html",
+                        "type": "text",
+                        "label": "HTML",
+                        "multiline": true,
+                        "help": "The template's HTML, as a Liquid template."
+                    },
+                    {
+                        "name": "scss",
+                        "type": "text",
+                        "label": "SCSS",
+                        "multiline": true
+                    },
+                    {
+                        "name": "header_html",
+                        "type": "text",
+                        "label": "Header HTML",
+                        "multiline": true,
+                        "help": "Printed at the top of each page."
+                    },
+                    {
+                        "name": "footer_html",
+                        "type": "text",
+                        "label": "Footer HTML",
+                        "multiline": true,
+                        "help": "Printed at the bottom of each page."
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "Root folder (/)"
+            }
+        },
+        "help": "The folder to create the template in."
+    },
+    {
+        "name": "wait",
+        "type": "boolean",
+        "label": "Wait for the PDF",
+        "default": true,
+        "advanced": true,
+        "help": "Yes waits until the PDF is ready. No returns straight away: get it later, or use the Watch events trigger."
+    }
+]

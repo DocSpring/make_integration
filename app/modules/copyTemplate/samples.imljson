@@ -1,0 +1,93 @@
+{
+    "id": "tpl_1234567890abcdef04",
+    "name": "Rental Contract (2)",
+    "description": null,
+    "template_type": "pdf",
+    "ready": true,
+    "document": {
+        "filename": "blank_pdf.pdf",
+        "md5": "1c32d785398e3a7eaab0e9b876903cc6",
+        "state": "processed",
+        "error_message": null,
+        "field_reimport_state": "none",
+        "page_count": 1,
+        "page_dimensions": [
+            [
+                612,
+                792
+            ]
+        ],
+        "has_fillable_fields": false,
+        "page_processing_statuses": [
+            {
+                "image": "processed",
+                "fields": "disabled",
+                "ai_naming": null,
+                "ai_error": null,
+                "detected_boxes": null
+            }
+        ],
+        "field_logic_status": null,
+        "download_url": "https://downloads.docspring.com/store/acc_1234567890abcdef01/templates/tpl_1234567890abcdef04/draft/document/original-0000000000.abcdef1234567890abcd.pdf?Expires=1609491600&Signature=MEUCIQDexampleSignatureOnlyForTheDocs~exampleexampleexample_&Key-Pair-Id=K2EXAMPLEKEYID&Hash-Algorithm=SHA256",
+        "permanent_url": "https://app.docspring.com/templates/tpl_1234567890abcdef04/original_pdf?token=exampleDocumentDownloadToken0001"
+    },
+    "parent_folder_id": "fld_1234567890abcdef01",
+    "path": "/Contracts",
+    "version": null,
+    "latest_version": null,
+    "version_published_at": null,
+    "locked": false,
+    "add_signature_request_submission_id_footers": true,
+    "ai_field_naming_language": "auto",
+    "allow_additional_properties": false,
+    "allow_skipping_optional_fields": false,
+    "default_form_mode": "web",
+    "editable_submissions": false,
+    "embed_domains": [],
+    "embed_edit_allow_settings": false,
+    "embed_edit_allow_versioning": false,
+    "embed_edit_allow_document_replacement": false,
+    "encrypt_pdfs": false,
+    "has_encrypt_pdfs_password": true,
+    "expire_submissions": true,
+    "expire_after": 7,
+    "expiration_interval": "days",
+    "merge_audit_trail_pdf": true,
+    "parse_dates_using_template_date_format": false,
+    "public_submissions": false,
+    "public_web_form": false,
+    "redirect_url": null,
+    "has_slack_webhook_url": false,
+    "last_changed_at": "2018-10-20T08:30:00Z",
+    "last_changed_by": {
+        "type": "user",
+        "user_id": "usr_1234567890abcdef01",
+        "external_id": null,
+        "name": "Test User 1",
+        "email": null
+    },
+    "created_at": "2018-10-20T09:00:00Z",
+    "updated_at": "2018-10-20T09:00:00Z",
+    "defaults": {
+        "typeface": "Helvetica",
+        "font_size": 11,
+        "character_spacing": 0,
+        "color": "444444",
+        "opacity": 1,
+        "date_format": "%m/%d/%Y",
+        "date_time_format": "%m/%d/%Y %H:%M:%S",
+        "check_color": "444444",
+        "shape_border_color": "4A90E2"
+    },
+    "field_dependencies": [],
+    "field_groups": [],
+    "predefined_fields": [],
+    "predefined_fields_sample_data": null,
+    "html": null,
+    "scss": null,
+    "header_html": null,
+    "footer_html": null,
+    "html_engine_options": null,
+    "embed_edit_token": "exampleEmbedEditTokenGenerated001",
+    "versions": []
+}

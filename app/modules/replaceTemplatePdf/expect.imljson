@@ -1,0 +1,44 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "document_url",
+        "type": "url",
+        "label": "PDF URL",
+        "help": "An https:// link to the PDF, up to 100 MB. Give a PDF URL or a PDF file."
+    },
+    {
+        "name": "filename",
+        "type": "filename",
+        "label": "PDF file name",
+        "semantic": "file:name",
+        "help": "The PDF file's name, such as contract.pdf."
+    },
+    {
+        "name": "file_data",
+        "type": "buffer",
+        "label": "PDF file data",
+        "semantic": "file:data",
+        "help": "The PDF file, up to 7 MB. For a larger file, use a PDF URL."
+    },
+    {
+        "name": "reimport_fields",
+        "type": "boolean",
+        "label": "Re-import the fields",
+        "help": "Replaces all of the template's fields with the fillable fields in the new PDF."
+    },
+    {
+        "name": "wait",
+        "type": "boolean",
+        "label": "Wait for the PDF",
+        "default": true,
+        "advanced": true,
+        "help": "Yes waits until the PDF is ready. No returns straight away: get it later, or use the Watch events trigger."
+    }
+]

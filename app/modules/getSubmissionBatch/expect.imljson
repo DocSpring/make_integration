@@ -1,0 +1,15 @@
+[
+    {
+        "name": "submission_batch_id",
+        "type": "text",
+        "label": "Submission batch ID",
+        "required": true,
+        "help": "The batch's ID, such as sbb_1234567890abcdef01."
+    },
+    {
+        "name": "include_data",
+        "type": "boolean",
+        "label": "Include data",
+        "help": "Include each submission's data."
+    }
+]

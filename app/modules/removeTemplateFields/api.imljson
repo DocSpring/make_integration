@@ -1,0 +1,22 @@
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/fields/remove",
+        "method": "POST",
+        "body": {
+            "field_ids": "{{parameters.field_ids}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
+    }
+]

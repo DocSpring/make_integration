@@ -1,0 +1,64 @@
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/submissions",
+        "method": "POST",
+        "qs": {
+            "version": "{{parameters.version}}"
+        },
+        "body": {
+            "data": {
+                "{{...}}": "{{parameters.data}}"
+            },
+            "test": "{{if(parameters.test; true; undefined)}}",
+            "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
+            "signature_requests": "{{parameters.signature_requests}}"
+        },
+        "response": {
+            "temp": {
+                "submission": "{{body}}",
+                "signature_request_ids": "{{map(body.signature_requests; 'id')}}",
+                "signing_links": "{{emptyarray}}",
+                "index": 1
+            }
+        }
+    },
+    {
+        "condition": "{{parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
+        "url": "/signature_requests/{{encodeURL(get(temp.signature_request_ids; temp.index))}}/tokens",
+        "method": "POST",
+        "body": {
+            "type": "{{parameters.signing_link_type}}"
+        },
+        "response": {
+            "temp": {
+                "signing_links": "{{add(temp.signing_links; body)}}",
+                "index": "{{temp.index + 1}}"
+            }
+        },
+        "repeat": {
+            "condition": "{{temp.index <= length(temp.signature_request_ids)}}",
+            "delay": 100,
+            "limit": 100
+        }
+    },
+    {
+        "response": {
+            "output": {
+                "{{...}}": "{{temp.submission}}",
+                "signing_links": "{{temp.signing_links}}",
+                "first_signature_request_id": "{{temp.signature_request_ids[1]}}",
+                "first_signing_url": "{{temp.signing_links[1].signature_request_url}}"
+            }
+        }
+    }
+]

@@ -16,7 +16,7 @@
         "type": "text",
         "label": "Self-hosted host",
         "editable": false,
-        "help": "Only for the Self-hosted / Enterprise region — your full DocSpring URL, e.g. https://docspring.example.com (https:// is added if you omit it). This cannot be changed after the connection is created."
+        "help": "Only for the Self-hosted / Enterprise region: your DocSpring server's URL, such as https://docspring.example.com (https:// is added if you leave it out). The server needs a DocSpring release with API v2. You can't change the host after creating the connection."
     },
     { "name": "token_id", "type": "text", "label": "API token ID", "required": true },
     { "name": "token_secret", "type": "password", "label": "API token secret", "required": true }

@@ -1,15 +1,22 @@
 {
-    "baseUrl": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"api-eu.docspring.com\"; \"api.docspring.com\"))}}/api/v1",
+    "baseUrl": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"api-eu.docspring.com\"; \"api.docspring.com\"))}}/api/v2",
     "headers": {
         "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "User-Agent": "docspring-make/2"
     },
     "response": {
         "error": {
-            "message": "[{{statusCode}}] {{if(body.errors; join(body.errors; \", \"); if(body.error; body.error; \"DocSpring API error\"))}}"
+            "message": "DocSpring API error {{statusCode}}{{if(body.error.code; ' ' + body.error.code + ': ' + body.error.message + replace(replace(replace(replace(createJSON(body.error.details); '/^.|.$/g'; ''); '/[{]\"code\":\"[^\"]*\",\"message\":\"((?:[^\"\\\\\\\\]|[\\\\\\\\].)*)\",\"(pointer|parameter)\":\"((?:[^\"\\\\\\\\]|[\\\\\\\\].)*)\"[^{}]*[}],?/g'; decodeURL('%0A') + '$3: $1'); '/[{]\"code\":\"[^\"]*\",\"message\":\"((?:[^\"\\\\\\\\]|[\\\\\\\\].)*)\"[^{}]*[}],?/g'; decodeURL('%0A') + '$1'); '/[\\\\\\\\]([\"\\\\\\\\])/g'; '$1') + if(body.error.submission_id; decodeURL('%0A') + 'Submission: ' + body.error.submission_id; '') + if(body.error.submission_batch_id; decodeURL('%0A') + 'Submission batch: ' + body.error.submission_batch_id; '') + if(body.error.combined_pdf_id; decodeURL('%0A') + 'Combined PDF: ' + body.error.combined_pdf_id; '') + if(body.error.template_id; decodeURL('%0A') + 'Template: ' + body.error.template_id; '') + if(body.error.request_id; decodeURL('%0A') + 'Request ID: ' + body.error.request_id; ''); '')}}",
+            "504": {
+                "message": "{{if(body.error.code = 'polling_timeout'; \"The PDF wasn't ready in time. Get it later with \" + if(body.error.submission_id; 'Get submission (' + body.error.submission_id + '), or use the submission.processed trigger.'; if(body.error.combined_pdf_id; 'Get combined PDF (' + body.error.combined_pdf_id + '), or use the combined_pdf.processed trigger.'; if(body.error.submission_batch_id; 'Get submission batch (' + body.error.submission_batch_id + '), or use the submission_batch.processed trigger.'; 'Get template (' + body.error.template_id + ').'))); 'DocSpring API error 504' + if(body.error.code; ' ' + body.error.code + ': ' + body.error.message; ''))}}{{if(body.error.request_id; ' Request ID: ' + body.error.request_id; '')}}",
+                "type": "RuntimeError"
+            }
         }
     },
     "log": {
-        "sanitize": ["request.headers.authorization"]
+        "sanitize": [
+            "request.headers.authorization"
+        ]
     }
 }

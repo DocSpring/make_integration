@@ -1,4 +1,26 @@
-{
-    "url": "/webhooks/{{webhook.externalHookId}}",
-    "method": "DELETE"
-}
+[
+    {
+        "url": "/webhooks",
+        "method": "GET",
+        "qs": {
+            "event_type": "{{webhook.eventType}}",
+            "limit": 100,
+            "cursor": "{{temp.cursor}}"
+        },
+        "response": {
+            "temp": {
+                "found": "{{temp.found || contains(map(body.data; 'id'); webhook.externalHookId)}}",
+                "cursor": "{{body.next_cursor}}"
+            }
+        },
+        "repeat": {
+            "condition": "{{!temp.found && ifempty(temp.cursor; '') != ''}}",
+            "limit": 20
+        }
+    },
+    {
+        "condition": "{{temp.found}}",
+        "url": "/webhooks/{{encodeURL(webhook.externalHookId)}}",
+        "method": "DELETE"
+    }
+]

@@ -1,0 +1,42 @@
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/templates/{{encodeURL(trim(parameters.template_id))}}/document",
+        "method": "PUT",
+        "headers": {
+            "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+            "Accept": "application/json",
+            "User-Agent": "docspring-make/2"
+        },
+        "qs": {
+            "wait": "{{parameters.wait}}"
+        },
+        "body": {
+            "document_url": "{{parameters.document_url}}",
+            "document_base64": "{{if(parameters.file_data; base64(parameters.file_data); undefined)}}",
+            "filename": "{{if(parameters.file_data; parameters.filename; undefined)}}",
+            "reimport_fields": "{{parameters.reimport_fields}}"
+        },
+        "response": {
+            "valid": {
+                "condition": "{{body.document.state != 'password_required' && body.document.state != 'malformed_pdf' && body.document.state != 'unknown_error' && body.document.state != 'download_failed'}}",
+                "message": "DocSpring couldn't process the template's PDF (state: {{body.document.state}}): {{body.document.error_message}}\nTemplate: {{body.id}}"
+            },
+            "output": "{{body}}"
+        },
+        "log": {
+            "sanitize": [
+                "request.headers.authorization"
+            ]
+        }
+    }
+]

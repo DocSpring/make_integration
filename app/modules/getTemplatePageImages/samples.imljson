@@ -1,0 +1,18 @@
+{
+    "template_id": "tpl_1234567890abcdef01",
+    "version": null,
+    "page_count": 1,
+    "pages": [
+        {
+            "page": 1,
+            "width": 1190,
+            "height": 1540,
+            "download_url": "https://downloads.docspring.com/store/acc_1234567890abcdef01/templates/tpl_1234567890abcdef01/draft/document/page_1_large-0000000000.abcdef1234567890abcd.jpg?Expires=1609491600&Signature=MEUCIQDexampleSignatureOnlyForTheDocs~exampleexampleexample_&Key-Pair-Id=K2EXAMPLEKEYID&Hash-Algorithm=SHA256",
+            "permanent_url": null,
+            "filename": "tpl_1234567890abcdef01_page_1.jpg",
+            "content_type": "image/jpeg",
+            "size": 7350,
+            "sha256": null
+        }
+    ]
+}

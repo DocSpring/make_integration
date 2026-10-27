@@ -1,0 +1,24 @@
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/copy",
+        "method": "POST",
+        "body": {
+            "name": "{{parameters.name}}",
+            "parent_folder_id": "{{parameters.parent_folder_id}}",
+            "version": "{{parameters.version}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
+    }
+]

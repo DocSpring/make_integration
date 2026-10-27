@@ -1,0 +1,24 @@
+{
+    "url": "/folders",
+    "method": "GET",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
+    },
+    "qs": {
+        "limit": 100
+    },
+    "response": {
+        "limit": 1000,
+        "iterate": "{{body.data}}",
+        "output": {
+            "label": "{{if(item.path = '/'; '/' + item.name; item.path + '/' + item.name)}}",
+            "value": "{{item.id}}"
+        }
+    },
+    "pagination": {
+        "qs": {
+            "cursor": "{{body.next_cursor}}"
+        },
+        "condition": "{{body.next_cursor}}"
+    }
+}

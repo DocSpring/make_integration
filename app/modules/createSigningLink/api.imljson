@@ -1,12 +1,22 @@
-{
-    "url": "/data_requests/{{parameters.data_request_id}}/tokens",
-    "method": "POST",
-    "qs": { "type": "{{parameters.token_type}}" },
-    "response": {
-        "output": {
-            "id": "{{body.token.id}}",
-            "signing_url": "{{body.token.data_request_url}}",
-            "expires_at": "{{body.token.expires_at}}"
+[
+    {
+        "condition": "{{trim(parameters.signature_request_id) = '.' || trim(parameters.signature_request_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The signature request ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/signature_requests/{{encodeURL(trim(parameters.signature_request_id))}}/tokens",
+        "method": "POST",
+        "body": {
+            "type": "{{parameters.type}}"
+        },
+        "response": {
+            "output": "{{body}}"
         }
     }
-}
+]

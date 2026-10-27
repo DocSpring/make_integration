@@ -1,0 +1,15 @@
+{
+    "condition": "{{trim(parameters.template_id) != '.' && trim(parameters.template_id) != '..'}}",
+    "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/fields",
+    "method": "GET",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
+    },
+    "response": {
+        "iterate": "{{body.fields}}",
+        "output": {
+            "label": "{{item.name}} (page {{item.page}}, ID {{item.id}})",
+            "value": "{{item.id}}"
+        }
+    }
+}

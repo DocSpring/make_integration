@@ -1,0 +1,19 @@
+[
+    {
+        "condition": "{{trim(parameters.combined_pdf_id) = '.' || trim(parameters.combined_pdf_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The combined PDF ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/combined_pdfs/{{encodeURL(trim(parameters.combined_pdf_id))}}",
+        "method": "GET",
+        "response": {
+            "output": "{{body}}"
+        }
+    }
+]

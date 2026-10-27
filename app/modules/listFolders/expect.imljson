@@ -1,0 +1,21 @@
+[
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Parent folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "All folders"
+            }
+        },
+        "help": "Only list the folders in this folder. Leave it empty for every folder, at any depth."
+    },
+    {
+        "name": "limit",
+        "type": "uinteger",
+        "label": "Limit",
+        "default": 10,
+        "help": "The most results to return."
+    }
+]

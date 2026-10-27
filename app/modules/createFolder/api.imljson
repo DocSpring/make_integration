@@ -1,0 +1,11 @@
+{
+    "url": "/folders",
+    "method": "POST",
+    "body": {
+        "name": "{{parameters.name}}",
+        "parent_folder_id": "{{parameters.parent_folder_id}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

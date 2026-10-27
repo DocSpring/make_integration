@@ -1,14 +1,24 @@
 {
     "url": "/templates",
     "method": "GET",
-    "qs": { "per_page": 50 },
-    "headers": { "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}" },
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}"
+    },
+    "qs": {
+        "limit": 100
+    },
     "response": {
-        "iterate": "{{body}}",
-        "output": { "label": "{{item.name}}", "value": "{{item.id}}" }
+        "limit": 1000,
+        "iterate": "{{body.data}}",
+        "output": {
+            "label": "{{ifempty(item.name; item.id) + if(item.path = '/'; ''; ' (' + item.path + ')')}}",
+            "value": "{{item.id}}"
+        }
     },
     "pagination": {
-        "qs": { "page": "{{pagination.page}}" },
-        "condition": "{{length(body) >= 50}}"
+        "qs": {
+            "cursor": "{{body.next_cursor}}"
+        },
+        "condition": "{{body.next_cursor}}"
     }
 }

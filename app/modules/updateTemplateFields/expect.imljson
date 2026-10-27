@@ -1,0 +1,17 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "fields",
+        "type": "json",
+        "label": "Fields",
+        "required": true,
+        "help": "The changes as a JSON list, each with the ID of the field it changes, such as [{\"id\": 3, \"required\": true}]. Settings left out keep their values. Get the IDs with List template fields."
+    }
+]

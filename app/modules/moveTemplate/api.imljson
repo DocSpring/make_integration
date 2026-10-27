@@ -1,0 +1,22 @@
+[
+    {
+        "condition": "{{trim(parameters.template_id) = '.' || trim(parameters.template_id) = '..'}}",
+        "response": {
+            "valid": {
+                "condition": "{{false}}",
+                "message": "The template ID can't be \".\" or \"..\".",
+                "type": "DataError"
+            }
+        }
+    },
+    {
+        "url": "/templates/{{encodeURL(trim(parameters.template_id))}}/move",
+        "method": "POST",
+        "body": {
+            "parent_folder_id": "{{ifempty(parameters.parent_folder_id; null)}}"
+        },
+        "response": {
+            "output": "{{body}}"
+        }
+    }
+]
