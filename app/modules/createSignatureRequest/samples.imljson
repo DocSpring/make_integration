@@ -1,0 +1,75 @@
+{
+    "id": "sub_1234567890abcdef04",
+    "template_id": "tpl_1234567890abcdef01",
+    "template_type": "pdf",
+    "template_version": null,
+    "batch_id": null,
+    "source": "api",
+    "state": "waiting_for_signature_requests",
+    "test": false,
+    "editable": false,
+    "data": {
+        "phone_number": "+11234567890"
+    },
+    "data_errors": [],
+    "error_message": null,
+    "metadata": {},
+    "has_password": false,
+    "signature_requests": [
+        {
+            "id": "srq_1234567890abcdef04",
+            "submission_id": "sub_1234567890abcdef04",
+            "name": "John Smith",
+            "email": "john@example.com",
+            "fields": [
+                "first_name",
+                "last_name"
+            ],
+            "metadata": {},
+            "role": "Signer 1",
+            "sort_order": 0,
+            "state": "pending",
+            "data": {},
+            "viewed_at": null,
+            "completed_at": null,
+            "declined_at": null,
+            "auth_type": "email_link",
+            "auth_second_factor_type": "none",
+            "auth_provider": null,
+            "auth_session_started_at": null,
+            "auth_session_id_hash": null,
+            "auth_user_id_hash": null,
+            "auth_username_hash": null,
+            "auth_phone_number_hash": null,
+            "ip_address": null,
+            "user_agent": null,
+            "created_at": "2018-10-20T09:00:00Z",
+            "updated_at": "2018-10-20T09:00:00Z"
+        }
+    ],
+    "actions": [],
+    "truncated_text": {},
+    "output_formats": [
+        "pdf"
+    ],
+    "files": {},
+    "preview_generated_at": null,
+    "expired": false,
+    "expires_at": null,
+    "processed_at": null,
+    "created_at": "2018-10-20T09:00:00Z",
+    "updated_at": "2018-10-20T09:00:00Z",
+    "signing_links": [
+        {
+            "id": "1234567890abcdef01",
+            "signature_request_id": "srq_1234567890abcdef04",
+            "type": "email",
+            "secret": "ABCDEF01234567890",
+            "signature_request_url": "https://app.docspring.com/signature_requests/srq_1234567890abcdef04?token_id=1234567890abcdef01&token_secret=ABCDEF01234567890",
+            "expires_at": "2018-10-27T09:00:00Z",
+            "created_at": "2018-10-20T09:00:00Z"
+        }
+    ],
+    "first_signature_request_id": "srq_1234567890abcdef04",
+    "first_signing_url": "https://app.docspring.com/signature_requests/srq_1234567890abcdef04?token_id=1234567890abcdef01&token_secret=ABCDEF01234567890"
+}

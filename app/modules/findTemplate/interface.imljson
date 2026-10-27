@@ -1,7 +1,312 @@
 [
-    { "name": "id", "type": "text", "label": "Template ID" },
-    { "name": "name", "type": "text", "label": "Name" },
-    { "name": "template_type", "type": "text", "label": "Type" },
-    { "name": "document_state", "type": "text", "label": "Document state" },
-    { "name": "updated_at", "type": "date", "label": "Updated at" }
+    {
+        "name": "id",
+        "label": "ID",
+        "type": "text"
+    },
+    {
+        "name": "name",
+        "label": "Name",
+        "type": "text"
+    },
+    {
+        "name": "description",
+        "label": "Description",
+        "type": "text"
+    },
+    {
+        "name": "template_type",
+        "label": "Template type",
+        "type": "text"
+    },
+    {
+        "name": "ready",
+        "label": "Ready",
+        "type": "boolean"
+    },
+    {
+        "name": "document",
+        "label": "Document",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "filename",
+                "label": "Filename",
+                "type": "text"
+            },
+            {
+                "name": "md5",
+                "label": "MD5",
+                "type": "text"
+            },
+            {
+                "name": "state",
+                "label": "State",
+                "type": "text"
+            },
+            {
+                "name": "error_message",
+                "label": "Error message",
+                "type": "text"
+            },
+            {
+                "name": "field_reimport_state",
+                "label": "Field reimport state",
+                "type": "text"
+            },
+            {
+                "name": "page_count",
+                "label": "Page count",
+                "type": "number"
+            },
+            {
+                "name": "page_dimensions",
+                "label": "Page dimensions",
+                "type": "array",
+                "spec": {
+                    "type": "any"
+                }
+            },
+            {
+                "name": "has_fillable_fields",
+                "label": "Has fillable fields",
+                "type": "boolean"
+            },
+            {
+                "name": "page_processing_statuses",
+                "label": "Page processing statuses",
+                "type": "array",
+                "spec": [
+                    {
+                        "name": "image",
+                        "label": "Image",
+                        "type": "text"
+                    },
+                    {
+                        "name": "fields",
+                        "label": "Fields",
+                        "type": "text"
+                    },
+                    {
+                        "name": "ai_naming",
+                        "label": "AI naming",
+                        "type": "text"
+                    },
+                    {
+                        "name": "ai_error",
+                        "label": "AI error",
+                        "type": "text"
+                    },
+                    {
+                        "name": "detected_boxes",
+                        "label": "Detected boxes",
+                        "type": "array",
+                        "spec": {
+                            "type": "any"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "field_logic_status",
+                "label": "Field logic status",
+                "type": "text"
+            },
+            {
+                "name": "download_url",
+                "label": "Download URL",
+                "type": "text"
+            },
+            {
+                "name": "permanent_url",
+                "label": "Permanent URL",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "parent_folder_id",
+        "label": "Parent folder ID",
+        "type": "text"
+    },
+    {
+        "name": "path",
+        "label": "Path",
+        "type": "text"
+    },
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
+    },
+    {
+        "name": "latest_version",
+        "label": "Latest version",
+        "type": "text"
+    },
+    {
+        "name": "version_published_at",
+        "label": "Version published at",
+        "type": "date"
+    },
+    {
+        "name": "locked",
+        "label": "Locked",
+        "type": "boolean"
+    },
+    {
+        "name": "add_signature_request_submission_id_footers",
+        "label": "Add signature request submission ID footers",
+        "type": "boolean"
+    },
+    {
+        "name": "ai_field_naming_language",
+        "label": "AI field naming language",
+        "type": "text"
+    },
+    {
+        "name": "allow_additional_properties",
+        "label": "Allow additional properties",
+        "type": "boolean"
+    },
+    {
+        "name": "allow_skipping_optional_fields",
+        "label": "Allow skipping optional fields",
+        "type": "boolean"
+    },
+    {
+        "name": "default_form_mode",
+        "label": "Default form mode",
+        "type": "text"
+    },
+    {
+        "name": "editable_submissions",
+        "label": "Editable submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_domains",
+        "label": "Embed domains",
+        "type": "array",
+        "spec": {
+            "type": "text"
+        }
+    },
+    {
+        "name": "embed_edit_allow_settings",
+        "label": "Embed edit allow settings",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_edit_allow_versioning",
+        "label": "Embed edit allow versioning",
+        "type": "boolean"
+    },
+    {
+        "name": "embed_edit_allow_document_replacement",
+        "label": "Embed edit allow document replacement",
+        "type": "boolean"
+    },
+    {
+        "name": "encrypt_pdfs",
+        "label": "Encrypt PDFs",
+        "type": "boolean"
+    },
+    {
+        "name": "has_encrypt_pdfs_password",
+        "label": "Has encrypt PDFs password",
+        "type": "boolean"
+    },
+    {
+        "name": "expire_submissions",
+        "label": "Expire submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "expire_after",
+        "label": "Expire after",
+        "type": "number"
+    },
+    {
+        "name": "expiration_interval",
+        "label": "Expiration interval",
+        "type": "text"
+    },
+    {
+        "name": "merge_audit_trail_pdf",
+        "label": "Merge audit trail PDF",
+        "type": "boolean"
+    },
+    {
+        "name": "parse_dates_using_template_date_format",
+        "label": "Parse dates using template date format",
+        "type": "boolean"
+    },
+    {
+        "name": "public_submissions",
+        "label": "Public submissions",
+        "type": "boolean"
+    },
+    {
+        "name": "public_web_form",
+        "label": "Public web form",
+        "type": "boolean"
+    },
+    {
+        "name": "redirect_url",
+        "label": "Redirect URL",
+        "type": "text"
+    },
+    {
+        "name": "has_slack_webhook_url",
+        "label": "Has slack webhook URL",
+        "type": "boolean"
+    },
+    {
+        "name": "last_changed_at",
+        "label": "Last changed at",
+        "type": "date"
+    },
+    {
+        "name": "last_changed_by",
+        "label": "Last changed by",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "user_id",
+                "label": "User ID",
+                "type": "text"
+            },
+            {
+                "name": "external_id",
+                "label": "External ID",
+                "type": "text"
+            },
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "email",
+                "label": "Email",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "updated_at",
+        "label": "Updated at",
+        "type": "date"
+    }
 ]

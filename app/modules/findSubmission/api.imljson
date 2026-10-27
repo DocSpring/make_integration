@@ -1,33 +1,23 @@
 {
-    "url": "{{if(parameters.submission_id; \"/submissions/\" + parameters.submission_id; \"/submissions\")}}",
+    "url": "/submissions",
     "method": "GET",
     "qs": {
-        "limit": 50,
-        "type": "{{parameters.type}}",
+        "template_id": "{{parameters.template_id}}",
+        "test": "{{if(parameters.mode = 'test'; true; if(parameters.mode = 'live'; false; undefined))}}",
         "created_after": "{{parameters.created_after}}",
         "created_before": "{{parameters.created_before}}",
-        "include_data": true
+        "include_data": "{{parameters.include_data}}",
+        "limit": "{{if(parameters.limit > 0 && parameters.limit < 100; parameters.limit; 100)}}"
     },
     "response": {
         "limit": "{{parameters.limit}}",
-        "iterate": "{{if(parameters.submission_id; add(emptyarray; body); body.submissions)}}",
-        "output": {
-            "id": "{{item.id}}",
-            "state": "{{item.state}}",
-            "test": "{{item.test}}",
-            "template_id": "{{item.template_id}}",
-            "download_url": "{{item.download_url}}",
-            "permanent_download_url": "{{item.permanent_download_url}}",
-            "processed_at": "{{item.processed_at}}",
-            "expired": "{{item.expired}}",
-            "expires_at": "{{item.expires_at}}",
-            "error_message": "{{item.error_message}}",
-            "metadata": "{{item.metadata}}",
-            "data": "{{item.data}}"
-        }
+        "iterate": "{{body.data}}",
+        "output": "{{item}}"
     },
     "pagination": {
-        "qs": { "cursor": "{{body.next_cursor}}" },
+        "qs": {
+            "cursor": "{{body.next_cursor}}"
+        },
         "condition": "{{body.next_cursor}}"
     }
 }

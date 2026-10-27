@@ -1,12 +1,10 @@
 {
-    "url": "/data_requests/{{parameters.data_request_id}}/tokens",
+    "url": "/signature_requests/{{parameters.signature_request_id}}/tokens",
     "method": "POST",
-    "qs": { "type": "{{parameters.token_type}}" },
+    "body": {
+        "type": "{{parameters.type}}"
+    },
     "response": {
-        "output": {
-            "id": "{{body.token.id}}",
-            "signing_url": "{{body.token.data_request_url}}",
-            "expires_at": "{{body.token.expires_at}}"
-        }
+        "output": "{{body}}"
     }
 }

@@ -1,4 +1,27 @@
 [
-    { "name": "query", "type": "text", "label": "Name or ID", "help": "Search templates by name or ID." },
-    { "name": "limit", "type": "uinteger", "label": "Limit", "default": 10, "help": "Maximum number of templates to return." }
+    {
+        "name": "query",
+        "type": "text",
+        "label": "Name",
+        "help": "Find templates whose name contains this text."
+    },
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "Any folder"
+            }
+        },
+        "help": "Only find the templates in this folder (not in its subfolders)."
+    },
+    {
+        "name": "limit",
+        "type": "uinteger",
+        "label": "Limit",
+        "default": 10,
+        "help": "The most results to return."
+    }
 ]

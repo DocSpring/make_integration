@@ -1,5 +1,37 @@
 [
-    { "name": "id", "type": "text", "label": "Token ID" },
-    { "name": "signing_url", "type": "text", "label": "Signing URL" },
-    { "name": "expires_at", "type": "date", "label": "Expires At" }
+    {
+        "name": "id",
+        "label": "ID",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_id",
+        "label": "Signature request ID",
+        "type": "text"
+    },
+    {
+        "name": "type",
+        "label": "Type",
+        "type": "text"
+    },
+    {
+        "name": "secret",
+        "label": "Secret",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_url",
+        "label": "Signature request URL",
+        "type": "text"
+    },
+    {
+        "name": "expires_at",
+        "label": "Expires at",
+        "type": "date"
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    }
 ]

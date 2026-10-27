@@ -1,8 +1,112 @@
 [
-    { "name": "template_id", "type": "select", "label": "Template", "required": true, "options": { "store": "rpc://listTemplates", "nested": "rpc://templateFields" } },
-    { "name": "test", "type": "boolean", "label": "Test PDF", "default": false, "help": "Test PDFs are free but watermarked." },
-    { "name": "pdf_passphrase", "type": "text", "label": "Encrypt PDF with passphrase" },
-    { "name": "expires_in", "type": "uinteger", "label": "Expires in (seconds)" },
-    { "name": "editable", "type": "boolean", "label": "Editable" },
-    { "name": "version", "type": "text", "label": "Template version" }
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "options": {
+            "store": "rpc://listTemplates",
+            "nested": [
+                {
+                    "name": "version",
+                    "type": "select",
+                    "label": "Template version",
+                    "dynamic": true,
+                    "help": "The template version to use: the latest published version (the draft when none has been published), the draft, or a published version number such as 1.2.0, or 1 for the latest 1.x.x (switch on Map to type one).",
+                    "default": "latest",
+                    "options": {
+                        "store": [
+                            {
+                                "label": "Latest published version",
+                                "value": "latest"
+                            },
+                            {
+                                "label": "Draft",
+                                "value": "draft"
+                            }
+                        ],
+                        "nested": "rpc://templateFields"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "name": "test",
+        "type": "boolean",
+        "label": "Test",
+        "help": "Test PDFs are free and have a watermark. A test API token always makes test PDFs."
+    },
+    {
+        "name": "metadata",
+        "type": "array",
+        "label": "Metadata",
+        "help": "Your own data, such as an ID from your app. It isn't printed on the PDF.",
+        "spec": [
+            {
+                "name": "key",
+                "type": "text",
+                "label": "Key",
+                "required": true
+            },
+            {
+                "name": "value",
+                "type": "text",
+                "label": "Value"
+            }
+        ]
+    },
+    {
+        "name": "output_formats",
+        "type": "select",
+        "label": "Output formats",
+        "multiple": true,
+        "options": [
+            {
+                "label": "PDF",
+                "value": "pdf"
+            },
+            {
+                "label": "PNG image of each page",
+                "value": "png"
+            }
+        ],
+        "help": "What to make. Leave it empty for just the PDF."
+    },
+    {
+        "name": "password",
+        "type": "text",
+        "label": "PDF password",
+        "advanced": true,
+        "help": "A password that the PDF needs to be opened with. DocSpring never returns it."
+    },
+    {
+        "name": "expires_in",
+        "type": "uinteger",
+        "label": "Expires in (seconds)",
+        "advanced": true,
+        "help": "Seconds after the PDF is generated until DocSpring deletes it and its data, up to 315360000 (10 years). Leave it empty for the template's setting."
+    },
+    {
+        "name": "editable",
+        "type": "boolean",
+        "label": "Editable PDF",
+        "advanced": true,
+        "help": "Yes keeps the PDF's text and check fields fillable. No flattens them. Leave it empty for the template's setting."
+    },
+    {
+        "name": "field_overrides",
+        "type": "json",
+        "label": "Field overrides",
+        "advanced": true,
+        "help": "Changes to field settings for this PDF only, as JSON by field name, such as {\"name\": {\"required\": false, \"font_size\": 9}}."
+    },
+    {
+        "name": "wait",
+        "type": "boolean",
+        "label": "Wait for the PDF",
+        "default": true,
+        "advanced": true,
+        "help": "Yes waits until the PDF is ready. No returns straight away: get it later, or use the Watch events trigger."
+    }
 ]
