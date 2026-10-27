@@ -1,8 +1,8 @@
 # Uploading the app to Make
 
 How to put this repo's app into Make with the Make API (the SDK Apps endpoints), one component at a time. The API v2
-version (sc-5981) was uploaded to the live app with these steps on 27 Oct 2026, with every module still private (not
-visible) until it's tested.
+version (sc-5981) was uploaded to the live app with these steps on 27 Oct 2026 and tested live, then its 29 modules
+were made public.
 
 The app is `docspring-sspkqt`, version 1, in Make's US2 zone (`APP.md`). It's public, and only apps Make has approved
 get versioned releases, so **every change is live at once in every scenario that uses it**. Make won't delete a
@@ -184,7 +184,8 @@ done
 
 Hooks that already exist keep the version 3 DocSpring webhook they were attached with, and its events now arrive in a
 version 3 shape the new `api` section doesn't read. Delete and re-create any such hook in Make (or its scenario's
-trigger) after this step.
+trigger) after this step. On 27 Oct 2026 our September test scenario got a new hook this way, and deleting its old hook
+deleted the version 3 webhook in DocSpring.
 
 ## 6. Modules
 
