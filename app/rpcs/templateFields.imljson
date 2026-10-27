@@ -14,7 +14,7 @@
             "label": "{{ifempty(item.value.title; item.key)}}",
             "type": "{{if(contains(ifempty(item.value.type; 'object'); 'boolean'); 'boolean'; if(contains(ifempty(item.value.type; 'object'); 'integer'); 'integer'; if(contains(ifempty(item.value.type; 'object'); 'number'); 'number'; if(contains(ifempty(item.value.type; 'object'); 'string'); 'text'; 'json'))))}}",
             "required": "{{if(parameters.optional; false; contains(ifempty(body.required; emptyarray); item.key))}}",
-            "help": "{{if(item.value.format = 'date'; 'A date as YYYY-MM-DD, such as 2026-10-27. To map a date, use formatDate(date; YYYY-MM-DD).'; if(item.value.format = 'date-time'; 'A date and time, such as 2026-10-27T09:30:00Z.'; if(item.value.enum; 'One of: ' + join(item.value.enum; ', '); if(contains(ifempty(item.value.type; 'object'); 'string') || contains(ifempty(item.value.type; 'object'); 'number') || contains(ifempty(item.value.type; 'object'); 'boolean'); item.value.description; 'JSON, such as {\"url\": \"https://example.com/photo.png\"} for an image field.'))))}}"
+            "help": "{{if(item.value.format = 'date'; 'A date as YYYY-MM-DD, such as 2026-10-27. To map a date, use formatDate(date; YYYY-MM-DD).'; if(item.value.format = 'date-time'; 'A date and time, such as 2026-10-27T09:30:00Z.'; if(item.value.enum; 'One of: ' + join(item.value.enum; ', '); if(contains(ifempty(item.value.type; 'object'); 'object') || contains(ifempty(item.value.type; 'object'); 'array'); 'JSON, such as {\"url\": \"https://example.com/photo.png\"} for an image field.'; item.value.description))))}}"
         },
         "wrapper": [
             {

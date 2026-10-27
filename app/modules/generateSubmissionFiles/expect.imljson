@@ -28,6 +28,6 @@
         "label": "Wait for the files",
         "default": true,
         "advanced": true,
-        "help": "Yes waits until the files is ready. No returns straight away: get it later, or use the Watch events trigger."
+        "help": "Yes waits until the files are ready. No returns straight away: get them later, or use the Watch events trigger."
     }
 ]

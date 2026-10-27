@@ -109,13 +109,13 @@
                         "value": "saml"
                     }
                 ],
-                "help": "How the person was identified before they see the form. Choose Email link when you send them the link by email."
+                "help": "How the person is identified before they see the form. Choose Email link when you send them the link by email."
             },
             {
                 "name": "prefilled_values_editable",
                 "type": "boolean",
                 "label": "Can change prefilled values",
-                "help": "Let the person change the values that the template fields above already fill in for their fields."
+                "help": "Let the person change the values already filled in for their fields."
             },
             {
                 "name": "ignore_unknown_fields",

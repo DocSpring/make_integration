@@ -112,6 +112,6 @@
         "label": "Wait for the PDFs",
         "default": true,
         "advanced": true,
-        "help": "Yes waits until the PDFs is ready. No returns straight away: get it later, or use the Watch events trigger."
+        "help": "Yes waits until the PDFs are ready. No returns straight away: get them later, or use the Watch events trigger."
     }
 ]
