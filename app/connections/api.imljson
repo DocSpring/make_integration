@@ -1,17 +1,26 @@
 {
-    "url": "{{if(parameters.region = \"self_hosted\"; if(contains(parameters.custom_host; \"://\"); parameters.custom_host; \"https://\" + parameters.custom_host); \"https://\" + switch(parameters.region; \"eu\"; \"api-eu.docspring.com\"; \"api.docspring.com\"))}}/api/v1/authentication",
+    "url": "{{if(parameters.region = \"self_hosted\"; if(contains(parameters.custom_host; \"://\"); parameters.custom_host; \"https://\" + parameters.custom_host); \"https://\" + switch(parameters.region; \"eu\"; \"api-eu.docspring.com\"; \"api.docspring.com\"))}}/api/v2/authentication",
     "method": "GET",
     "headers": {
         "Authorization": "Basic {{base64(parameters.token_id + \":\" + parameters.token_secret)}}",
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "User-Agent": "docspring-make/2"
     },
     "response": {
-        "valid": "{{body.status = \"success\"}}",
+        "valid": "{{body.authenticated = true}}",
         "error": {
-            "message": "[{{statusCode}}] Invalid DocSpring API token. Check your token ID, secret, and region."
+            "message": "DocSpring API error {{statusCode}}{{if(body.error.code; ' ' + body.error.code + ': ' + body.error.message; '')}}",
+            "401": {
+                "message": "DocSpring API error 401: the API token isn't valid. Check your token ID, token secret and region."
+            },
+            "404": {
+                "message": "{{if(parameters.region = 'self_hosted'; \"This DocSpring server doesn't have API v2 yet. Upgrade it to the latest release to use this app.\"; 'DocSpring API error 404: the API was not found. Check the region.')}}"
+            }
         }
     },
     "log": {
-        "sanitize": ["request.headers.authorization"]
+        "sanitize": [
+            "request.headers.authorization"
+        ]
     }
 }
