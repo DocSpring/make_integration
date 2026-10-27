@@ -1,0 +1,10 @@
+{
+    "url": "/templates/{{parameters.template_id}}/fields",
+    "method": "POST",
+    "body": {
+        "fields": "{{parameters.fields}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "url": "/templates/{{parameters.template_id}}/fields/remove",
+    "method": "POST",
+    "body": {
+        "field_ids": "{{parameters.field_ids}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

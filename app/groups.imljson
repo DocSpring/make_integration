@@ -1,7 +1,10 @@
 [
-    { "label": "PDFs", "modules": ["generatePdf", "combinePdfs"] },
-    { "label": "Signature requests", "modules": ["createDataRequest", "createSigningLink"] },
-    { "label": "Search", "modules": ["findTemplate", "findSubmission"] },
-    { "label": "Triggers", "modules": ["watchEvents"] },
-    { "label": "Other", "modules": ["makeApiCall"] }
+    {"label": "PDFs", "modules": ["generatePdf", "generatePdfBatch", "getSubmissionBatch", "checkData", "combinePdfs", "getCombinedPdf"]},
+    {"label": "Submissions", "modules": ["getSubmission", "findSubmission", "generateSubmissionFiles", "expireSubmission"]},
+    {"label": "Signature requests", "modules": ["createSignatureRequest", "createSigningLink", "getSignatureRequest"]},
+    {"label": "Templates", "modules": ["findTemplate", "getTemplate", "createTemplate", "replaceTemplatePdf", "copyTemplate", "moveTemplate", "publishTemplateVersion", "getTemplatePageImages"]},
+    {"label": "Template fields", "modules": ["listTemplateFields", "addTemplateFields", "updateTemplateFields", "removeTemplateFields"]},
+    {"label": "Folders", "modules": ["listFolders", "createFolder"]},
+    {"label": "Triggers", "modules": ["watchEvents"]},
+    {"label": "Other", "modules": ["makeApiCall"]}
 ]

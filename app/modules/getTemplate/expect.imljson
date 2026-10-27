@@ -1,0 +1,10 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    }
+]

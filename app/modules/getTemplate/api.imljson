@@ -1,0 +1,7 @@
+{
+    "url": "/templates/{{parameters.template_id}}",
+    "method": "GET",
+    "response": {
+        "output": "{{body}}"
+    }
+}

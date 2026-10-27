@@ -1,0 +1,22 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "Root folder (/)"
+            }
+        },
+        "help": "The folder to move the template and its published versions to. Leave it empty for the root folder."
+    }
+]

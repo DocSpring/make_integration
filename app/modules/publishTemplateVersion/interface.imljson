@@ -1,0 +1,49 @@
+[
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
+    },
+    {
+        "name": "description",
+        "label": "Description",
+        "type": "text"
+    },
+    {
+        "name": "published_at",
+        "label": "Published at",
+        "type": "date"
+    },
+    {
+        "name": "published_by",
+        "label": "Published by",
+        "type": "collection",
+        "spec": [
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "user_id",
+                "label": "User ID",
+                "type": "text"
+            },
+            {
+                "name": "external_id",
+                "label": "External ID",
+                "type": "text"
+            },
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "email",
+                "label": "Email",
+                "type": "text"
+            }
+        ]
+    }
+]

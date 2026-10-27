@@ -1,0 +1,10 @@
+{
+    "url": "/templates/{{parameters.template_id}}/page_images",
+    "method": "GET",
+    "qs": {
+        "version": "{{parameters.version}}"
+    },
+    "response": {
+        "output": "{{body}}"
+    }
+}

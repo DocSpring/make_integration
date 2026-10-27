@@ -1,0 +1,34 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "help": "Leave it empty for the template's name followed by a number, such as Contract (2)."
+    },
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "The template's own folder"
+            }
+        },
+        "help": "The folder to put the copy in."
+    },
+    {
+        "name": "version",
+        "type": "text",
+        "label": "Published version",
+        "help": "Copy this published version (such as 1.2.0, or 1 for the latest 1.x.x) instead of the draft."
+    }
+]

@@ -1,0 +1,21 @@
+[
+    {
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "required": true,
+        "help": "The folder's name. It can't contain /."
+    },
+    {
+        "name": "parent_folder_id",
+        "type": "select",
+        "label": "Parent folder",
+        "options": {
+            "store": "rpc://listFolders",
+            "placeholder": {
+                "label": "Root folder (/)"
+            }
+        },
+        "help": "The folder to create the folder in."
+    }
+]

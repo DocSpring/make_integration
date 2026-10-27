@@ -1,0 +1,513 @@
+[
+    {
+        "name": "template_id",
+        "label": "Template ID",
+        "type": "text"
+    },
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
+    },
+    {
+        "name": "fields",
+        "label": "Fields",
+        "type": "array",
+        "spec": [
+            {
+                "name": "id",
+                "label": "ID",
+                "type": "number"
+            },
+            {
+                "name": "name",
+                "label": "Name",
+                "type": "text"
+            },
+            {
+                "name": "page",
+                "label": "Page",
+                "type": "number"
+            },
+            {
+                "name": "acroform_name",
+                "label": "Acroform name",
+                "type": "text"
+            },
+            {
+                "name": "type",
+                "label": "Type",
+                "type": "text"
+            },
+            {
+                "name": "static",
+                "label": "Static",
+                "type": "boolean"
+            },
+            {
+                "name": "editable",
+                "label": "Editable",
+                "type": "boolean"
+            },
+            {
+                "name": "default",
+                "label": "Default",
+                "type": "text"
+            },
+            {
+                "name": "title",
+                "label": "Title",
+                "type": "text"
+            },
+            {
+                "name": "description",
+                "label": "Description",
+                "type": "text"
+            },
+            {
+                "name": "placeholder",
+                "label": "Placeholder",
+                "type": "text"
+            },
+            {
+                "name": "metadata",
+                "label": "Metadata",
+                "type": "text"
+            },
+            {
+                "name": "required",
+                "label": "Required",
+                "type": "boolean"
+            },
+            {
+                "name": "option_list",
+                "label": "Option list",
+                "type": "text"
+            },
+            {
+                "name": "combined_field_names",
+                "label": "Combined field names",
+                "type": "text"
+            },
+            {
+                "name": "combined_field_type",
+                "label": "Combined field type",
+                "type": "text"
+            },
+            {
+                "name": "combined_field_separator",
+                "label": "Combined field separator",
+                "type": "text"
+            },
+            {
+                "name": "combined_field_format",
+                "label": "Combined field format",
+                "type": "text"
+            },
+            {
+                "name": "integer",
+                "label": "Integer",
+                "type": "boolean"
+            },
+            {
+                "name": "minimum",
+                "label": "Minimum",
+                "type": "number"
+            },
+            {
+                "name": "maximum",
+                "label": "Maximum",
+                "type": "number"
+            },
+            {
+                "name": "exclusive_minimum",
+                "label": "Exclusive minimum",
+                "type": "boolean"
+            },
+            {
+                "name": "exclusive_maximum",
+                "label": "Exclusive maximum",
+                "type": "boolean"
+            },
+            {
+                "name": "include_time",
+                "label": "Include time",
+                "type": "boolean"
+            },
+            {
+                "name": "signature_allow_draw",
+                "label": "Signature allow draw",
+                "type": "boolean"
+            },
+            {
+                "name": "signature_allow_type",
+                "label": "Signature allow type",
+                "type": "boolean"
+            },
+            {
+                "name": "barcode_symbology",
+                "label": "Barcode symbology",
+                "type": "text"
+            },
+            {
+                "name": "hidden",
+                "label": "Hidden",
+                "type": "boolean"
+            },
+            {
+                "name": "x",
+                "label": "X",
+                "type": "number"
+            },
+            {
+                "name": "y",
+                "label": "Y",
+                "type": "number"
+            },
+            {
+                "name": "width",
+                "label": "Width",
+                "type": "number"
+            },
+            {
+                "name": "height",
+                "label": "Height",
+                "type": "number"
+            },
+            {
+                "name": "rotation",
+                "label": "Rotation",
+                "type": "number"
+            },
+            {
+                "name": "display_type",
+                "label": "Display type",
+                "type": "text"
+            },
+            {
+                "name": "opacity",
+                "label": "Opacity",
+                "type": "number"
+            },
+            {
+                "name": "date_time_format",
+                "label": "Date time format",
+                "type": "text"
+            },
+            {
+                "name": "typeface",
+                "label": "Typeface",
+                "type": "text"
+            },
+            {
+                "name": "font_size",
+                "label": "Font size",
+                "type": "number"
+            },
+            {
+                "name": "character_spacing",
+                "label": "Character spacing",
+                "type": "number"
+            },
+            {
+                "name": "bold",
+                "label": "Bold",
+                "type": "boolean"
+            },
+            {
+                "name": "uppercase",
+                "label": "Uppercase",
+                "type": "boolean"
+            },
+            {
+                "name": "strikethrough",
+                "label": "Strikethrough",
+                "type": "boolean"
+            },
+            {
+                "name": "keep_leading_spaces",
+                "label": "Keep leading spaces",
+                "type": "boolean"
+            },
+            {
+                "name": "overflow",
+                "label": "Overflow",
+                "type": "text"
+            },
+            {
+                "name": "multiline",
+                "label": "Multiline",
+                "type": "boolean"
+            },
+            {
+                "name": "multiline_lines",
+                "label": "Multiline lines",
+                "type": "number"
+            },
+            {
+                "name": "min_length",
+                "label": "Min length",
+                "type": "number"
+            },
+            {
+                "name": "max_length",
+                "label": "Max length",
+                "type": "number"
+            },
+            {
+                "name": "auto_calculate_max_length",
+                "label": "Auto calculate max length",
+                "type": "boolean"
+            },
+            {
+                "name": "color",
+                "label": "Color",
+                "type": "text"
+            },
+            {
+                "name": "color_field_name",
+                "label": "Color field name",
+                "type": "text"
+            },
+            {
+                "name": "color_field_required",
+                "label": "Color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "background_color",
+                "label": "Background color",
+                "type": "text"
+            },
+            {
+                "name": "background_color_field_name",
+                "label": "Background color field name",
+                "type": "text"
+            },
+            {
+                "name": "background_color_field_required",
+                "label": "Background color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "alignment",
+                "label": "Alignment",
+                "type": "text"
+            },
+            {
+                "name": "v_alignment",
+                "label": "V alignment",
+                "type": "text"
+            },
+            {
+                "name": "comb",
+                "label": "Comb",
+                "type": "boolean"
+            },
+            {
+                "name": "comb_number_of_cells",
+                "label": "Comb number of cells",
+                "type": "number"
+            },
+            {
+                "name": "comb_value_offset",
+                "label": "Comb value offset",
+                "type": "number"
+            },
+            {
+                "name": "shape_type",
+                "label": "Shape type",
+                "type": "text"
+            },
+            {
+                "name": "shape_sides",
+                "label": "Shape sides",
+                "type": "number"
+            },
+            {
+                "name": "shape_border_width",
+                "label": "Shape border width",
+                "type": "number"
+            },
+            {
+                "name": "shape_border_color",
+                "label": "Shape border color",
+                "type": "text"
+            },
+            {
+                "name": "shape_border_color_field_name",
+                "label": "Shape border color field name",
+                "type": "text"
+            },
+            {
+                "name": "shape_border_color_field_required",
+                "label": "Shape border color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "shape_fill_color",
+                "label": "Shape fill color",
+                "type": "text"
+            },
+            {
+                "name": "shape_fill_color_field_name",
+                "label": "Shape fill color field name",
+                "type": "text"
+            },
+            {
+                "name": "shape_fill_color_field_required",
+                "label": "Shape fill color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "check_character",
+                "label": "Check character",
+                "type": "text"
+            },
+            {
+                "name": "check_color",
+                "label": "Check color",
+                "type": "text"
+            },
+            {
+                "name": "check_color_field_name",
+                "label": "Check color field name",
+                "type": "text"
+            },
+            {
+                "name": "check_color_field_required",
+                "label": "Check color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "qrcode_color",
+                "label": "Qrcode color",
+                "type": "text"
+            },
+            {
+                "name": "qrcode_color_field_name",
+                "label": "Qrcode color field name",
+                "type": "text"
+            },
+            {
+                "name": "qrcode_color_field_required",
+                "label": "Qrcode color field required",
+                "type": "boolean"
+            },
+            {
+                "name": "true_text",
+                "label": "True text",
+                "type": "text"
+            },
+            {
+                "name": "false_text",
+                "label": "False text",
+                "type": "text"
+            },
+            {
+                "name": "condition",
+                "label": "Condition",
+                "type": "text"
+            },
+            {
+                "name": "string_condition_type",
+                "label": "String condition type",
+                "type": "text"
+            },
+            {
+                "name": "number_condition_type",
+                "label": "Number condition type",
+                "type": "text"
+            },
+            {
+                "name": "number_condition_range_min",
+                "label": "Number condition range min",
+                "type": "number"
+            },
+            {
+                "name": "number_condition_range_max",
+                "label": "Number condition range max",
+                "type": "number"
+            },
+            {
+                "name": "number_condition_range_exclusive_min",
+                "label": "Number condition range exclusive min",
+                "type": "boolean"
+            },
+            {
+                "name": "number_condition_range_exclusive_max",
+                "label": "Number condition range exclusive max",
+                "type": "boolean"
+            },
+            {
+                "name": "invert_boolean_condition",
+                "label": "Invert boolean condition",
+                "type": "boolean"
+            },
+            {
+                "name": "currency",
+                "label": "Currency",
+                "type": "boolean"
+            },
+            {
+                "name": "decimal_places",
+                "label": "Decimal places",
+                "type": "number"
+            },
+            {
+                "name": "image_scale_type",
+                "label": "Image scale type",
+                "type": "text"
+            },
+            {
+                "name": "image_gravity",
+                "label": "Image gravity",
+                "type": "text"
+            },
+            {
+                "name": "dependencies",
+                "label": "Dependencies",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "action",
+                        "label": "Action",
+                        "type": "text"
+                    },
+                    {
+                        "name": "match",
+                        "label": "Match",
+                        "type": "text"
+                    },
+                    {
+                        "name": "conditions",
+                        "label": "Conditions",
+                        "type": "array",
+                        "spec": [
+                            {
+                                "name": "field",
+                                "label": "Field",
+                                "type": "text"
+                            },
+                            {
+                                "name": "operator",
+                                "label": "Operator",
+                                "type": "text"
+                            },
+                            {
+                                "name": "value",
+                                "label": "Value",
+                                "type": "any"
+                            },
+                            {
+                                "name": "range_max",
+                                "label": "Range max",
+                                "type": "number"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

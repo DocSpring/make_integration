@@ -1,0 +1,40 @@
+{
+    "url": "{{if(connection.region = \"self_hosted\"; if(contains(connection.custom_host; \"://\"); connection.custom_host; \"https://\" + connection.custom_host); \"https://\" + switch(connection.region; \"eu\"; \"sync.api-eu.docspring.com\"; \"sync.api.docspring.com\"))}}/api/v2/templates",
+    "method": "POST",
+    "headers": {
+        "Authorization": "Basic {{base64(connection.token_id + \":\" + connection.token_secret)}}",
+        "Accept": "application/json",
+        "User-Agent": "docspring-make/2"
+    },
+    "qs": {
+        "wait": "{{parameters.wait}}"
+    },
+    "body": {
+        "name": "{{parameters.name}}",
+        "template_type": "{{parameters.template_type}}",
+        "parent_folder_id": "{{parameters.parent_folder_id}}",
+        "document_url": "{{parameters.document_url}}",
+        "document_base64": "{{if(parameters.file_data; base64(parameters.file_data); undefined)}}",
+        "filename": "{{if(parameters.file_data; parameters.filename; undefined)}}",
+        "detect_fields": "{{parameters.detect_fields}}",
+        "field_source": "{{parameters.field_source}}",
+        "field_naming": "{{parameters.field_naming}}",
+        "field_logic": "{{parameters.field_logic}}",
+        "html": "{{parameters.html}}",
+        "scss": "{{parameters.scss}}",
+        "header_html": "{{parameters.header_html}}",
+        "footer_html": "{{parameters.footer_html}}"
+    },
+    "response": {
+        "valid": {
+            "condition": "{{body.document.state != 'password_required' && body.document.state != 'malformed_pdf' && body.document.state != 'unknown_error' && body.document.state != 'download_failed'}}",
+            "message": "DocSpring couldn't process the template's PDF (state: {{body.document.state}}): {{body.document.error_message}}\nTemplate: {{body.id}}"
+        },
+        "output": "{{body}}"
+    },
+    "log": {
+        "sanitize": [
+            "request.headers.authorization"
+        ]
+    }
+}

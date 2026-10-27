@@ -1,0 +1,17 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "fields",
+        "type": "json",
+        "label": "Fields",
+        "required": true,
+        "help": "The fields to add, as a JSON list, such as [{\"name\": \"first_name\", \"type\": \"string\", \"page\": 1, \"x\": 50, \"y\": 100, \"width\": 200, \"height\": 20}]. See the Add fields to a template operation in the DocSpring API docs."
+    }
+]

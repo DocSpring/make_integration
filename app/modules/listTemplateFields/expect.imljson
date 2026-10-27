@@ -1,0 +1,34 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": "rpc://listTemplates"
+    },
+    {
+        "name": "version",
+        "type": "select",
+        "label": "Template version",
+        "dynamic": true,
+        "help": "The template version: the draft (when left empty), the latest published version, or a published version number such as 1.2.0 (switch on Map to type one).",
+        "options": [
+            {
+                "label": "Latest published version",
+                "value": "latest"
+            },
+            {
+                "label": "Draft",
+                "value": "draft"
+            }
+        ]
+    },
+    {
+        "name": "limit",
+        "type": "uinteger",
+        "label": "Limit",
+        "default": 10,
+        "help": "The most results to return."
+    }
+]

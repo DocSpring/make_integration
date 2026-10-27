@@ -1,0 +1,23 @@
+[
+    {
+        "name": "template_id",
+        "type": "select",
+        "label": "Template",
+        "required": true,
+        "mode": "edit",
+        "options": {
+            "store": "rpc://listTemplates",
+            "nested": [
+                {
+                    "name": "field_ids",
+                    "type": "select",
+                    "label": "Fields",
+                    "multiple": true,
+                    "required": true,
+                    "options": "rpc://templateFieldIds",
+                    "help": "The fields to remove from the template's draft."
+                }
+            ]
+        }
+    }
+]
