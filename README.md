@@ -1,47 +1,61 @@
-# DocSpring Integration for Make.com
+# DocSpring app for Make
 
-The DocSpring custom app for [Make.com](https://www.make.com) (formerly
-Integromat — the platforms merged in 2022; there is no separate Integromat).
+The DocSpring custom app for [Make](https://www.make.com) (formerly Integromat). It's a public app, `docspring-sspkqt`
+(app version 1), in Make's US2 zone.
 
-This is the Make counterpart to the Zapier integration
-([`DocSpring/zapier_integration`](https://github.com/DocSpring/zapier_integration)).
-The **design** (auth, endpoints, module set, field mapping) ports almost 1:1
-from Zapier; the **implementation** is re-expressed in Make's declarative
-**JSON + IML** (Integromat Markup Language) rather than Node.js. See
-[`DESIGN.md`](./DESIGN.md) for the full port spec.
+The app is on DocSpring API v2 with the full operation set (sc-5981): 29 modules for PDFs, submissions, signature
+requests, templates, template fields and folders, a Watch events trigger and a universal "Make an API call" module.
+It behaves like DocSpring's other integrations (Zapier, n8n, Node-RED, Pipedream, Bubble), which follow the same
+spec. A self-hosted DocSpring server needs a release with API v2.
 
 ## Status
 
-✅ **All modules built and validated** against the live DocSpring API (via the
-Make API v2 — see `DESIGN.md` for the method). Confirmed working: the Connection,
-**Find Template**, **Find Submission**, **Generate PDF**, **Combine PDFs**,
-**Create Signature Request**, **Create Signing Link**, and the **Watch Events** instant
-trigger (attach → deliver → flatten → detach). Next: submit for Make app
-verification to list it publicly.
+The API v2 files are ready but not uploaded to Make yet: the app in Make still calls API v1. `app/UPLOAD.md` is the
+step-by-step upload, followed by the live tests it lists. The v1 app was validated live in Make and went through
+Make's review in September 2026 (`DESIGN.md`).
 
-Known follow-up: enum template fields render as free text (DocSpring still
-validates the value); the dropdown fix needs a custom IML function, which requires
-an "apps edit" token permission not currently granted. See `DESIGN.md`.
+## Layout
+
+Make apps are JSON with IML expressions, stored in Make. This repo keeps a copy of every section:
+
+```
+app/base.imljson           base URL (region + /api/v2), auth headers, error messages
+app/connections/           the connection: api (the authentication test) and parameters (region, host, token)
+app/modules/<id>/          one folder per module: api, expect (inputs), interface (outputs), samples
+app/rpcs/                  pickers: templates, folders, template fields, field names, field IDs
+app/webhooks/              the Watch events webhook: api, parameters, attach, detach
+app/groups.imljson         the module groups shown in Make
+app/readme.md              the app's documentation in Make's listing
+app/UPLOAD.md              how to upload everything with the Make API, and each module's label, type and binding
+app/APP.md                 the app's identifiers and the Make API routes
+scripts/check.py           checks every file before an upload
+scripts/generate_interfaces.py  writes interfaces and samples from DocSpring's OpenAPI spec
+```
+
+Labels, descriptions, module types and visibility live only in Make; `app/UPLOAD.md` records them.
+
+## Checks
+
+There's no test framework: Make runs the IML. Before an upload:
+
+```bash
+python3 scripts/check.py
+```
+
+It checks that every file is valid JSON with closed `{{ }}`, that nothing calls `/api/v1`, Make's URL and error
+message limits, each module's sections, every `rpc://` reference, the groups, and that `app/UPLOAD.md` names every
+module and RPC.
+
+After a change to DocSpring's API v2 responses, regenerate the module outputs and samples from the docspring repo
+checked out next to this one:
+
+```bash
+python3 scripts/generate_interfaces.py ../docspring/openapi/v2/openapi.json
+```
 
 ## Requirements
 
-- A **Make account** (free tier is fine for building/testing a custom app).
-- A DocSpring **API token** (region + token id + secret) for testing.
-- The **Make Apps SDK** (`@makehq/sdk`, or the "Make Apps SDK" VS Code
-  extension) to sync the local app definition to Make. The exact push
-  mechanism (SDK vs Make API vs the web "Custom apps" editor) is confirmed
-  during setup.
+- A Make API token with the SDK apps scopes, in `.env` (never committed), for the upload.
+- A DocSpring test API token on our account for the live tests.
 
-## Layout (once scaffolded)
-
-Make apps are a set of JSON/IML files synced to the Make cloud:
-
-```
-makecomapp.json        # manifest: components + which remote app/version they map to
-general/base           # base URL (per region) + Authorization header
-connections/           # API-key connection (region, custom_host, token id/secret)
-modules/               # actions + searches + instant triggers
-webhooks/              # webhook attach/detach for the instant triggers
-rpcs/                  # dynamic dropdowns + dynamic template-schema fields
-functions/             # IML helper functions (payload flattening, schema mapping)
-```
+See `DESIGN.md` for how the app works and where it differs from the spec, and `CHANGELOG.md` for what changed.

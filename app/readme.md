@@ -1,41 +1,66 @@
 # DocSpring
 
-[DocSpring](https://docspring.com) turns structured data into filled, downloadable, and **signable** PDFs. Use these modules to generate PDFs from your templates, merge documents, request data or signatures from other people, and react to DocSpring events as they happen.
+[DocSpring](https://docspring.com) fills, generates and e-signs PDFs. Use these modules to generate PDFs from your templates with your data, combine PDFs, send signature requests, manage templates, fields and folders, and start scenarios when something happens in DocSpring.
 
 ## Connecting to DocSpring
 
-To create a connection you need a **DocSpring API token** (a Token ID and Token Secret):
+You need a DocSpring **API token** (a token ID and a token secret):
 
 1. Sign in to DocSpring and open **Settings → API Tokens**.
-2. Create a token and copy the **Token ID** and **Token Secret**.
+2. Create a token and copy its **Token ID** and **Token Secret**.
 3. In Make, add a DocSpring connection and enter:
-   - **Region** — where your DocSpring account is hosted: United States, Europe, or **Self-hosted / Enterprise**.
-   - **Self-hosted Host** — only for the Self-hosted / Enterprise region, e.g. `docspring.example.com`.
+   - **Region**: where your DocSpring account is hosted: United States, Europe, or Self-hosted / Enterprise.
+   - **Self-hosted host**: only for Self-hosted / Enterprise, such as `docspring.example.com`. Your server needs a DocSpring release with API v2.
    - **API Token ID** and **API Token Secret** from step 2.
 
-Your credentials are sent as HTTP Basic authentication over HTTPS and are never written to execution logs.
+Your token is sent over HTTPS and never written to execution logs. A test API token generates free test PDFs with a watermark.
 
 ## Modules
 
-### Actions
+### PDFs
 
-- **Generate PDF** — Fill a template's fields and generate a finished PDF. Choose a template, then fill the fields defined by that template (they appear automatically). Optionally generate a watermarked **test** PDF, encrypt it with a passphrase, or set an expiry. Returns the submission ID, state, and download URLs.
-- **Combine PDFs** — Merge several PDFs into a single document. Add one or more **Source PDFs**, each referencing a submission, a template, or a custom file by ID. Returns the combined submission ID and download URL.
-- **Create Signature Request** — Create a submission that waits for one or more people to fill out and/or sign it. Choose a template and add **recipients** (email, name, the fields each person may edit, and an authentication method). Returns a submission in the `waiting_for_data_requests` state along with a signature request for each recipient. Follow it with **Create Signing Link** to send people their link.
-- **Create Signing Link** — Generate an authenticated link a recipient can use to complete their signature request. Provide the **Signature Request ID** from *Create Signature Request* and choose a link type (an email link that lasts 30 days, or a short-lived API link). Returns the signing URL.
+- **Generate PDF**: fills a template's fields with your data and generates a PDF. Choose a template and version, and its fields appear as inputs. Waits until the PDF is ready, then returns the submission with its download URL.
+- **Generate PDFs in a batch**: generates up to 50 PDFs in one request, from one template or several.
+- **Get submission batch**: returns a batch and each of its submissions.
+- **Check data**: checks your data against a template's fields without generating a PDF, and says what's wrong.
+- **Combine PDFs**: merges PDFs from submissions, templates, other combined PDFs, custom files or URLs into one PDF.
+- **Get combined PDF**: returns a combined PDF by its ID.
 
-### Searches
+### Submissions
 
-- **Find Template** — Look up templates by name or ID.
-- **Find Submission** — Look up a single submission by ID, or list recent submissions filtered by mode (live/test) and creation date.
+- **Get submission**: returns a submission by its ID, with its data and files.
+- **Find submissions**: finds submissions by template, live or test mode, and when they were created.
+- **Generate submission files**: generates more files for a submission, such as a PNG image of each page.
+- **Expire submission**: deletes a submission's data and files. This can't be undone.
+
+### Signature requests
+
+- **Create signature request**: creates a submission that people fill in and sign. Add the signers (name, email, the fields each one fills in, and how they sign in), and choose the link type: an email link (7 days), an API link (24 hours) or none. Returns the submission and a signing link for each signer.
+- **Create signing link**: creates a new link to a signature request's signing form.
+- **Get signature request**: returns a signature request by its ID, with its signer and state.
+
+### Templates
+
+- **Find templates**, **Get template**.
+- **Create template**: from a PDF (a URL or a file) or from HTML.
+- **Replace template PDF**, **Copy template**, **Move template**, **Publish template version**.
+- **Get template page images**: an image of each page of a template's PDF.
+
+### Template fields
+
+- **List template fields**, **Add template fields**, **Update template fields**, **Remove template fields**. Changes go to the template's draft, which Publish template version publishes.
+
+### Folders
+
+- **List folders**, **Create folder**.
 
 ### Triggers
 
-- **Watch Events** — Starts a scenario the moment a DocSpring event occurs. Choose which events to watch — submission processed / failed / created / expired, signature request completed / viewed, combined submission processed / failed, submission batch processed / failed, and template created / updated / deleted — and optionally limit to live or test mode. DocSpring delivers each event to Make as it happens.
+- **Watch events**: starts a scenario as soon as something happens in DocSpring. Choose the events (submissions created, processed, failed, declined, updated or expired; signature requests viewed, completed, declined or updated; combined PDFs processed, failed or expired; batches processed or failed; templates created, updated or deleted; custom files created; folders created, updated or deleted), live or test mode, and optionally the templates to watch. Each event has `event_type`, `resource_type`, `resource_id` and the record in `data`.
 
-### Universal
+### Other
 
-- **Make an API Call** — Perform an authorized call to any DocSpring API endpoint that the other modules don't cover. Enter a path relative to the API base (for example `/templates`), a method, and optional query string, headers, and body. Authentication is added for you.
+- **Make an API call**: calls any DocSpring API endpoint the other modules don't cover. Enter a path after `/api/v2`, such as `/templates`; authentication is added for you.
 
 ## Learn more
 

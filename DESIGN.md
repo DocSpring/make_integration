@@ -1,247 +1,185 @@
-# DocSpring Make.com App — Design Notes
+# DocSpring Make app: design notes
 
-Port specification for the Make custom app. Companion to `README.md`. The
-source of truth for behavior is the Zapier integration
-(`DocSpring/zapier_integration`); this doc records what carries over verbatim
-and what changes because Make apps are **declarative JSON + IML**, not Node.js.
+The Make custom app (`docspring-sspkqt`, app version 1) on DocSpring API v2, with the full operation set (sc-5981).
+The behaviour follows the sc-5981 build spec shared by every DocSpring integration (Zapier, n8n, Node-RED, Pipedream,
+Bubble and this app), so they behave and read the same. `app/UPLOAD.md` says how the files get into Make;
+`app/APP.md` has the app's identifiers and the Make API routes.
 
-## The core difference from Zapier
+Make apps are declarative: each module is JSON describing its HTTP requests, with IML expressions (`{{...}}`) for
+mapping. There's no JavaScript: custom IML functions need Make support to enable them for the app, so this app uses
+only Make's built-in IML functions.
 
-Zapier apps are Node.js: `perform` functions run arbitrary JS. Make apps are
-**declarative** — each module is JSON describing the HTTP request (`url`,
-`method`, `body`, `qs`, `headers`) plus **IML** expressions (`{{...}}`) for
-mapping. Non-trivial logic (payload flattening, JSON-Schema → parameters) lives
-in **IML functions** (`functions/`) or **RPCs** (`rpcs/`), not inline JS.
+## Connection and base
 
-So: the *design* below ports directly; the *implementation* is re-expressed in
-IML. Build and test each module against the live API before moving on — IML
-mistakes are easiest to catch module-by-module.
+- Parameters (unchanged, so existing connections keep working): `region` (US, EU, self-hosted), `custom_host`,
+  `token_id`, `token_secret`.
+- Base URL: `https://api.docspring.com/api/v2`, `https://api-eu.docspring.com/api/v2`, or the self-hosted host
+  (`https://` prepended when it has no scheme) + `/api/v2`.
+- Every request sends `Authorization: Basic base64(token_id:token_secret)`, `Accept: application/json` and
+  `User-Agent: docspring-make/2`. `log.sanitize` hides the Authorization header in the base and the connection.
+- The connection test is `GET /api/v2/authentication`, valid when `body.authenticated` is true. A 401 says the token
+  isn't valid. A 404 from a self-hosted host says the server doesn't have API v2 yet and needs the latest release.
 
-## Connection (auth)
+## Requests
 
-Mirror the Zapier custom auth (`authentication.js` + `lib/regions.js`):
+- **Hosts.** Generate PDF, Generate PDFs in a batch, Combine PDFs, Generate submission files, Create template and
+  Replace template PDF go to the sync host (`sync.api.docspring.com`, `sync.api-eu.docspring.com`, or the self-hosted
+  host) with `?wait=true`, or `wait=false` when the user turns off "Wait for the PDF". They use an absolute URL, so they
+  set the auth headers themselves. Everything else uses the base URL.
+- **Bodies** are flat JSON. `version` and `wait` are query parameters.
+- **Empty values.** The app uses manifest 2 processing: an empty input becomes `undefined` and Make leaves it out of
+  the request, so the API never gets `""` or `null` for an empty optional value. `test` is sent only when it's true
+  (`{{if(parameters.test; true; undefined)}}`): v2 rejects `test: false` from a test token. `metadata` is a key/value
+  list turned into an object with `toCollection()`, and left out when empty.
+- **Template data.** Template fields are mappable inputs from the `templateFields` RPC, which reads
+  `GET /templates/{id}/schema?version=`. They go in one `data` collection (the RPC's `wrapper`), so a field named
+  `test` or `metadata` can't clash with the module's own inputs, and the module sends `data` as the user mapped it.
+  Each field gets its type from the schema (boolean, integer, number or text, so Make sends real booleans and
+  numbers; JSON for objects and arrays such as image fields), `required` from the schema, and help: `YYYY-MM-DD` for
+  a date field, the enum values, the description, or a JSON example. Check data and Create signature request load the same fields as
+  optional.
+- **Dates.** v2 takes `YYYY-MM-DD` for date fields. Make converts a `date` input to a UTC timestamp, which can move
+  the day, so date fields are text inputs whose help says `YYYY-MM-DD` and suggests `formatDate()` for a mapped
+  date. Find submissions' `created_after` and `created_before` are Make `date` inputs: the API takes timestamps
+  (`date-time`) there.
+- **Lists.** `limit` (up to 100) and `cursor`; responses are `{data, next_cursor}`. The pickers (`listTemplates`,
+  `listFolders`) follow `next_cursor` up to 1,000 items. The searches (Find submissions, Find templates, List
+  folders) follow it up to their Limit input.
 
-- Parameters: `region` (US / EU / Self-hosted), `custom_host`, `token_id`,
-  `token_secret`.
-- Base URL resolved from region (IML in `general/base`):
-  - US `api.docspring.com` / sync `sync.api.docspring.com`
-  - EU `api-eu.docspring.com` / sync `sync.api-eu.docspring.com`
-  - Self-hosted → `custom_host` (single origin, validated like `normalizeHost`)
-- `Authorization: Basic base64(token_id:token_secret)` — Make computes the
-  header in the connection/base (IML `base64()`).
-- Connection validation → `GET /api/v1/authentication` (200 `{status:success}`).
+## Failures
+
+- **An HTTP error** (base `response.error`): `DocSpring API error <status> <code>: <message>`, a line per detail
+  (`<pointer or parameter>: <message>`), then `Submission: <id>` (or the batch, combined PDF or template ID) and
+  `Request ID: <id>`. The details come from `createJSON(body.error.details)` reshaped with `replace()` and regular
+  expressions; if Make reads those differently, the details show as JSON, never `[object Object]`.
+- **A 201 with a failure state** (`error`, `syntax_error`, `image_download_failed`, `image_processing_failed`, or a
+  template `document.state` of `password_required`, `malformed_pdf`, `unknown_error` or `download_failed`): the
+  module's `response.valid` fails with the state, `error_message` and the record ID.
+- **A 504 `polling_timeout`**: "The PDF wasn't ready in time. Get it later with Get submission (<id>), or use the
+  submission.processed trigger." (and the combined PDF, batch and template versions). It's a RuntimeError rather
+  than Make's default for a 5xx (a connection error, which Make retries), so a retry can't generate a second PDF.
 
 ## Modules
 
-### Instant triggers (webhooks) — 13 events
+29 modules. Labels, descriptions, types and bindings are in `app/UPLOAD.md`; groups in `app/groups.imljson`.
 
-Make "instant trigger" modules backed by a **shared webhook** with attach /
-detach IML (the Zapier `performSubscribe` / `performUnsubscribe`):
+| Group | Modules |
+|---|---|
+| PDFs | Generate PDF, Generate PDFs in a batch, Get submission batch, Check data, Combine PDFs, Get combined PDF |
+| Submissions | Get submission, Find submissions, Generate submission files, Expire submission |
+| Signature requests | Create signature request, Create signing link, Get signature request |
+| Templates | Find templates, Get template, Create template, Replace template PDF, Copy template, Move template, Publish template version, Get template page images |
+| Template fields | List template fields, Add template fields, Update template fields, Remove template fields |
+| Folders | List folders, Create folder |
+| Triggers | Watch events |
+| Other | Make an API call |
 
-- **attach** → `POST /api/v1/webhooks` with
-  `{ webhook: { url, event_types:[<event>], include_submission_data:true,
-  version:3, mode } }`. `version:3` is pinned so the
-  delivery shape matches the flattener.
-- **detach** → `DELETE /api/v1/webhooks/{webhook_id}`; tolerate 404.
-- **payload** → an IML function `flattenDelivery` mirroring `lib/payload.js`:
-  the top-level `id` stays the **event** id (uuid, stable across retries); the
-  resource's own id is exposed as `resource_id`. (Dedup-correctness — never let
-  the resource id overwrite the event id.)
+Each module returns the v2 resource as the API returns it. Interfaces and samples are generated from the OpenAPI
+spec by `scripts/generate_interfaces.py`.
 
-Events: `submission.processed` / `.failed` / `.created` / `.expired`,
-`submission_data_request.completed` / `.viewed`,
-`combined_submission.processed` / `.failed`,
-`submission_batch.processed` / `.failed`,
-`template.created` / `.updated` / `.deleted`.
+- **Template pickers.** A template select (`rpc://listTemplates`) nests a version select (`latest` by default, which
+  is the latest published version, or the draft when nothing is published), which nests the template fields.
+- **Create signature request** makes three requests: it creates the submission with `signature_requests`, makes a
+  signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
+  default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id`
+  and `first_signing_url`. Each signer's `fields` is a multi-select of the template's field names
+  (`rpc://templateFieldNames`).
+- **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
 
-Scope parameters per event mirror `lib/scopeFields.js`:
-- submission / signature request: Templates + Folders + Mode.
-- template: Templates + Folders (no Mode — mode-agnostic events).
-- combined / batch: Mode only (not template/folder scopable — the API rejects it).
+## Watch events
 
-### Actions
+One instant trigger on a dedicated webhook, as in v1.
 
-- **Generate PDF** — `POST {sync}/api/v1/templates/{template_id}/submissions?wait=true`.
-  Template dropdown via RPC (`list_templates`); dynamic per-template fields via
-  RPC over `GET /templates/{id}/schema`. Template-field inputs namespaced
-  `data__<field>` so a field named `test`/`metadata`/etc. can't collide with a
-  control input; the action strips the prefix to rebuild `data`. `pdf_passphrase`
-  keyed (not "password") → mapped to the API's `password`.
-- **Combine PDFs** — `POST {sync}/api/v1/combined_submissions?wait=true` with a
-  line-item `source_pdfs` (`type` + `id` + optional `template_version`).
-- **Create Signature Request** — `POST {standard}/api/v1/templates/{id}/submissions`
-  **with no `wait`** (a signature request submission returns immediately in
-  `waiting_for_data_requests`; it doesn't produce a PDF until recipients finish).
-  Recipients are a line-item (`email`, `name`, `fields`, `auth_type` — default
-  `email_link`). Template pre-fill fields are all **optional**. After creating,
-  mint a 30-day `email` token per recipient (`POST /data_requests/{id}/tokens`,
-  `type:email`) and expose each `signing_url` (+ `first_signing_url`).
+- **Parameters:** Events (every v4 event except `webhook.*`: 22 events), Mode (live, test, or both), Templates
+  (`rpc://listTemplates`), Include submission data (default on).
+- **attach:** `POST /webhooks` with `url`, `event_types`, `name: "Make"`, `mode`, `template_ids` and
+  `include_submission_data`, never `version`, so DocSpring sends version 4 events. It stores the webhook's `id` and
+  first event type.
+- **detach:** lists the webhooks with that event type, and deletes the stored webhook only if it's in the list. Make
+  can't treat an HTTP 404 as success, so this is how detach tolerates a webhook someone already deleted in
+  DocSpring.
+- **Output:** the version 4 event as delivered (`id` = the event ID, `event_type`, `created_at`, `data` = the v2
+  resource) plus `resource_type` (the event name before the first dot) and `resource_id` (`data.id`).
 
-### Searches
+## Where this differs from the spec, and why
 
-- **Find Template** — `GET /api/v1/templates?query=…` (also backs the template
-  dropdown RPC).
-- **Find Submission** — by id (`GET /api/v1/submissions/{id}`; 404 → empty) or
-  recent list filtered by mode/date.
+- **Labels are in sentence case** ("Generate PDFs in a batch", "Find submissions"): Make's naming conventions require
+  it, and the v1 review asked for it.
+- **Signing links are a separate `signing_links` list**, not a `signing_url` added to each signature request. IML
+  can't merge a value into each item of a list without custom IML functions. `first_signing_url` and
+  `first_signature_request_id` are as specified.
+- **Date fields are text inputs** with `YYYY-MM-DD` help (the spec's first option). Formatting each dynamic date field
+  with `formatDate()` would need custom IML functions.
+- **The self-hosted 404 message doesn't offer a previous version:** the app changes in place, so there's none.
+- **Pickers stop at 1,000 items**, as the spec says. Make's best practice suggests 300 to 500 for an RPC that pages
+  100 at a time, so a reviewer may ask for less.
 
-## RPCs (dynamic data)
+## Make limits that shape the app
 
-- `list_templates` — `GET /templates?per_page=100` → dropdown options.
-- `list_folders` — `GET /folders` → dropdown options.
-- `template_schema_fields` — `GET /templates/{id}/schema` → Make parameters
-  (the `jsonSchemaToZapierFields` logic re-expressed for Make: scalar/enum/list
-  → parameter types; nested objects → a JSON "collection"; `data__` namespacing).
-  Optional-variant for Create Signature Request (all fields non-required).
+- A module times out after 40 seconds (Make's default; Make support can raise it for an app). A PDF that takes
+  longer fails in Make, not with DocSpring's 504; turning off "Wait for the PDF" avoids it.
+- A request URL can be at most 512 characters and an error message 1,024. `scripts/check.py` checks both.
+- A module makes at most 100 requests, 50 of them pages. Create signature request's link loop stops at 100 signers.
 
-## IML functions (`functions/`)
+## Custom IML functions: the upgrade path
 
-- `flattenDelivery(body)` — v3 delivery envelope → flat object (see triggers).
-- `toDeliveryShape(type, obj, event)` — wrap a list item so RPC/search output
-  matches live deliveries (parity with `lib/payload.js`).
-- `jsonSchemaToParams(schema, opts)` — JSON Schema → Make parameter definitions.
-- small helpers: `asArray`, `parseDict`, `normalizeHost` equivalents.
+If Make enables custom IML functions for the app (or the token gets the "apps edit" permission), they would allow:
+a `signing_url` on each signature request, date fields as Make `date` inputs formatted to `YYYY-MM-DD`, and enum
+fields as dropdowns.
 
-## Gotchas carried over
+## Checks
 
-- `version:3` pinned on webhook subscribe.
-- `data__` field namespacing on Generate PDF / Create Signature Request.
-- `pdf_passphrase` field key (not "password").
-- Sync host + `?wait=true` for Generate PDF / Combine PDFs; **standard host, no
-  wait** for Create Signature Request.
-- Self-hosted `custom_host` validation (only `[scheme://]host[:port]`).
-- Naming: DocSpring calls data requests **signature requests**, so labels, help
-  and the listing say "signature request". Module IDs (`createDataRequest`),
-  parameter names (`data_requests`, `data_request_id`) and event values
-  (`submission_data_request.*`) keep their names: scenario blueprints store them.
-  The module labels and descriptions live in Make (set through the SDK API), not
-  in this repo, so a rename there is done in Make too.
-
-## Publishing
-
-Build as a **private** app first (usable by our org), test every module against
-the DocSpring test account, then submit for **Make app verification** to list it
-in the public app directory (review process, like Zapier's).
-
-### Submission (v1) — checklist status + form answers
-
-Review prerequisites met (see `app-review/prerequisites`):
-- ✅ Universal "Make an API Call" module (typeId 12).
-- ✅ Sensitive-data sanitization: `log.sanitize: ["request.headers.authorization"]`
-  in base **and** connection; token secret is a `password`-type field.
-- ✅ Every module has a label + description + interface; dates are `type:date`.
-- ✅ Base + connection error handling; connection validates via `GET /authentication`.
-- ✅ `limit` parameter on both searches (Find Template, Find Submission).
-- ✅ 8 demo scenarios (one per module) with successful execution logs, clean data
-  (`Jane Doe` / `jane.doe@example.com`). Watch Events kept active (instant trigger).
-  Note: the Make plan caps **active** scenarios (~2), so the on-demand demos are
-  toggled off but retain their green run logs — sufficient for review.
-- ✅ **Handled-API-error demo** (`DocSpring — Handled API Error`, scenario 6220743):
-  Generate PDF with an invalid enum (`favorite_color: chartreuse`) fails with the
-  clean, service-sourced message `[422] The property '#/favorite_color' value
-  "chartreuse" did not match one of the following values: red, green, blue, ...` —
-  the base `response.error` handler surfaces DocSpring's own text, no raw JSON. The
-  review form's **"Scenario with an API Error"** field requires this link.
-
-The review request is **UI-only** (no API): in the app editor → **Publish**, make
-all 8 modules visible in the **Modules** tab, then the **Review** tab → paste the
-API-docs link + demo-scenario links → **Request review**. A follow-up form arrives
-by email. Prepared answers:
-- Developer relationship: **we are the vendor** (DocSpring owns the API).
-- Support contact: **support@docspring.com**.
-- Category: **Files & Documents** (where the competing doc-gen apps are listed).
-- Service URL: **https://docspring.com**.
-- API docs: **https://docspring.com/docs**.
-- Trademark / third-party T&C compliance: **yes** (our own API).
-
-### Review round 1 (addressed 2026-09-10)
-
-Reviewer (AppBot) feedback addressed in commit `622723b` and re-tested:
-- **Fixed:** signing-link `type` → query string; removed the shut-down AU region;
-  self-hosted URL now prepends `https://` + host field locked (`editable:false`);
-  pagination (cursor on Find a submission, page on Find a template + listTemplates
-  RPC, per_page 50); `response.limit` on both searches (uinteger, default 10);
-  `data` added to the Watch events + Find a submission interfaces; sentence-case
-  labels; third-person descriptions; `actionCrud`; meaningful groups; samples on
-  searches + trigger; Combine PDFs `combined_submission`/`url` source types; dropped
-  the unused listFolders RPC.
-- **Answered (reviewer mistakes, with evidence):** the v3 delivery **does** carry a
-  top-level `id` (event UUID) — captured a live delivery to confirm `{{body.id}}`
-  populates. POST /webhooks returns the webhook's ID at the **top level** (not wrapped), so
-  attach/detach are correct (add-then-remove verified; DELETE now returns 200 with the webhook). `type` on the
-  tokens endpoint is honoured from both body and query (Rails merges params) — moved
-  to `qs` anyway per guidance. `GET /templates/{id}/schema` is a valid live endpoint
-  returning a JSON Schema (`properties`). Both RPCs declare the connection.
-
-## Open items (resolve during setup)
-
-- Confirm the Make Apps SDK local file layout + the push mechanism (SDK CLI vs
-  Make API vs web "Custom apps" editor) once the Make account/API token exists.
-- Confirm Make's line-item (array) parameter UX for `source_pdfs` / recipients.
-- Confirm whether Make strips empty values before requests (Zapier's
-  `cleanInputData`); if so, handle blanks in IML as the Zapier performs do.
-
-## Implementation decisions (v1, built via SDK API)
-
-- **One "Watch Events" instant trigger**, not 13 discrete triggers. It offers an
-  `event_types` multi-select (all 13 events) + a Mode filter, and subscribes to
-  the chosen events in one DocSpring webhook. This is the idiomatic Make pattern
-  (cf. Stripe's "Watch Events") and far less to maintain than 13 near-identical
-  modules. Output is the flattened envelope (`id` = event id, `resource_id` =
-  the resource's id) + the full `data` object.
-- **Create Signing Link is its own action** (not folded into Create
-  Signature Request), because a Make module makes exactly one HTTP request — so minting the
-  30-day `email` token per recipient (`POST /data_requests/{id}/tokens`) is a
-  separate, chainable module (map over Create Signature Request's `data_requests`).
-- **Dynamic template fields** via the `templateFields` RPC: `keys(body.properties)`
-  from `GET /templates/{id}/schema` → one `data__<field>` text input per field,
-  bound to the Generate PDF / Create Signature Request `data` collection.
-- **Sync host + `?wait=true`** for Generate PDF / Combine PDFs (absolute URL in
-  the module, base auth headers still applied); **standard host, no wait** for
-  Create Signature Request.
+There's no test framework: Make runs the IML. `scripts/check.py` checks that every file is valid JSON with closed
+`{{ }}`, that nothing calls `/api/v1`, Make's URL and error-message limits, each module's sections, every `rpc://`
+reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
 
 ## Validation status
-- ✅ **Connection** (region base URL + Basic auth IML) — live in a Make scenario.
-- ✅ **Find Template** — returned the Demo template; also backs the template RPC.
-- ✅ **Generate PDF** — dynamic per-template fields (nested `templateFields` RPC),
-  `omit()` data assembly, sync host + `?wait=true` + explicit auth header. Live run
-  produced a processed submission + download URL.
-- ✅ **Find Submission** — by id (`add(emptyarray; body)` wraps the single object)
-  and list (`body.submissions`). Live spot-test passed.
-- ✅ **Combine PDFs** — line-item `source_pdfs`, sync host + `?wait=true`. API run
-  produced a processed `com_…` combined submission on DocSpring.
-- ✅ **Create Signature Request** — standard host, no wait. API run produced a
-  `waiting_for_data_requests` submission with the recipient's `drq_…`. The
-  `fields`-as-array change means `data_requests` passes straight through (no lambda).
-- ✅ **Create Signing Link** — `POST /data_requests/{id}/tokens`; run status 1 and
-  the DocSpring token response `{token:{id, data_request_url, expires_at}}` matches
-  the output mapping (`signing_url = body.token.data_request_url`, 30-day email token).
-- ✅ **Watch Events** (instant trigger) — full lifecycle verified: creating the hook
-  fired `attach` (registered DocSpring webhook `whk_…`, version 3); a live
-  `submission.processed` event was delivered and the scenario auto-executed
-  (status 1) with the inline flatten; deleting the hook fired `detach` (webhook
-  removed from DocSpring). No dangling webhook left.
 
-### How the modules were tested (no manual canvas work)
-All modules were validated via the **Make API v2** (token in `.env`), not the MCP
-server (which only *triggers* existing scenarios). The loop, driven from the shell:
-1. Clone the connection binding from a working scenario: flow module
-   `app#docspring-sspkqt:<module>`, `parameters: {"__IMTCONN__": <connId>}`, `mapper`.
+The API v2 version hasn't run in Make yet. `app/UPLOAD.md` ("Testing") lists the live tests and the Make behaviour
+these files rely on that hasn't been tried.
+
+The v1 app (API v1) was validated live in Make in September 2026: the connection, Find template, Find submission,
+Generate PDF, Combine PDFs, Create signature request, Create signing link and Watch events (attach, delivery,
+detach).
+
+## How modules are tested without the canvas
+
+All v1 modules were run through the Make API (token in `.env`), driven from the shell:
+
+1. Clone the connection binding from a working scenario: flow module `app#docspring-sspkqt:<module>`,
+   `parameters: {"__IMTCONN__": <connId>}`, `mapper`.
 2. `POST /scenarios` (or `PATCH /scenarios/{id}`) with the blueprint as a JSON string.
-3. `POST /scenarios/{id}/start` to activate (on-demand scenarios must be active to run).
-4. `POST /scenarios/{id}/run` `{responsive:true}` → returns `executionId`; poll
-   `GET /scenarios/{id}/logs` for `status:1`.
-5. Verify ground-truth on the DocSpring side (submission/combined/webhook created).
-For the instant trigger: `POST /hooks` `{typeName:"app#docspring-sspkqt",
-__IMTCONN__, event_types, mode}` creates the hook (fires `attach`); a scenario with
-`metadata.instant:true` + `parameters:{"__IMTHOOK__":<hookId>}` binds to it;
-`DELETE /hooks/{id}` fires `detach`. Team `2910546`, connection `10972788`.
+3. `POST /scenarios/{id}/start` to activate it (on-demand scenarios must be active to run).
+4. `POST /scenarios/{id}/run` `{responsive:true}` returns an `executionId`; poll `GET /scenarios/{id}/logs` for
+   `status:1`.
+5. Check the result in DocSpring (the submission, combined PDF or webhook).
 
-### Known IML gotchas learned during testing (Make ≠ Zapier JS)
-- **No `array()`** — build a one-element array with `add(emptyarray; x)`.
-- **`get(body.properties; item)` inside an RPC `iterate` output fails** — `body`
-  isn't reliably in scope there. This blocks the enum→dropdown fix; `templateFields`
-  currently emits plain text fields (DocSpring still validates enums with a clear 422).
-- **Custom IML *functions* need an "apps edit" permission** the API token lacks, so
-  the JS-function route to schema→fields conversion is gated for now.
-- **Confirmed-valid functions in use:** `if`, `base64`, `switch`, `omit`, `keys`,
-  `join`, `add`.
+For the instant trigger: `POST /hooks` `{typeName:"app#docspring-sspkqt", __IMTCONN__, event_types, mode}` creates the
+hook (runs `attach`); a scenario with `metadata.instant:true` and `parameters:{"__IMTHOOK__":<hookId>}` binds to it;
+`DELETE /hooks/{id}` runs `detach`. Team `2910546`, connection `10972788`.
+
+## IML lessons from v1
+
+- There's no `array()`: build a one-element array with `add(emptyarray; x)`.
+- `get(body.properties; item)` inside an RPC's `iterate` output failed in v1: `body` wasn't reliably in scope there.
+  `templateFields` now iterates `toArray(body.properties)`, so each item carries its own schema, and reads
+  `body.required` through `ifempty(...; emptyarray)`, so at worst every field is optional.
+- Custom IML functions need an "apps edit" permission the API token lacks.
+
+## Make review (v1)
+
+The v1 app went through Make's review in September 2026. What still applies:
+
+- Review prerequisites: a universal "Make an API call" module, `log.sanitize` on the Authorization header and a
+  password-type token secret, a label, description and interface on every module, base and connection error
+  handling, a `limit` on every search, samples on searches and the trigger, `crud` on actions, meaningful groups,
+  sentence-case labels and third-person descriptions.
+- Demo scenarios: one per module with a successful run and clean data (`Jane Doe` / `jane.doe@example.com`), and a
+  scenario that shows a handled API error (the review form's "Scenario with an API Error" field). The Make plan caps
+  active scenarios, so on-demand demos can be off as long as they keep their green run logs.
+- The review request is UI-only: in the app editor, Publish, make every module visible in the Modules tab, then the
+  Review tab: paste the API docs link and the demo scenario links and request a review. Prepared answers: we are the
+  vendor; support `support@docspring.com`; category Files & Documents; service URL https://docspring.com; API docs
+  https://docspring.com/docs; trademark and third-party terms: yes (our own API).
+- The reviewer asked for the signing link `type` in the query string. v2 takes it only in the body (a query
+  parameter is a 422), so it's in the body again.
