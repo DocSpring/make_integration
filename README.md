@@ -10,9 +10,11 @@ spec. A self-hosted DocSpring server needs a release with API v2.
 
 ## Status
 
-The API v2 files are ready but not uploaded to Make yet: the app in Make still calls API v1. `app/UPLOAD.md` is the
-step-by-step upload, followed by the live tests it lists. The v1 app was validated live in Make and went through
-Make's review in September 2026 (`DESIGN.md`).
+The API v2 version is live in Make: it was uploaded with `app/UPLOAD.md` on 27 Oct 2026, tested live, and its 29
+modules are public. Anyone can install it from its public link,
+https://www.make.com/en/hq/app-invitation/68c6ec31b2b25382cfa7ad917caa7420, which docspring.com/integrations/make
+links to. Make's review, requested in September 2026 for the v1 app (`DESIGN.md`), is still pending, so the app isn't
+in Make's app directory yet.
 
 ## Layout
 
