@@ -135,6 +135,303 @@
                 "spec": []
             },
             {
+                "name": "files",
+                "label": "Files",
+                "type": "collection",
+                "spec": [
+                    {
+                        "name": "pdf",
+                        "label": "PDF",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "audit_trail",
+                        "label": "Audit trail",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "preview",
+                        "label": "Preview",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "docx",
+                        "label": "Docx",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "odt",
+                        "label": "Odt",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "download_url",
+                                "label": "Download URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "permanent_url",
+                                "label": "Permanent URL",
+                                "type": "text"
+                            },
+                            {
+                                "name": "filename",
+                                "label": "Filename",
+                                "type": "text"
+                            },
+                            {
+                                "name": "content_type",
+                                "label": "Content type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "size",
+                                "label": "Size",
+                                "type": "number"
+                            },
+                            {
+                                "name": "sha256",
+                                "label": "SHA-256",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "png",
+                        "label": "PNG",
+                        "type": "collection",
+                        "spec": [
+                            {
+                                "name": "state",
+                                "label": "State",
+                                "type": "text"
+                            },
+                            {
+                                "name": "error_message",
+                                "label": "Error message",
+                                "type": "text"
+                            },
+                            {
+                                "name": "page_count",
+                                "label": "Page count",
+                                "type": "number"
+                            },
+                            {
+                                "name": "pages",
+                                "label": "Pages",
+                                "type": "array",
+                                "spec": {
+                                    "type": "any"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "expired",
+                "label": "Expired",
+                "type": "boolean"
+            },
+            {
+                "name": "expires_at",
+                "label": "Expires at",
+                "type": "date"
+            },
+            {
+                "name": "processed_at",
+                "label": "Processed at",
+                "type": "date"
+            },
+            {
+                "name": "created_at",
+                "label": "Created at",
+                "type": "date"
+            },
+            {
+                "name": "updated_at",
+                "label": "Updated at",
+                "type": "date"
+            },
+            {
                 "name": "has_password",
                 "label": "Has password",
                 "type": "boolean"
@@ -329,211 +626,8 @@
                 }
             },
             {
-                "name": "files",
-                "label": "Files",
-                "type": "collection",
-                "spec": [
-                    {
-                        "name": "pdf",
-                        "label": "PDF",
-                        "type": "collection",
-                        "spec": [
-                            {
-                                "name": "state",
-                                "label": "State",
-                                "type": "text"
-                            },
-                            {
-                                "name": "error_message",
-                                "label": "Error message",
-                                "type": "text"
-                            },
-                            {
-                                "name": "download_url",
-                                "label": "Download URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "permanent_url",
-                                "label": "Permanent URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "filename",
-                                "label": "Filename",
-                                "type": "text"
-                            },
-                            {
-                                "name": "content_type",
-                                "label": "Content type",
-                                "type": "text"
-                            },
-                            {
-                                "name": "size",
-                                "label": "Size",
-                                "type": "number"
-                            },
-                            {
-                                "name": "sha256",
-                                "label": "SHA-256",
-                                "type": "text"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "audit_trail",
-                        "label": "Audit trail",
-                        "type": "collection",
-                        "spec": [
-                            {
-                                "name": "state",
-                                "label": "State",
-                                "type": "text"
-                            },
-                            {
-                                "name": "error_message",
-                                "label": "Error message",
-                                "type": "text"
-                            },
-                            {
-                                "name": "download_url",
-                                "label": "Download URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "permanent_url",
-                                "label": "Permanent URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "filename",
-                                "label": "Filename",
-                                "type": "text"
-                            },
-                            {
-                                "name": "content_type",
-                                "label": "Content type",
-                                "type": "text"
-                            },
-                            {
-                                "name": "size",
-                                "label": "Size",
-                                "type": "number"
-                            },
-                            {
-                                "name": "sha256",
-                                "label": "SHA-256",
-                                "type": "text"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "preview",
-                        "label": "Preview",
-                        "type": "collection",
-                        "spec": [
-                            {
-                                "name": "state",
-                                "label": "State",
-                                "type": "text"
-                            },
-                            {
-                                "name": "error_message",
-                                "label": "Error message",
-                                "type": "text"
-                            },
-                            {
-                                "name": "download_url",
-                                "label": "Download URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "permanent_url",
-                                "label": "Permanent URL",
-                                "type": "text"
-                            },
-                            {
-                                "name": "filename",
-                                "label": "Filename",
-                                "type": "text"
-                            },
-                            {
-                                "name": "content_type",
-                                "label": "Content type",
-                                "type": "text"
-                            },
-                            {
-                                "name": "size",
-                                "label": "Size",
-                                "type": "number"
-                            },
-                            {
-                                "name": "sha256",
-                                "label": "SHA-256",
-                                "type": "text"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "png",
-                        "label": "PNG",
-                        "type": "collection",
-                        "spec": [
-                            {
-                                "name": "state",
-                                "label": "State",
-                                "type": "text"
-                            },
-                            {
-                                "name": "error_message",
-                                "label": "Error message",
-                                "type": "text"
-                            },
-                            {
-                                "name": "page_count",
-                                "label": "Page count",
-                                "type": "number"
-                            },
-                            {
-                                "name": "pages",
-                                "label": "Pages",
-                                "type": "array",
-                                "spec": {
-                                    "type": "any"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
                 "name": "preview_generated_at",
                 "label": "Preview generated at",
-                "type": "date"
-            },
-            {
-                "name": "expired",
-                "label": "Expired",
-                "type": "boolean"
-            },
-            {
-                "name": "expires_at",
-                "label": "Expires at",
-                "type": "date"
-            },
-            {
-                "name": "processed_at",
-                "label": "Processed at",
-                "type": "date"
-            },
-            {
-                "name": "created_at",
-                "label": "Created at",
-                "type": "date"
-            },
-            {
-                "name": "updated_at",
-                "label": "Updated at",
                 "type": "date"
             }
         ]
