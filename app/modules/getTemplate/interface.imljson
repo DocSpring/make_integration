@@ -278,6 +278,44 @@
         "type": "text"
     },
     {
+        "name": "signature_request_email_attachments",
+        "label": "Signature request email attachments",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_from_address",
+        "label": "Signature request from address",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_include_signing_token",
+        "label": "Signature request include signing token",
+        "type": "boolean"
+    },
+    {
+        "name": "signature_request_from_name",
+        "label": "Signature request from name",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_notification_emails",
+        "label": "Signature request notification emails",
+        "type": "array",
+        "spec": {
+            "type": "text"
+        }
+    },
+    {
+        "name": "signature_request_reply_to",
+        "label": "Signature request reply to",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_signing_url",
+        "label": "Signature request signing URL",
+        "type": "text"
+    },
+    {
         "name": "has_slack_webhook_url",
         "label": "Has slack webhook URL",
         "type": "boolean"

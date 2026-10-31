@@ -44,6 +44,26 @@
         "type": "number"
     },
     {
+        "name": "send_email",
+        "label": "Send email",
+        "type": "boolean"
+    },
+    {
+        "name": "signing_step",
+        "label": "Signing step",
+        "type": "number"
+    },
+    {
+        "name": "sent_at",
+        "label": "Sent at",
+        "type": "date"
+    },
+    {
+        "name": "email_status",
+        "label": "Email status",
+        "type": "text"
+    },
+    {
         "name": "state",
         "label": "State",
         "type": "text"

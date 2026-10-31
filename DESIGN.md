@@ -90,7 +90,12 @@ spec by `scripts/generate_interfaces.py`.
 - **Create a signature request** makes three requests: it creates the submission with `signature_requests`, makes a
   signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
   default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id` and
-  `first_signing_url`. Each signer's `fields` is a list of field names to type or map (also in Check data for a
+  `first_signing_url`. Emails to signers chooses whether DocSpring emails them (`send_email`, the API's default):
+  its email options (subject, message, CC, reminders, reply-to, notification emails, notify when signed) are nested
+  under "DocSpring emails each signer their link", and the link type under "I send the links". With DocSpring's
+  emails the module makes no links, so a scenario can't send a second one. It's one choice for every signer: the
+  API's per-signer `send_email` isn't offered, since a mix would need links for only some of the IDs (Make an API
+  call can do it). Signing order and each signer's Signing step work either way. Each signer's `fields` is a list of field names to type or map (also in Check data for a
   template), as List template fields shows them: the full `name`, such as `address/street`, which a signature request
   needs (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with
   only that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).

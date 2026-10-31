@@ -21,7 +21,16 @@
             },
             "test": "{{if(parameters.test; true; undefined)}}",
             "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
-            "signature_requests": "{{parameters.signature_requests}}"
+            "signature_requests": "{{parameters.signature_requests}}",
+            "signing_order": "{{parameters.signing_order}}",
+            "send_email": "{{parameters.send_email = 'docspring'}}",
+            "email_subject": "{{parameters.email_subject}}",
+            "email_message": "{{parameters.email_message}}",
+            "cc": "{{if(length(ifempty(parameters.cc; emptyarray)) > 0; parameters.cc; undefined)}}",
+            "reminders": "{{if(parameters.reminders.interval_days || parameters.reminders.max_count; parameters.reminders; undefined)}}",
+            "reply_to": "{{parameters.reply_to}}",
+            "notification_emails": "{{if(length(ifempty(parameters.notification_emails; emptyarray)) > 0; parameters.notification_emails; undefined)}}",
+            "notify_when_signed": "{{if(parameters.notify_when_signed; true; undefined)}}"
         },
         "response": {
             "temp": {
@@ -33,7 +42,7 @@
         }
     },
     {
-        "condition": "{{parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
+        "condition": "{{parameters.send_email = 'self' && parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
         "url": "/signature_requests/{{encodeURL(get(temp.signature_request_ids; temp.index))}}/tokens",
         "method": "POST",
         "body": {

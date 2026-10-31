@@ -2,6 +2,23 @@
 
 The app's version in Make stays 1: Make changes a public app in place.
 
+## Emails to signers (sc-2878)
+
+**Upload it only once the DocSpring release that emails signers is live in the US and the EU.** Until then API v2
+rejects `send_email` and the email options, so every Create a signature request would fail.
+
+### Changed
+
+- Create a signature request: Emails to signers chooses whether DocSpring emails each signer a link to sign (the
+  default, as in the API) or you send the links yourself. With DocSpring's emails you can set the subject, a message,
+  CC addresses, reminders, the reply-to address, notification emails and a notification each time someone signs, and
+  the module makes no signing links. Sending the links yourself works as before, with the same link types.
+- Create a signature request: Signing order (everyone at once, or one step at a time) and each signer's Signing step.
+- Module outputs follow API v2 at that release: a signature request's `send_email`, `signing_step`, `sent_at` and
+  `email_status`, a submission's `signing_order` and `email_action_id`, a template's signature request email settings,
+  a combined PDF's `email_action_id`, Word submissions' DOCX and ODT files, a template's output format, layout and
+  HTML escaping, and Search templates' template summaries.
+
 ## API v2 (sc-5981, uploaded 27 Oct 2026)
 
 The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full set of operations.

@@ -35,7 +35,7 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 ### Signature requests
 
-- **Create a signature request**: creates a submission that people fill in and sign. Add the signers (name, email, the fields each one fills in, and how they sign in), and choose the link type: an email link (7 days), an API link (24 hours) or none. Returns the submission and a signing link for each signer.
+- **Create a signature request**: creates a submission that people fill in and sign. Add the signers (name, email, the fields each one fills in, and how they sign in). DocSpring emails each signer a link to sign, with your subject, message and reminders, and everyone the signed PDF; signers can sign at once or one step at a time. Or send the links yourself: choose the link type, an email link (7 days), an API link (24 hours) or none, and the module returns a signing link for each signer.
 - **Create a signing link**: creates a new link to a signature request's signing form.
 - **Get a signature request**: returns a signature request by its ID, with its signer and state.
 

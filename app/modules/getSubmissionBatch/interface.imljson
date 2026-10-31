@@ -486,6 +486,26 @@
                         "type": "number"
                     },
                     {
+                        "name": "send_email",
+                        "label": "Send email",
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "signing_step",
+                        "label": "Signing step",
+                        "type": "number"
+                    },
+                    {
+                        "name": "sent_at",
+                        "label": "Sent at",
+                        "type": "date"
+                    },
+                    {
+                        "name": "email_status",
+                        "label": "Email status",
+                        "type": "text"
+                    },
+                    {
                         "name": "state",
                         "label": "State",
                         "type": "text"
@@ -574,6 +594,11 @@
                 ]
             },
             {
+                "name": "signing_order",
+                "label": "Signing order",
+                "type": "text"
+            },
+            {
                 "name": "actions",
                 "label": "Actions",
                 "type": "array",
@@ -586,6 +611,11 @@
                     {
                         "name": "integration_id",
                         "label": "Integration ID",
+                        "type": "text"
+                    },
+                    {
+                        "name": "email_action_id",
+                        "label": "Email action ID",
                         "type": "text"
                     },
                     {

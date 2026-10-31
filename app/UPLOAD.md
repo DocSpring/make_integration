@@ -204,7 +204,7 @@ the webhook from step 5. Every module is public (visible) once its sections are 
 | `findSubmission` | Search (9) | Search submissions | Finds submissions by template, live or test mode and when they were created. | - | connection `docspring-sspkqt` | changed |
 | `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission, such as a PNG image of each page. | update | connection `docspring-sspkqt` | new |
 | `expireSubmission` | Action (4) | Expire a submission | Expires a submission, which deletes its data and files. This action cannot be undone. | delete | connection `docspring-sspkqt` | new |
-| `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign, and a signing link for each signer. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
+| `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign. DocSpring emails each signer a link to sign, or the module returns their links. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
 | `createSigningLink` | Action (4) | Create a signing link | Creates a link that opens a signature request's signing form. | create | connection `docspring-sspkqt` | changed |
 | `getSignatureRequest` | Action (4) | Get a signature request | Returns a signature request by its ID, with its signer and state. | read | connection `docspring-sspkqt` | new |
 | `findTemplate` | Search (9) | Search templates | Finds templates by name and folder. | - | connection `docspring-sspkqt` | changed |
@@ -337,6 +337,13 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
   link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
   `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
   didn't re-read the token URL on each repeat, and signer 2 would get signer 1's form: don't publish.
+- Create a signature request with Emails to signers left at "DocSpring emails each signer their link", two signers
+  whose addresses are DocSpring team members (a test submission only emails the team), a subject, a message and
+  reminders: Signing links is empty, each signature request has `send_email: true`, and both people get DocSpring's
+  email with the subject and message. With Signing order One step at a time and a Signing step on each signer, only
+  step 1 gets an email until it has signed. With "I send the links", the result has a link per signer as above and
+  nobody gets an email. A signer with Authentication Password and DocSpring's emails fails with DocSpring's message
+  about `auth_type`.
 - Signer Fields, with a template whose field names have a `/` (such as `address/street` and `items/0/name`): type
   those full names in a signer's Fields in Create a signature request and in Check data for a template, and both
   succeed. Fields is a list of names, not a picker: an RPC called from inside the Signers list gets only that item's

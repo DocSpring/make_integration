@@ -300,8 +300,47 @@ def test_detach_paging():
     return errors
 
 
+# 12. Create a signature request: with DocSpring's emails it sends send_email and the email options, and makes no
+# signing links (the signers get theirs by email); when you send the links, it sends none of the email options.
+def run_signature_request(parameters):
+    api = requests_of(load("modules/createSignatureRequest/api.imljson"))
+    create, links = api[1], api[2]
+    context = {"parameters": parameters}
+    body = {k: evaluate(v, context) for k, v in create["body"].items() if k != "data"}
+    temp = {"signature_request_ids": ["srq_1", "srq_2"]}
+    makes_links = bool(evaluate(links["condition"], {**context, "temp": temp}))
+    return {k: v for k, v in body.items() if v is not None}, makes_links
+
+
+def test_signature_request_emails():
+    rel = "modules/createSignatureRequest/api.imljson"
+    signers = [{"name": "Jane Doe", "email": "jane.doe@example.com", "fields": ["signature"], "auth_type": "email_link"}]
+    errors = []
+    body, makes_links = run_signature_request({
+        "signature_requests": signers, "send_email": "docspring", "signing_order": "sequential",
+        "email_subject": "Please sign", "cc": ["cc@example.com"], "notification_emails": [],
+        "reminders": {"interval_days": 3, "max_count": 2}, "notify_when_signed": True, "signing_link_type": "email"})
+    expected = {"signature_requests": signers, "send_email": True, "signing_order": "sequential",
+                "email_subject": "Please sign", "cc": ["cc@example.com"],
+                "reminders": {"interval_days": 3, "max_count": 2}, "notify_when_signed": True}
+    if body != expected or makes_links:
+        errors.append(f"{rel}: DocSpring's emails sent {body} and makes_links={makes_links}")
+    body, makes_links = run_signature_request({
+        "signature_requests": signers, "send_email": "docspring", "cc": [], "reminders": {}, "notify_when_signed": False})
+    if body != {"signature_requests": signers, "send_email": True} or makes_links:
+        errors.append(f"{rel}: empty email options sent {body} and makes_links={makes_links}")
+    body, makes_links = run_signature_request({
+        "signature_requests": signers, "send_email": "self", "signing_link_type": "api"})
+    if body != {"signature_requests": signers, "send_email": False} or not makes_links:
+        errors.append(f"{rel}: sending the links yourself sent {body} and makes_links={makes_links}")
+    _, makes_links = run_signature_request({"signature_requests": signers, "send_email": "self", "signing_link_type": "none"})
+    if makes_links:
+        errors.append(f"{rel}: No links still makes links")
+    return errors
+
+
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
-         test_watch_events_templates, test_remove_field_ids, test_detach_paging]
+         test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails]
 
 
 def run():

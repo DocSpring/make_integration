@@ -48,6 +48,13 @@
     "public_submissions": false,
     "public_web_form": false,
     "redirect_url": null,
+    "signature_request_email_attachments": null,
+    "signature_request_from_address": null,
+    "signature_request_from_name": null,
+    "signature_request_include_signing_token": false,
+    "signature_request_notification_emails": [],
+    "signature_request_reply_to": null,
+    "signature_request_signing_url": null,
     "has_slack_webhook_url": false,
     "last_changed_by": {
         "type": "api",
