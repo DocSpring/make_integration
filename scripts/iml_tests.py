@@ -339,8 +339,51 @@ def test_signature_request_emails():
     return errors
 
 
+# 13. Check data sends the email settings Create a signature request sends, only with signers: the API refuses them
+# without.
+def check_data_body(parameters):
+    check = requests_of(load("modules/checkData/api.imljson"))[1]
+    body = {k: evaluate(v, {"parameters": parameters}) for k, v in check["body"].items() if k != "data"}
+    return {k: v for k, v in body.items() if v is not None}
+
+
+def test_check_data_emails():
+    rel = "modules/checkData/api.imljson"
+    signers = [{"email": "jane.doe@example.com", "fields": ["signature"], "auth_type": "email_link"}]
+    settings = {"signing_order": "sequential", "email_subject": "Please sign", "cc": ["cc@example.com"],
+                "reminders": {"interval_days": 3, "max_count": 2}, "notify_when_signed": True}
+    errors = []
+    body = check_data_body({**settings, "signature_requests": signers})
+    if body != {**settings, "signature_requests": signers, "send_email": True}:
+        errors.append(f"{rel}: DocSpring's emails (the default) sent {body}")
+    body = check_data_body({"signature_requests": signers, "send_email": "self", "signing_order": "sequential"})
+    if body != {"signature_requests": signers, "send_email": False, "signing_order": "sequential"}:
+        errors.append(f"{rel}: sending the links yourself sent {body}")
+    body = check_data_body({**settings, "send_email": "docspring", "cc": [], "reminders": {}, "notify_when_signed": False,
+                            "signature_requests": signers})
+    if body != {"signature_requests": signers, "send_email": True, "signing_order": "sequential",
+                "email_subject": "Please sign"}:
+        errors.append(f"{rel}: empty email options sent {body}")
+    for no_signers in (None, []):
+        body = check_data_body({**settings, "send_email": "docspring", "signature_requests": no_signers})
+        if {k: v for k, v in body.items() if k != "signature_requests"}:
+            errors.append(f"{rel}: without signers it sent {body}")
+    return errors
+
+
+# 14. Make an API call offers only the methods API v2 has: it answers PATCH with a 405.
+def test_api_call_methods():
+    expect = load("modules/makeApiCall/expect.imljson")
+    method = next(p for p in expect if p["name"] == "method")
+    values = [o["value"] for o in method["options"]]
+    if values != ["GET", "POST", "PUT", "DELETE"]:
+        return [f"modules/makeApiCall/expect.imljson: offers {values}"]
+    return []
+
+
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
-         test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails]
+         test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails,
+         test_check_data_emails, test_api_call_methods]
 
 
 def run():

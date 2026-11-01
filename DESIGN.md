@@ -95,11 +95,14 @@ spec by `scripts/generate_interfaces.py`.
   under "DocSpring emails each signer their link", and the link type under "I send the links". With DocSpring's
   emails the module makes no links, so a scenario can't send a second one. It's one choice for every signer: the
   API's per-signer `send_email` isn't offered, since a mix would need links for only some of the IDs (Make an API
-  call can do it). Signing order and each signer's Signing step work either way. Each signer's `fields` is a list of field names to type or map (also in Check data for a
+  call can do it). Signing order and each signer's Signing step work either way. Check data for a template offers the
+  same Emails to signers, email options, order and steps (no link type) and sends them only with signers, since the
+  API refuses them without. Each signer's `fields` is a list of field names to type or map (also in Check data for a
   template), as List template fields shows them: the full `name`, such as `address/street`, which a signature request
   needs (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with
   only that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).
-- **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
+- **Make an API call** takes a path relative to `/api/v2`, a method (GET, POST, PUT or DELETE: API v2 has no PATCH
+  endpoints and answers one with a 405), query string, headers and a body.
 
 ## Watch events
 

@@ -51,7 +51,8 @@
             {
                 "name": "email",
                 "type": "email",
-                "label": "Email"
+                "label": "Email",
+                "help": "Required when DocSpring emails the signers."
             },
             {
                 "name": "fields",
@@ -111,7 +112,17 @@
                         "value": "saml"
                     }
                 ],
-                "help": "How the person is identified before they see the form. Choose Email link when you send them the link by email."
+                "help": "How the person is identified before they see the form. Choose Email link when they get their link by email, from DocSpring or from you: DocSpring's emails always use it. The other types are for people you send the link to yourself or who sign in your app."
+            },
+            {
+                "name": "signing_step",
+                "type": "uinteger",
+                "label": "Signing step",
+                "validate": {
+                    "min": 1,
+                    "max": 100
+                },
+                "help": "With Signing order One step at a time: when this person signs. Everyone in step 1 signs first, then step 2, and so on, and people in the same step sign in any order. Give every signer a step, or none to have them sign in the order of this list."
             },
             {
                 "name": "prefilled_values_editable",
@@ -126,5 +137,124 @@
                 "help": "Leave out field names that the template doesn't have, instead of failing."
             }
         ]
+    },
+    {
+        "name": "signing_order",
+        "type": "select",
+        "label": "Signing order",
+        "default": "parallel",
+        "options": [
+            {
+                "label": "Everyone at once",
+                "value": "parallel"
+            },
+            {
+                "label": "One step at a time",
+                "value": "sequential"
+            }
+        ],
+        "help": "One step at a time: people sign in the order of their Signing step, or of the Signers list. DocSpring emails each step when the one before it is done; when you send the links, send each step's once the step before it has signed."
+    },
+    {
+        "name": "send_email",
+        "type": "select",
+        "label": "Emails to signers",
+        "default": "docspring",
+        "options": [
+            {
+                "label": "DocSpring emails each signer their link",
+                "value": "docspring",
+                "nested": [
+                    {
+                        "name": "email_subject",
+                        "type": "text",
+                        "label": "Email subject",
+                        "validate": {
+                            "max": 200
+                        },
+                        "help": "The subject of the emails that ask people to sign. Leave it empty for \"<your name> sent you <document> to sign\"."
+                    },
+                    {
+                        "name": "email_message",
+                        "type": "text",
+                        "label": "Message",
+                        "multiline": true,
+                        "validate": {
+                            "max": 2000
+                        },
+                        "help": "A message for the signers, shown above the signing button. Links and web addresses are shown as plain text."
+                    },
+                    {
+                        "name": "cc",
+                        "type": "array",
+                        "label": "CC",
+                        "spec": {
+                            "type": "email",
+                            "label": "Email"
+                        },
+                        "validate": {
+                            "maxItems": 10
+                        },
+                        "help": "Up to 10 people who get the signed PDF. They don't sign."
+                    },
+                    {
+                        "name": "reminders",
+                        "type": "collection",
+                        "label": "Reminders",
+                        "spec": [
+                            {
+                                "name": "interval_days",
+                                "type": "uinteger",
+                                "label": "Days between reminders",
+                                "validate": {
+                                    "min": 1,
+                                    "max": 30
+                                }
+                            },
+                            {
+                                "name": "max_count",
+                                "type": "uinteger",
+                                "label": "Most reminders per person",
+                                "validate": {
+                                    "min": 1,
+                                    "max": 10
+                                }
+                            }
+                        ],
+                        "help": "Remind people who haven't signed. Leave both empty for no reminders."
+                    },
+                    {
+                        "name": "reply_to",
+                        "type": "email",
+                        "label": "Reply-to address",
+                        "help": "Where replies to the emails go: a member of your DocSpring team, or an address at one of your verified email domains. Leave it empty for the template's reply-to address (the account owner when it has none)."
+                    },
+                    {
+                        "name": "notification_emails",
+                        "type": "array",
+                        "label": "Notification emails",
+                        "spec": {
+                            "type": "email",
+                            "label": "Email"
+                        },
+                        "validate": {
+                            "maxItems": 10
+                        },
+                        "help": "Up to 10 addresses that DocSpring tells when the document is completed or declined, or an email bounces or can't be sent: members of your DocSpring team or addresses at your verified email domains. Leave it empty for the template's notification addresses (the account owner when it has none)."
+                    },
+                    {
+                        "name": "notify_when_signed",
+                        "type": "boolean",
+                        "label": "Notify when each person signs",
+                        "help": "Also email the notification addresses each time someone signs."
+                    }
+                ]
+            },
+            {
+                "label": "I send the links, or open them in my app",
+                "value": "self"
+            }
+        ],
+        "help": "With Signers: who sends them their links, as in Create a signature request. DocSpring emails each signer a link to sign, any reminders, and the signed PDF once everyone has signed. A test submission only emails members of your DocSpring team. DocSpring doesn't email the signers of a form library template: choose I send the links for one."
     }
 ]

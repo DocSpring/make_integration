@@ -14,6 +14,9 @@ rejects `send_email` and the email options, so every Create a signature request 
   CC addresses, reminders, the reply-to address, notification emails and a notification each time someone signs, and
   the module makes no signing links. Sending the links yourself works as before, with the same link types.
 - Create a signature request: Signing order (everyone at once, or one step at a time) and each signer's Signing step.
+- Check data for a template: the same Emails to signers, email options, Signing order and Signing steps, sent only
+  with signers (the API refuses them without), so it checks what Create a signature request will send.
+- Make an API call no longer offers PATCH: API v2 has no PATCH endpoints and answers one with a 405.
 - Module outputs follow API v2 at that release: a signature request's `send_email`, `signing_step`, `sent_at` and
   `email_status`, a submission's `signing_order` and `email_action_id`, a template's signature request email settings,
   a combined PDF's `email_action_id`, Word submissions' DOCX and ODT files, a template's output format, layout and

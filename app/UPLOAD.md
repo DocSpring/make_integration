@@ -344,6 +344,9 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
   step 1 gets an email until it has signed. With "I send the links", the result has a link per signer as above and
   nobody gets an email. A signer with Authentication Password and DocSpring's emails fails with DocSpring's message
   about `auth_type`.
+- Check data for a template with a signer who has no email: with Emails to signers left at DocSpring's emails, Valid
+  is false and the error is DocSpring's message about the email; with "I send the links", it's valid. Without
+  signers, the email settings aren't sent and the data alone is checked.
 - Signer Fields, with a template whose field names have a `/` (such as `address/street` and `items/0/name`): type
   those full names in a signer's Fields in Create a signature request and in Check data for a template, and both
   succeed. Fields is a list of names, not a picker: an RPC called from inside the Signers list gets only that item's
