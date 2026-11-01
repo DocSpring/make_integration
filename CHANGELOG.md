@@ -17,6 +17,11 @@ rejects `send_email` and the email options, so every Create a signature request 
 - Check data for a template: the same Emails to signers, email options, Signing order and Signing steps, sent only
   with signers (the API refuses them without), so it checks what Create a signature request will send.
 - Make an API call no longer offers PATCH: API v2 has no PATCH endpoints and answers one with a 405.
+- Generate a PDF and Generate a batch of PDFs: Output formats offers a Word template's Word document and OpenDocument
+  file, and left empty makes what the template makes. Generate files for a submission offers a Word template
+  submission's PDF, Word document and OpenDocument file beside the page images, and fails when any file it was asked
+  for couldn't be made, naming which one (it checked only the page images). Its module description in Make changes to
+  the one in `app/UPLOAD.md` (sc-6829).
 - Module outputs follow API v2 at that release: a signature request's `send_email`, `signing_step`, `sent_at` and
   `email_status`, a submission's `signing_order` and `email_action_id`, a template's signature request email settings,
   a combined PDF's `email_action_id`, Word submissions' DOCX and ODT files, a template's output format, layout and

@@ -30,7 +30,7 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 - **Get a submission**: returns a submission by its ID, with its data and files.
 - **Search submissions**: finds submissions by template, live or test mode, and when they were created.
-- **Generate files for a submission**: generates more files for a submission, such as a PNG image of each page.
+- **Generate files for a submission**: generates more files for a submission: a PNG image of each page, or a Word template submission's PDF, Word document or OpenDocument file.
 - **Expire a submission**: deletes a submission's data and files. This can't be undone.
 
 ### Signature requests

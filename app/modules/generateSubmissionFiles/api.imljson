@@ -25,8 +25,8 @@
         },
         "response": {
             "valid": {
-                "condition": "{{body.files.png.state != 'error'}}",
-                "message": "DocSpring couldn't make the page images: {{body.files.png.error_message}}\nSubmission: {{body.id}}"
+                "condition": "{{body.files.pdf.state != 'error' && body.files.docx.state != 'error' && body.files.odt.state != 'error' && body.files.png.state != 'error'}}",
+                "message": "DocSpring couldn't make some of the files.{{if(body.files.pdf.state = 'error'; ' PDF: ' + body.files.pdf.error_message; '')}}{{if(body.files.docx.state = 'error'; ' Word document: ' + body.files.docx.error_message; '')}}{{if(body.files.odt.state = 'error'; ' OpenDocument file: ' + body.files.odt.error_message; '')}}{{if(body.files.png.state = 'error'; ' Page images: ' + body.files.png.error_message; '')}}\nSubmission: {{body.id}}"
             },
             "output": "{{body}}"
         },

@@ -381,9 +381,46 @@ def test_api_call_methods():
     return []
 
 
+# 15. A Word template's submission can make its Word document and OpenDocument file, and Generate files for a
+# submission fails when any file it was asked for couldn't be made, naming which one and why.
+def options_of(module, name):
+    parameter = next(p for p in load(f"modules/{module}/expect.imljson") if p["name"] == name)
+    return [o["value"] for o in parameter["options"]]
+
+
+def test_word_outputs():
+    errors = []
+    for module in ("generatePdf", "generatePdfBatch"):
+        values = options_of(module, "output_formats")
+        if sorted(values) != ["docx", "odt", "pdf", "png"]:
+            errors.append(f"modules/{module}/expect.imljson: Output formats offers {values}")
+    values = options_of("generateSubmissionFiles", "formats")
+    if sorted(values) != ["docx", "odt", "pdf", "png"]:
+        errors.append(f"modules/generateSubmissionFiles/expect.imljson: Formats offers {values}")
+
+    rel = "modules/generateSubmissionFiles/api.imljson"
+    valid = requests_of(load(rel))[1]["response"]["valid"]
+    processed = {"state": "processed", "error_message": None}
+    pending = {"state": "pending", "error_message": None}
+    failed = {"state": "error", "error_message": "LibreOffice couldn't convert it"}
+    for files in ({"pdf": processed, "png": pending}, {"docx": processed, "odt": pending}, {"pdf": processed}):
+        if evaluate(valid["condition"], {"body": {"id": "sub_1", "files": files}}) is not True:
+            errors.append(f"{rel}: files {files} fail the check")
+    for name, label in (("pdf", "PDF"), ("docx", "Word document"), ("odt", "OpenDocument file"),
+                        ("png", "Page images")):
+        body = {"id": "sub_1", "files": {"docx": processed, name: failed}}
+        if evaluate(valid["condition"], {"body": body}) is not False:
+            errors.append(f"{rel}: a {name} error passes the check")
+        message = evaluate(valid["message"], {"body": body})
+        expected = f"DocSpring couldn't make some of the files. {label}: LibreOffice couldn't convert it\nSubmission: sub_1"
+        if message != expected:
+            errors.append(f"{rel}: a {name} error reads {message!r}")
+    return errors
+
+
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
          test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails,
-         test_check_data_emails, test_api_call_methods]
+         test_check_data_emails, test_api_call_methods, test_word_outputs]
 
 
 def run():

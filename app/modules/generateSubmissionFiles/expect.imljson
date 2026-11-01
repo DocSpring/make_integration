@@ -19,8 +19,21 @@
             {
                 "label": "PNG image of each page",
                 "value": "png"
+            },
+            {
+                "label": "PDF (Word templates that made only a Word document)",
+                "value": "pdf"
+            },
+            {
+                "label": "Word document (Word templates)",
+                "value": "docx"
+            },
+            {
+                "label": "OpenDocument file (Word templates)",
+                "value": "odt"
             }
-        ]
+        ],
+        "help": "The files to add. PDF, Word document and OpenDocument file are for the submissions of Word templates. A format the submission already has is left as it is."
     },
     {
         "name": "wait",

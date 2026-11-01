@@ -202,7 +202,7 @@ the webhook from step 5. Every module is public (visible) once its sections are 
 | `getCombinedPdf` | Action (4) | Get a combined PDF | Returns a combined PDF by its ID, with its state and files. | read | connection `docspring-sspkqt` | new |
 | `getSubmission` | Action (4) | Get a submission | Returns a submission by its ID, with its data and files. | read | connection `docspring-sspkqt` | new |
 | `findSubmission` | Search (9) | Search submissions | Finds submissions by template, live or test mode and when they were created. | - | connection `docspring-sspkqt` | changed |
-| `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission, such as a PNG image of each page. | update | connection `docspring-sspkqt` | new |
+| `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission: a PNG image of each page, or a Word template submission's PDF, Word document or OpenDocument file. | update | connection `docspring-sspkqt` | new |
 | `expireSubmission` | Action (4) | Expire a submission | Expires a submission, which deletes its data and files. This action cannot be undone. | delete | connection `docspring-sspkqt` | new |
 | `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign. DocSpring emails each signer a link to sign, or the module returns their links. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
 | `createSigningLink` | Action (4) | Create a signing link | Creates a link that opens a signature request's signing form. | create | connection `docspring-sspkqt` | changed |
