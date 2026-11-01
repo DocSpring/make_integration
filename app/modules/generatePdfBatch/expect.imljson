@@ -112,7 +112,7 @@
                 "value": "png"
             }
         ],
-        "help": "What to make: the PDF, and for a Word template its Word document or an OpenDocument file. PNG adds an image of each page of the PDF, with the PDF. Leave it empty for what the template makes: the PDF, or what a Word template is set to make."
+        "help": "What to make: the PDF, and for a Word template its Word document or an OpenDocument file. PNG adds an image of each page of the PDF, with the PDF. Leave it empty for what the template makes: the PDF, or what a Word template is set to make. A submission with a PDF password can't make the Word document or OpenDocument file."
     },
     {
         "name": "wait",

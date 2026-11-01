@@ -192,6 +192,12 @@ def main():
         ],
     )
     sample = example(spec, "post", "/templates/{template_id}/submissions", "201", "submission with signature requests created")
+    # The module makes links only when you send them yourself, so the sample's signature requests aren't emailed
+    sample["signature_requests"] = [
+        dict(request, **{key: value for key, value in (("send_email", False), ("sent_at", None), ("email_status", None))
+                         if key in request})
+        for request in sample["signature_requests"]
+    ]
     link = example(spec, "post", "/signature_requests/{signature_request_id}/tokens", "201", "token created")
     first = sample["signature_requests"][0]["id"]
     link = dict(link, signature_request_id=first)

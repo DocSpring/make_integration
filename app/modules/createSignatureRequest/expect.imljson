@@ -148,7 +148,7 @@
                 "value": "sequential"
             }
         ],
-        "help": "One step at a time: people sign in the order of their Signing step, or of the Signers list. DocSpring emails each step when the one before it is done; when you send the links, send each step's once the step before it has signed."
+        "help": "One step at a time: people sign in the order of their Signing step, or of the Signers list. DocSpring emails each step when the one before it is done. When you send the links, send each step's once the step before it has signed, and make a new one with Create a signing link if it has expired (email links last 7 days, API links 24 hours)."
     },
     {
         "name": "send_email",
@@ -275,7 +275,7 @@
                 ]
             }
         ],
-        "help": "DocSpring emails each signer a link to sign, any reminders, and the signed PDF once everyone has signed. A test submission only emails members of your DocSpring team. DocSpring doesn't email the signers of a form library template: choose I send the links for one."
+        "help": "DocSpring emails each signer a link to sign, any reminders, and the signed PDF once everyone has signed. A test submission can only email members of your DocSpring team: other addresses are refused. DocSpring doesn't email the signers of a form library template: choose I send the links for one."
     },
     {
         "name": "test",

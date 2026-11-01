@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Runs the app's IML with scripts/iml.py and checks what it does: error messages, IDs in URLs, the signer field
-picker, the Watch events checks and detach's paging. scripts/check.py runs these; they can also run alone.
+picker, the Watch events checks and events, detach's paging, the signature request and Check data bodies for each Emails
+to signers choice, the Word output formats and Generate files for a submission's file checks. scripts/check.py runs these; they can also run alone.
 
 Usage: scripts/iml_tests.py
 """
@@ -302,6 +303,12 @@ def test_detach_paging():
 
 # 12. Create a signature request: with DocSpring's emails it sends send_email and the email options, and makes no
 # signing links (the signers get theirs by email); when you send the links, it sends none of the email options.
+# Email options a scenario could still hold after switching to "I send the links": the API refuses each one then
+STALE_EMAIL_OPTIONS = {"email_subject": "Please sign", "email_message": "Hi", "reply_to": "team@example.com",
+                       "cc": ["cc@example.com"], "reminders": {"interval_days": 3, "max_count": 2},
+                       "notification_emails": ["n@example.com"], "notify_when_signed": True}
+
+
 def run_signature_request(parameters):
     api = requests_of(load("modules/createSignatureRequest/api.imljson"))
     create, links = api[1], api[2]
@@ -336,6 +343,21 @@ def test_signature_request_emails():
     _, makes_links = run_signature_request({"signature_requests": signers, "send_email": "self", "signing_link_type": "none"})
     if makes_links:
         errors.append(f"{rel}: No links still makes links")
+    # Blank or unexpected is DocSpring's emails, as in Check data and the API: never nobody emailed and no links
+    for mode in (None, "", "DocSpring", True):
+        body, makes_links = run_signature_request({"signature_requests": signers, "send_email": mode,
+                                                   "signing_link_type": "email"})
+        if body != {"signature_requests": signers, "send_email": True} or makes_links:
+            errors.append(f"{rel}: Emails to signers {mode!r} sent {body} and makes_links={makes_links}")
+    body, makes_links = run_signature_request({**STALE_EMAIL_OPTIONS, "signature_requests": signers, "send_email": "self",
+                                               "signing_order": "sequential", "signing_link_type": "api"})
+    if body != {"signature_requests": signers, "send_email": False, "signing_order": "sequential"} or not makes_links:
+        errors.append(f"{rel}: email options left from DocSpring's emails were sent with I send the links: {body}")
+    body, _ = run_signature_request({"signature_requests": signers, "send_email": "docspring",
+                                     "cc": ["a@example.com", "b@example.com", "a@example.com"],
+                                     "notification_emails": ["n@example.com", "n@example.com"]})
+    if body.get("cc") != ["a@example.com", "b@example.com"] or body.get("notification_emails") != ["n@example.com"]:
+        errors.append(f"{rel}: repeated addresses (a 422) were sent: {body}")
     return errors
 
 
@@ -364,6 +386,12 @@ def test_check_data_emails():
     if body != {"signature_requests": signers, "send_email": True, "signing_order": "sequential",
                 "email_subject": "Please sign"}:
         errors.append(f"{rel}: empty email options sent {body}")
+    body = check_data_body({**STALE_EMAIL_OPTIONS, "signature_requests": signers, "send_email": "self"})
+    if body != {"signature_requests": signers, "send_email": False}:
+        errors.append(f"{rel}: email options left from DocSpring's emails were sent with I send the links: {body}")
+    body = check_data_body({"signature_requests": signers, "cc": ["a@example.com", "a@example.com"]})
+    if body.get("cc") != ["a@example.com"]:
+        errors.append(f"{rel}: repeated CC addresses (a 422) were sent: {body}")
     for no_signers in (None, []):
         body = check_data_body({**settings, "send_email": "docspring", "signature_requests": no_signers})
         if {k: v for k, v in body.items() if k != "signature_requests"}:
@@ -403,24 +431,35 @@ def test_word_outputs():
     processed = {"state": "processed", "error_message": None}
     pending = {"state": "pending", "error_message": None}
     failed = {"state": "error", "error_message": "LibreOffice couldn't convert it"}
-    for files in ({"pdf": processed, "png": pending}, {"docx": processed, "odt": pending}, {"pdf": processed}):
-        if evaluate(valid["condition"], {"body": {"id": "sub_1", "files": files}}) is not True:
-            errors.append(f"{rel}: files {files} fail the check")
+    for formats, files in ((["png"], {"pdf": processed, "png": pending}), (["docx", "odt"], {"docx": processed, "odt": pending}),
+                           (["pdf"], {"pdf": processed}),
+                           # A file that failed earlier, from a request for another format, isn't this request's
+                           (["png"], {"png": processed, "odt": failed}), (["docx"], {"docx": pending, "pdf": failed})):
+        context = {"parameters": {"formats": formats}, "body": {"id": "sub_1", "files": files}}
+        if evaluate(valid["condition"], context) is not True:
+            errors.append(f"{rel}: formats {formats} with files {files} fail the check")
     for name, label in (("pdf", "PDF"), ("docx", "Word document"), ("odt", "OpenDocument file"),
                         ("png", "Page images")):
-        body = {"id": "sub_1", "files": {"docx": processed, name: failed}}
-        if evaluate(valid["condition"], {"body": body}) is not False:
+        context = {"parameters": {"formats": ["docx", name]}, "body": {"id": "sub_1", "files": {"docx": processed, name: failed}}}
+        if evaluate(valid["condition"], context) is not False:
             errors.append(f"{rel}: a {name} error passes the check")
-        message = evaluate(valid["message"], {"body": body})
+        message = evaluate(valid["message"], context)
         expected = f"DocSpring couldn't make some of the files. {label}: LibreOffice couldn't convert it\nSubmission: sub_1"
         if message != expected:
             errors.append(f"{rel}: a {name} error reads {message!r}")
     return errors
 
 
+# 16. Watch events offers sc-2878's signer email events, and Templates can limit them
+def test_signer_email_events():
+    events = [o["value"] for p in load("webhooks/parameters.imljson") if p["name"] == "event_types" for o in p["options"]]
+    missing = [e for e in ("signature_request.sent", "signature_request.email_bounced") if e not in events]
+    return [f"webhooks/parameters.imljson: Events doesn't offer {missing}"] if missing else []
+
+
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
          test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails,
-         test_check_data_emails, test_api_call_methods, test_word_outputs]
+         test_check_data_emails, test_api_call_methods, test_word_outputs, test_signer_email_events]
 
 
 def run():

@@ -108,7 +108,7 @@ spec by `scripts/generate_interfaces.py`.
 
 One instant trigger on a dedicated webhook, as in v1.
 
-- **Parameters:** Events (every v4 event except `webhook.*`: 22 events), Mode (live, test, or both), Templates
+- **Parameters:** Events (every v4 event except `webhook.*`: 24 events), Mode (live, test, or both), Templates
   (`rpc://listTemplates`), Include submission data (default on).
 - **attach:** `POST /webhooks` with `url`, `event_types`, `name: "Make"`, `mode`, `template_ids` and
   `include_submission_data`, never `version`, so DocSpring sends version 4 events. It stores the webhook's `id` and
@@ -158,8 +158,9 @@ reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
 It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML evaluator
 that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with `/regex/flags`). The
 tests cover the error message (with and without backslash escapes in IML strings), encoded IDs and the `.`/`..` checks
-in every URL, that no field inside an array item calls an RPC, the Watch events template check, Remove template
-fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any other.
+in every URL, that no field inside an array item calls an RPC, the Watch events template check and its signer email events, Remove template
+fields' typed IDs, detach's paging, the request bodies of Create a signature request and Check data for each Emails to signers choice, the Word output
+formats, and Generate files for a submission's check of the files it was asked for. The evaluator knows only the functions the tests need, and fails on any other.
 
 ## Validation status
 

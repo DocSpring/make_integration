@@ -1,10 +1,10 @@
 [
     {
-        "condition": "{{length(ifempty(parameters.template_ids; emptyarray)) > 0 && length(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'template.created'; 'template.updated'; 'template.deleted')) > 0}}",
+        "condition": "{{length(ifempty(parameters.template_ids; emptyarray)) > 0 && length(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'signature_request.sent'; 'signature_request.email_bounced'; 'template.created'; 'template.updated'; 'template.deleted')) > 0}}",
         "response": {
             "valid": {
                 "condition": "{{false}}",
-                "message": "Templates only limit submission, signature request and template events. Clear Templates, or remove these events: {{join(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'template.created'; 'template.updated'; 'template.deleted'); ', ')}}",
+                "message": "Templates only limit submission, signature request and template events. Clear Templates, or remove these events: {{join(remove(parameters.event_types; 'submission.created'; 'submission.processed'; 'submission.failed'; 'submission.declined'; 'submission.updated'; 'submission.expired'; 'signature_request.viewed'; 'signature_request.completed'; 'signature_request.declined'; 'signature_request.updated'; 'signature_request.sent'; 'signature_request.email_bounced'; 'template.created'; 'template.updated'; 'template.deleted'); ', ')}}",
                 "type": "DataError"
             }
         }

@@ -16,6 +16,11 @@ rejects `send_email` and the email options, so every Create a signature request 
 - Create a signature request: Signing order (everyone at once, or one step at a time) and each signer's Signing step.
 - Check data for a template: the same Emails to signers, email options, Signing order and Signing steps, sent only
   with signers (the API refuses them without), so it checks what Create a signature request will send.
+- Create a signature request and Check data for a template send the email options only with DocSpring's emails, send
+  each CC and notification address once (the API refuses repeats), and treat an empty Emails to signers as DocSpring's
+  emails, as the API does.
+- Watch events: Signature request sent (DocSpring first emailed someone their link) and Signature request email
+  bounced, both limited by Templates like the other signature request events.
 - Make an API call no longer offers PATCH: API v2 has no PATCH endpoints and answers one with a 405.
 - Generate a PDF and Generate a batch of PDFs: Output formats offers a Word template's Word document and OpenDocument
   file, and left empty makes what the template makes. Generate files for a submission offers a Word template
