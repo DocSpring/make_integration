@@ -12,6 +12,6 @@
         "type": "json",
         "label": "Fields",
         "required": true,
-        "help": "The fields to add, as a JSON list, such as [{\"name\": \"first_name\", \"type\": \"string\", \"page\": 1, \"x\": 50, \"y\": 100, \"width\": 200, \"height\": 20}]. See the Add fields to a template operation in the DocSpring API docs."
+        "help": "The fields to add, as a JSON list, such as [{\"name\": \"first_name\", \"type\": \"string\", \"page\": 1, \"x\": 50, \"y\": 100, \"width\": 200, \"height\": 20}]. A field with the name of one of the template's fields shares its settings (type, required, default and others): leave them out or give the same values, and change them for every field with the name with Update fields in a template. See the Add fields to a template operation in the DocSpring API docs."
     }
 ]
