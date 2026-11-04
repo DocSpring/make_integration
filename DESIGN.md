@@ -164,8 +164,9 @@ formats, and Generate files for a submission's check of the files it was asked f
 
 ## Validation status
 
-The API v2 version hasn't run in Make yet. `app/UPLOAD.md` ("Testing") lists the live tests and the Make behaviour
-these files rely on that hasn't been tried.
+The API v2 version was uploaded and tested live on 27 Oct 2026, and the signer email settings and Word outputs on
+4 Nov 2026 (`README.md`). `app/UPLOAD.md` ("Testing") lists the live tests and the Make behaviour these files rely on
+that hasn't been tried.
 
 The v1 app (API v1) was validated live in Make in September 2026: the connection, Find template, Find submission,
 Generate a PDF, Combine PDFs, Create a signature request, Create a signing link and Watch events (attach, delivery,
@@ -189,6 +190,11 @@ hook (runs `attach`); a scenario with `metadata.instant:true` and `parameters:{"
 
 ## IML lessons from v1
 
+- A request's `condition` is checked on each pass of its `repeat`, but doesn't end the repeat: Make keeps repeating
+  while the repeat's own condition holds, skipped passes too, and stops the module at the limit with "Maximum number
+  of repeats exceeded". Put the step's condition in the repeat's condition as well. (Found 4 Nov 2026: with
+  DocSpring's emails, Create a signature request's skipped token step looped until the limit after the submission was
+  made. `scripts/iml_tests.py` runs repeats this way.)
 - There's no `array()`: build a one-element array with `add(emptyarray; x)`.
 - `get(body.properties; item)` inside an RPC's `iterate` output failed in v1: `body` wasn't reliably in scope there.
   `templateFields` now iterates `toArray(body.properties)`, so each item carries its own schema, and reads

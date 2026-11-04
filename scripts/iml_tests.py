@@ -309,13 +309,35 @@ STALE_EMAIL_OPTIONS = {"email_subject": "Please sign", "email_message": "Hi", "r
                        "notification_emails": ["n@example.com"], "notify_when_signed": True}
 
 
+def run_token_requests(step, parameters, ids):
+    """The token request URLs Make sends for the signature requests `ids`, and Make's error if any. Make checks the
+    step's condition on each pass, but goes on repeating while the repeat's own condition holds, skipped passes too, up
+    to its limit, then stops the module with "Maximum number of repeats exceeded" (seen live on 4 Nov 2026: with
+    DocSpring's emails the skipped token step never moved temp.index)."""
+    temp = {"signature_request_ids": ids, "signing_links": [], "index": 1}
+    urls = []
+    for _ in range(step.get("repeat", {}).get("limit", 1)):
+        context = {"parameters": parameters, "temp": temp}
+        if evaluate(step["condition"], context):
+            urls.append(evaluate(step["url"], context))
+            body = {"signature_request_url": f"https://app.docspring.com/sign/{len(urls)}"}
+            temp = {**temp, **evaluate(step["response"]["temp"], {**context, "body": body})}
+        if "repeat" not in step or not evaluate(step["repeat"]["condition"], {"parameters": parameters, "temp": temp}):
+            return urls, None
+    return urls, "Maximum number of repeats exceeded"
+
+
 def run_signature_request(parameters):
     api = requests_of(load("modules/createSignatureRequest/api.imljson"))
     create, links = api[1], api[2]
     context = {"parameters": parameters}
     body = {k: evaluate(v, context) for k, v in create["body"].items() if k != "data"}
-    temp = {"signature_request_ids": ["srq_1", "srq_2"]}
-    makes_links = bool(evaluate(links["condition"], {**context, "temp": temp}))
+    urls, error = run_token_requests(links, parameters, ["srq_1", "srq_2"])
+    if error:
+        raise AssertionError(f"modules/createSignatureRequest/api.imljson: {error} with {parameters}")
+    makes_links = bool(urls)
+    if makes_links and urls != ["/signature_requests/srq_1/tokens", "/signature_requests/srq_2/tokens"]:
+        raise AssertionError(f"modules/createSignatureRequest/api.imljson: token requests {urls}, not one per signer")
     return {k: v for k, v in body.items() if v is not None}, makes_links
 
 

@@ -371,9 +371,10 @@ Make behaviour these files rely on that hasn't been tried yet (each is from Make
 - `templateFields` uses `toArray()` and a `wrapper` to put the fields in one collection, and reads `body.required`
   while iterating. If the collection doesn't appear, the fallback is the old flat list: iterate
   `keys(body.properties)` without the wrapper, and build `data` with `omit(parameters; ...)` in the modules.
-- `createSignatureRequest` runs three requests: the submission, a token request that `repeat`s once per signature
-  request (reading the next ID from `temp`), and a request-less output. `detach` uses a `repeat` the same way: each
-  list request reads the next page's cursor from `temp`.
+- `detach` uses a `repeat` that reads the next page's cursor from `temp`, as `createSignatureRequest`'s token request
+  reads the next signature request's ID (tried live: one link per signer, 27 Oct 2026). A repeated request's
+  `condition` doesn't end its `repeat` (`DESIGN.md`, "IML lessons"), so detach's repeat condition must stay false
+  once there's nothing left to read.
 - Request-less steps whose `response.valid` is `false`: the `.`/`..` ID checks at the start of 20 modules, and the
   template check at the start of `attach`. Make's docs list `valid` as available without a request. If Make ignores
   it there, the request goes ahead: an ID of `.` or `..` gets DocSpring's 404 (the ID is still encoded), and attach

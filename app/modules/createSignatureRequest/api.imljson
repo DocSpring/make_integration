@@ -55,7 +55,7 @@
             }
         },
         "repeat": {
-            "condition": "{{temp.index <= length(temp.signature_request_ids)}}",
+            "condition": "{{parameters.send_email = 'self' && parameters.signing_link_type != 'none' && temp.index <= length(temp.signature_request_ids)}}",
             "delay": 100,
             "limit": 100
         }
