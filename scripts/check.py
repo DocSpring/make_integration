@@ -50,14 +50,27 @@ def strings(value, path=""):
 
 
 def unclosed_iml(text):
-    """True if an IML expression's {{ has no }} before the next {{. A }} on its own is plain text (a JSON example)."""
+    """True if an IML expression's {{ has no }} before the next {{. Braces inside a quoted text in an expression don't
+    count: Make reads {{"{{ signer.name }}"}} as the text {{ signer.name }} (tried live 4 Nov 2026). A }} on its own is
+    plain text (a JSON example)."""
     start = text.find("{{")
     while start != -1:
-        end = text.find("}}", start + 2)
-        following = text.find("{{", start + 2)
-        if end == -1 or (following != -1 and following < end):
-            return True
-        start = text.find("{{", end + 2)
+        i, quote = start + 2, None
+        while True:
+            if i >= len(text):
+                return True
+            char = text[i]
+            if quote:
+                if char == quote:
+                    quote = None
+            elif char in "\"'":
+                quote = char
+            elif text.startswith("}}", i):
+                break
+            elif text.startswith("{{", i):
+                return True
+            i += 1
+        start = text.find("{{", i + 2)
     return False
 
 

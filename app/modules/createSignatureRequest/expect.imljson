@@ -168,7 +168,7 @@
                         "validate": {
                             "max": 200
                         },
-                        "help": "The subject of the emails that ask people to sign. Leave it empty for \"<your name> sent you <document> to sign\"."
+                        "help": "The subject of the emails that ask people to sign. Leave it empty for \"<your name> sent you <document> to sign\". DocSpring fills in variables such as `{{ signer.name }}` and `{{ document.name }}`: write each one as `{{\"{{ signer.name }}\"}}`, or Make reads it as its own mapping and leaves it empty."
                     },
                     {
                         "name": "email_message",
@@ -178,7 +178,7 @@
                         "validate": {
                             "max": 2000
                         },
-                        "help": "A message for the signers, shown above the signing button. Links and web addresses are shown as plain text."
+                        "help": "A message for the signers, shown above the signing button. Links and web addresses are shown as plain text. DocSpring fills in variables such as `{{ signer.name }}` and `{{ document.name }}`: write each one as `{{\"{{ signer.name }}\"}}`, or Make reads it as its own mapping and leaves it empty."
                     },
                     {
                         "name": "cc",
