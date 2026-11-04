@@ -2,10 +2,10 @@
 
 The app's version in Make stays 1: Make changes a public app in place.
 
-## Emails to signers (sc-2878)
+## Emails to signers (sc-2878, sc-6806, sc-6829; uploaded 4 Nov 2026)
 
-**Upload it only once the DocSpring release that emails signers is live in the US and the EU.** Until then API v2
-rejects `send_email` and the email options, so every Create a signature request would fail.
+Uploaded once the DocSpring release that emails signers was live in the US and the EU (a self-hosted server needs that
+release too: older ones refuse `send_email` and the email options, so every Create a signature request fails there).
 
 ### Changed
 
@@ -22,6 +22,8 @@ rejects `send_email` and the email options, so every Create a signature request 
 - Watch events: Signature request sent (DocSpring first emailed someone their link) and Signature request email
   bounced, both limited by Templates like the other signature request events.
 - Make an API call no longer offers PATCH: API v2 has no PATCH endpoints and answers one with a 405.
+- Email subject and Message say how to write DocSpring's variables, such as `{{ signer.name }}`: as
+  `{{"{{ signer.name }}"}}`, or Make reads them as its own mapping and leaves them empty.
 - Generate a PDF and Generate a batch of PDFs: Output formats offers a Word template's Word document and OpenDocument
   file, and left empty makes what the template makes. Generate files for a submission offers a Word template
   submission's PDF, Word document and OpenDocument file beside the page images, and fails when any file it was asked
