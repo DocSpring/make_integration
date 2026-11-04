@@ -132,6 +132,11 @@
                 "type": "text"
             },
             {
+                "name": "email_action_id",
+                "label": "Email action ID",
+                "type": "text"
+            },
+            {
                 "name": "state",
                 "label": "State",
                 "type": "text"

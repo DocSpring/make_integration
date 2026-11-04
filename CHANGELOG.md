@@ -2,6 +2,38 @@
 
 The app's version in Make stays 1: Make changes a public app in place.
 
+## Emails to signers (sc-2878, sc-6806, sc-6829; uploaded 4 Nov 2026)
+
+Uploaded once the DocSpring release that emails signers was live in the US and the EU (a self-hosted server needs that
+release too: older ones refuse `send_email` and the email options, so every Create a signature request fails there).
+
+### Changed
+
+- Create a signature request: Emails to signers chooses whether DocSpring emails each signer a link to sign (the
+  default, as in the API) or you send the links yourself. With DocSpring's emails you can set the subject, a message,
+  CC addresses, reminders, the reply-to address, notification emails and a notification each time someone signs, and
+  the module makes no signing links. Sending the links yourself works as before, with the same link types.
+- Create a signature request: Signing order (everyone at once, or one step at a time) and each signer's Signing step.
+- Check data for a template: the same Emails to signers, email options, Signing order and Signing steps, sent only
+  with signers (the API refuses them without), so it checks what Create a signature request will send.
+- Create a signature request and Check data for a template send the email options only with DocSpring's emails, send
+  each CC and notification address once (the API refuses repeats), and treat an empty Emails to signers as DocSpring's
+  emails, as the API does.
+- Watch events: Signature request sent (DocSpring first emailed someone their link) and Signature request email
+  bounced, both limited by Templates like the other signature request events.
+- Make an API call no longer offers PATCH: API v2 has no PATCH endpoints and answers one with a 405.
+- Email subject and Message say how to write DocSpring's variables, such as `{{ signer.name }}`: as
+  `{{"{{ signer.name }}"}}`, or Make reads them as its own mapping and leaves them empty.
+- Generate a PDF and Generate a batch of PDFs: Output formats offers a Word template's Word document and OpenDocument
+  file, and left empty makes what the template makes. Generate files for a submission offers a Word template
+  submission's PDF, Word document and OpenDocument file beside the page images, and fails when any file it was asked
+  for couldn't be made, naming which one (it checked only the page images). Its module description in Make changes to
+  the one in `app/UPLOAD.md` (sc-6829).
+- Module outputs follow API v2 at that release: a signature request's `send_email`, `signing_step`, `sent_at` and
+  `email_status`, a submission's `signing_order` and `email_action_id`, a template's signature request email settings,
+  a combined PDF's `email_action_id`, Word submissions' DOCX and ODT files, a template's output format, layout and
+  HTML escaping, and Search templates' template summaries.
+
 ## API v2 (sc-5981, uploaded 27 Oct 2026)
 
 The app now calls DocSpring API v2 (`/api/v2`) for everything, and adds the full set of operations.

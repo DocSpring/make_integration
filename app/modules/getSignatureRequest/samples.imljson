@@ -11,6 +11,10 @@
     },
     "role": "Signer 1",
     "sort_order": 0,
+    "send_email": false,
+    "signing_step": null,
+    "sent_at": null,
+    "email_status": null,
     "state": "pending",
     "data": {
         "last_name": "Smith"

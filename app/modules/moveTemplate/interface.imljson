@@ -20,6 +20,11 @@
         "type": "text"
     },
     {
+        "name": "output_format",
+        "label": "Output format",
+        "type": "text"
+    },
+    {
         "name": "ready",
         "label": "Ready",
         "type": "boolean"
@@ -35,11 +40,6 @@
                 "type": "text"
             },
             {
-                "name": "md5",
-                "label": "MD5",
-                "type": "text"
-            },
-            {
                 "name": "state",
                 "label": "State",
                 "type": "text"
@@ -50,14 +50,19 @@
                 "type": "text"
             },
             {
-                "name": "field_reimport_state",
-                "label": "Field reimport state",
-                "type": "text"
-            },
-            {
                 "name": "page_count",
                 "label": "Page count",
                 "type": "number"
+            },
+            {
+                "name": "md5",
+                "label": "MD5",
+                "type": "text"
+            },
+            {
+                "name": "field_reimport_state",
+                "label": "Field reimport state",
+                "type": "text"
             },
             {
                 "name": "page_dimensions",
@@ -135,11 +140,6 @@
         "type": "text"
     },
     {
-        "name": "version",
-        "label": "Version",
-        "type": "text"
-    },
-    {
         "name": "latest_version",
         "label": "Latest version",
         "type": "text"
@@ -153,6 +153,26 @@
         "name": "locked",
         "label": "Locked",
         "type": "boolean"
+    },
+    {
+        "name": "last_changed_at",
+        "label": "Last changed at",
+        "type": "date"
+    },
+    {
+        "name": "created_at",
+        "label": "Created at",
+        "type": "date"
+    },
+    {
+        "name": "updated_at",
+        "label": "Updated at",
+        "type": "date"
+    },
+    {
+        "name": "version",
+        "label": "Version",
+        "type": "text"
     },
     {
         "name": "add_signature_request_submission_id_footers",
@@ -258,14 +278,47 @@
         "type": "text"
     },
     {
-        "name": "has_slack_webhook_url",
-        "label": "Has slack webhook URL",
+        "name": "signature_request_email_attachments",
+        "label": "Signature request email attachments",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_from_address",
+        "label": "Signature request from address",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_include_signing_token",
+        "label": "Signature request include signing token",
         "type": "boolean"
     },
     {
-        "name": "last_changed_at",
-        "label": "Last changed at",
-        "type": "date"
+        "name": "signature_request_from_name",
+        "label": "Signature request from name",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_notification_emails",
+        "label": "Signature request notification emails",
+        "type": "array",
+        "spec": {
+            "type": "text"
+        }
+    },
+    {
+        "name": "signature_request_reply_to",
+        "label": "Signature request reply to",
+        "type": "text"
+    },
+    {
+        "name": "signature_request_signing_url",
+        "label": "Signature request signing URL",
+        "type": "text"
+    },
+    {
+        "name": "has_slack_webhook_url",
+        "label": "Has slack webhook URL",
+        "type": "boolean"
     },
     {
         "name": "last_changed_by",
@@ -298,16 +351,6 @@
                 "type": "text"
             }
         ]
-    },
-    {
-        "name": "created_at",
-        "label": "Created at",
-        "type": "date"
-    },
-    {
-        "name": "updated_at",
-        "label": "Updated at",
-        "type": "date"
     },
     {
         "name": "defaults",
@@ -644,6 +687,17 @@
                 "type": "text"
             }
         ]
+    },
+    {
+        "name": "html_escape_data",
+        "label": "HTML escape data",
+        "type": "boolean"
+    },
+    {
+        "name": "layout",
+        "label": "Layout",
+        "type": "collection",
+        "spec": []
     },
     {
         "name": "embed_edit_token",

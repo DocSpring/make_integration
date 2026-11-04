@@ -85,6 +85,21 @@
                 "name": "template_id",
                 "label": "Template ID",
                 "type": "text"
+            },
+            {
+                "name": "folder_id",
+                "label": "Folder ID",
+                "type": "text"
+            },
+            {
+                "name": "custom_file_id",
+                "label": "Custom file ID",
+                "type": "text"
+            },
+            {
+                "name": "webhook_id",
+                "label": "Webhook ID",
+                "type": "text"
             }
         ]
     }

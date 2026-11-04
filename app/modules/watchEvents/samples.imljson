@@ -22,13 +22,6 @@
         "metadata": {
             "user_id": 42
         },
-        "has_password": false,
-        "signature_requests": [],
-        "actions": [],
-        "truncated_text": {},
-        "output_formats": [
-            "pdf"
-        ],
         "files": {
             "pdf": {
                 "state": "processed",
@@ -41,12 +34,20 @@
                 "sha256": "0622971147486e1900037eff229d921d14f5b51aac7171729b2b66f81cdf6585"
             }
         },
-        "preview_generated_at": null,
         "expired": false,
         "expires_at": "2018-10-27T09:00:00Z",
         "processed_at": "2018-10-20T08:30:05Z",
         "created_at": "2018-10-20T08:30:00Z",
-        "updated_at": "2018-10-20T09:00:00Z"
+        "updated_at": "2018-10-20T09:00:00Z",
+        "has_password": false,
+        "signature_requests": [],
+        "signing_order": "parallel",
+        "actions": [],
+        "truncated_text": {},
+        "output_formats": [
+            "pdf"
+        ],
+        "preview_generated_at": null
     },
     "resource_type": "submission",
     "resource_id": "sub_1234567890abcdef01"

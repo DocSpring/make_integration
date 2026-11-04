@@ -21,7 +21,16 @@
             },
             "test": "{{if(parameters.test; true; undefined)}}",
             "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
-            "signature_requests": "{{parameters.signature_requests}}"
+            "signature_requests": "{{parameters.signature_requests}}",
+            "signing_order": "{{parameters.signing_order}}",
+            "send_email": "{{parameters.send_email != 'self'}}",
+            "email_subject": "{{if(parameters.send_email != 'self'; parameters.email_subject; undefined)}}",
+            "email_message": "{{if(parameters.send_email != 'self'; parameters.email_message; undefined)}}",
+            "cc": "{{if(parameters.send_email != 'self' && length(ifempty(parameters.cc; emptyarray)) > 0; distinct(parameters.cc); undefined)}}",
+            "reminders": "{{if(parameters.send_email != 'self' && (parameters.reminders.interval_days || parameters.reminders.max_count); parameters.reminders; undefined)}}",
+            "reply_to": "{{if(parameters.send_email != 'self'; parameters.reply_to; undefined)}}",
+            "notification_emails": "{{if(parameters.send_email != 'self' && length(ifempty(parameters.notification_emails; emptyarray)) > 0; distinct(parameters.notification_emails); undefined)}}",
+            "notify_when_signed": "{{if(parameters.send_email != 'self' && parameters.notify_when_signed; true; undefined)}}"
         },
         "response": {
             "temp": {
@@ -33,7 +42,7 @@
         }
     },
     {
-        "condition": "{{parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
+        "condition": "{{parameters.send_email = 'self' && parameters.signing_link_type != 'none' && length(temp.signature_request_ids) > 0}}",
         "url": "/signature_requests/{{encodeURL(get(temp.signature_request_ids; temp.index))}}/tokens",
         "method": "POST",
         "body": {
@@ -46,7 +55,7 @@
             }
         },
         "repeat": {
-            "condition": "{{temp.index <= length(temp.signature_request_ids)}}",
+            "condition": "{{parameters.send_email = 'self' && parameters.signing_link_type != 'none' && temp.index <= length(temp.signature_request_ids)}}",
             "delay": 100,
             "limit": 100
         }

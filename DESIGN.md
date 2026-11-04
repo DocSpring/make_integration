@@ -90,17 +90,25 @@ spec by `scripts/generate_interfaces.py`.
 - **Create a signature request** makes three requests: it creates the submission with `signature_requests`, makes a
   signing link for each signature request (a `repeat` over the IDs, with the chosen link type: email, 7 days, by
   default; API, 24 hours; or none), and returns the submission plus `signing_links`, `first_signature_request_id` and
-  `first_signing_url`. Each signer's `fields` is a list of field names to type or map (also in Check data for a
+  `first_signing_url`. Emails to signers chooses whether DocSpring emails them (`send_email`, the API's default):
+  its email options (subject, message, CC, reminders, reply-to, notification emails, notify when signed) are nested
+  under "DocSpring emails each signer their link", and the link type under "I send the links". With DocSpring's
+  emails the module makes no links, so a scenario can't send a second one. It's one choice for every signer: the
+  API's per-signer `send_email` isn't offered, since a mix would need links for only some of the IDs (Make an API
+  call can do it). Signing order and each signer's Signing step work either way. Check data for a template offers the
+  same Emails to signers, email options, order and steps (no link type) and sends them only with signers, since the
+  API refuses them without. Each signer's `fields` is a list of field names to type or map (also in Check data for a
   template), as List template fields shows them: the full `name`, such as `address/street`, which a signature request
   needs (the schema nests it under `address`). It isn't a picker because Make calls an RPC inside an array item with
   only that item's inputs, so the RPC can't read the module's template (tried 27 Oct 2026).
-- **Make an API call** takes a path relative to `/api/v2`, a method, query string, headers and a body.
+- **Make an API call** takes a path relative to `/api/v2`, a method (GET, POST, PUT or DELETE: API v2 has no PATCH
+  endpoints and answers one with a 405), query string, headers and a body.
 
 ## Watch events
 
 One instant trigger on a dedicated webhook, as in v1.
 
-- **Parameters:** Events (every v4 event except `webhook.*`: 22 events), Mode (live, test, or both), Templates
+- **Parameters:** Events (every v4 event except `webhook.*`: 24 events), Mode (live, test, or both), Templates
   (`rpc://listTemplates`), Include submission data (default on).
 - **attach:** `POST /webhooks` with `url`, `event_types`, `name: "Make"`, `mode`, `template_ids` and
   `include_submission_data`, never `version`, so DocSpring sends version 4 events. It stores the webhook's `id` and
@@ -150,13 +158,15 @@ reference, the groups, and that `app/UPLOAD.md` names every module and RPC.
 It also runs `scripts/iml_tests.py`, which runs the app's own expressions with `scripts/iml.py`, a small IML evaluator
 that follows Make's documented behaviour (JavaScript operators, 1-based indexes, `replace()` with `/regex/flags`). The
 tests cover the error message (with and without backslash escapes in IML strings), encoded IDs and the `.`/`..` checks
-in every URL, that no field inside an array item calls an RPC, the Watch events template check, Remove template
-fields' typed IDs and detach's paging. The evaluator knows only the functions the tests need, and fails on any other.
+in every URL, that no field inside an array item calls an RPC, the Watch events template check and its signer email events, Remove template
+fields' typed IDs, detach's paging, the request bodies of Create a signature request and Check data for each Emails to signers choice, the Word output
+formats, and Generate files for a submission's check of the files it was asked for. The evaluator knows only the functions the tests need, and fails on any other.
 
 ## Validation status
 
-The API v2 version hasn't run in Make yet. `app/UPLOAD.md` ("Testing") lists the live tests and the Make behaviour
-these files rely on that hasn't been tried.
+The API v2 version was uploaded and tested live on 27 Oct 2026, and the signer email settings and Word outputs on
+4 Nov 2026 (`README.md`). `app/UPLOAD.md` ("Testing") lists the live tests and the Make behaviour these files rely on
+that hasn't been tried.
 
 The v1 app (API v1) was validated live in Make in September 2026: the connection, Find template, Find submission,
 Generate a PDF, Combine PDFs, Create a signature request, Create a signing link and Watch events (attach, delivery,
@@ -180,6 +190,11 @@ hook (runs `attach`); a scenario with `metadata.instant:true` and `parameters:{"
 
 ## IML lessons from v1
 
+- A request's `condition` is checked on each pass of its `repeat`, but doesn't end the repeat: Make keeps repeating
+  while the repeat's own condition holds, skipped passes too, and stops the module at the limit with "Maximum number
+  of repeats exceeded". Put the step's condition in the repeat's condition as well. (Found 4 Nov 2026: with
+  DocSpring's emails, Create a signature request's skipped token step looped until the limit after the submission was
+  made. `scripts/iml_tests.py` runs repeats this way.)
 - There's no `array()`: build a one-element array with `add(emptyarray; x)`.
 - `get(body.properties; item)` inside an RPC's `iterate` output failed in v1: `body` wasn't reliably in scope there.
   `templateFields` now iterates `toArray(body.properties)`, so each item carries its own schema, and reads

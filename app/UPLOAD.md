@@ -202,9 +202,9 @@ the webhook from step 5. Every module is public (visible) once its sections are 
 | `getCombinedPdf` | Action (4) | Get a combined PDF | Returns a combined PDF by its ID, with its state and files. | read | connection `docspring-sspkqt` | new |
 | `getSubmission` | Action (4) | Get a submission | Returns a submission by its ID, with its data and files. | read | connection `docspring-sspkqt` | new |
 | `findSubmission` | Search (9) | Search submissions | Finds submissions by template, live or test mode and when they were created. | - | connection `docspring-sspkqt` | changed |
-| `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission, such as a PNG image of each page. | update | connection `docspring-sspkqt` | new |
+| `generateSubmissionFiles` | Action (4) | Generate files for a submission | Generates more files for a submission: a PNG image of each page, or a Word template submission's PDF, Word document or OpenDocument file. | update | connection `docspring-sspkqt` | new |
 | `expireSubmission` | Action (4) | Expire a submission | Expires a submission, which deletes its data and files. This action cannot be undone. | delete | connection `docspring-sspkqt` | new |
-| `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign, and a signing link for each signer. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
+| `createSignatureRequest` | Action (4) | Create a signature request | Creates a submission that people fill in and sign. DocSpring emails each signer a link to sign, or the module returns their links. | create | connection `docspring-sspkqt` | new (replaces `createDataRequest`) |
 | `createSigningLink` | Action (4) | Create a signing link | Creates a link that opens a signature request's signing form. | create | connection `docspring-sspkqt` | changed |
 | `getSignatureRequest` | Action (4) | Get a signature request | Returns a signature request by its ID, with its signer and state. | read | connection `docspring-sspkqt` | new |
 | `findTemplate` | Search (9) | Search templates | Finds templates by name and folder. | - | connection `docspring-sspkqt` | changed |
@@ -337,6 +337,16 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
   link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
   `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
   didn't re-read the token URL on each repeat, and signer 2 would get signer 1's form: don't publish.
+- Create a signature request with Emails to signers left at "DocSpring emails each signer their link", two signers
+  whose addresses are DocSpring team members (a test submission only emails the team), a subject, a message and
+  reminders: Signing links is empty, each signature request has `send_email: true`, and both people get DocSpring's
+  email with the subject and message. With Signing order One step at a time and a Signing step on each signer, only
+  step 1 gets an email until it has signed. With "I send the links", the result has a link per signer as above and
+  nobody gets an email. A signer with Authentication Password and DocSpring's emails fails with DocSpring's message
+  about `auth_type`.
+- Check data for a template with a signer who has no email: with Emails to signers left at DocSpring's emails, Valid
+  is false and the error is DocSpring's message about the email; with "I send the links", it's valid. Without
+  signers, the email settings aren't sent and the data alone is checked.
 - Signer Fields, with a template whose field names have a `/` (such as `address/street` and `items/0/name`): type
   those full names in a signer's Fields in Create a signature request and in Check data for a template, and both
   succeed. Fields is a list of names, not a picker: an RPC called from inside the Signers list gets only that item's
@@ -361,9 +371,10 @@ Make behaviour these files rely on that hasn't been tried yet (each is from Make
 - `templateFields` uses `toArray()` and a `wrapper` to put the fields in one collection, and reads `body.required`
   while iterating. If the collection doesn't appear, the fallback is the old flat list: iterate
   `keys(body.properties)` without the wrapper, and build `data` with `omit(parameters; ...)` in the modules.
-- `createSignatureRequest` runs three requests: the submission, a token request that `repeat`s once per signature
-  request (reading the next ID from `temp`), and a request-less output. `detach` uses a `repeat` the same way: each
-  list request reads the next page's cursor from `temp`.
+- `detach` uses a `repeat` that reads the next page's cursor from `temp`, as `createSignatureRequest`'s token request
+  reads the next signature request's ID (tried live: one link per signer, 27 Oct 2026). A repeated request's
+  `condition` doesn't end its `repeat` (`DESIGN.md`, "IML lessons"), so detach's repeat condition must stay false
+  once there's nothing left to read.
 - Request-less steps whose `response.valid` is `false`: the `.`/`..` ID checks at the start of 20 modules, and the
   template check at the start of `attach`. Make's docs list `valid` as available without a request. If Make ignores
   it there, the request goes ahead: an ID of `.` or `..` gets DocSpring's 404 (the ID is still encoded), and attach

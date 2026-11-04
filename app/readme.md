@@ -30,12 +30,12 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 - **Get a submission**: returns a submission by its ID, with its data and files.
 - **Search submissions**: finds submissions by template, live or test mode, and when they were created.
-- **Generate files for a submission**: generates more files for a submission, such as a PNG image of each page.
+- **Generate files for a submission**: generates more files for a submission: a PNG image of each page, or a Word template submission's PDF, Word document or OpenDocument file.
 - **Expire a submission**: deletes a submission's data and files. This can't be undone.
 
 ### Signature requests
 
-- **Create a signature request**: creates a submission that people fill in and sign. Add the signers (name, email, the fields each one fills in, and how they sign in), and choose the link type: an email link (7 days), an API link (24 hours) or none. Returns the submission and a signing link for each signer.
+- **Create a signature request**: creates a submission that people fill in and sign. Add the signers (name, email, the fields each one fills in, and how they sign in). DocSpring emails each signer a link to sign, with your subject, message and reminders, and everyone the signed PDF; signers can sign at once or one step at a time. Or send the links yourself: choose the link type, an email link (7 days), an API link (24 hours) or none, and the module returns a signing link for each signer.
 - **Create a signing link**: creates a new link to a signature request's signing form.
 - **Get a signature request**: returns a signature request by its ID, with its signer and state.
 
@@ -56,7 +56,7 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 ### Triggers
 
-- **Watch events**: starts a scenario as soon as something happens in DocSpring. Choose the events (submissions created, processed, failed, declined, updated or expired; signature requests viewed, completed, declined or updated; combined PDFs processed, failed or expired; batches processed or failed; templates created, updated or deleted; custom files created; folders created, updated or deleted), live or test mode, and optionally the templates to watch (for submission, signature request and template events). Each event has `event_type`, `resource_type`, `resource_id` and the record in `data`.
+- **Watch events**: starts a scenario as soon as something happens in DocSpring. Choose the events (submissions created, processed, failed, declined, updated or expired; signature requests viewed, completed, declined, updated or emailed, or a signer's email bounced; combined PDFs processed, failed or expired; batches processed or failed; templates created, updated or deleted; custom files created; folders created, updated or deleted), live or test mode, and optionally the templates to watch (for submission, signature request and template events). Each event has `event_type`, `resource_type`, `resource_id` and the record in `data`.
 
 ### Other
 

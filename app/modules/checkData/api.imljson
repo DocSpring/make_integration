@@ -20,7 +20,16 @@
                 "{{...}}": "{{parameters.data}}"
             },
             "test": "{{if(parameters.test; true; undefined)}}",
-            "signature_requests": "{{parameters.signature_requests}}"
+            "signature_requests": "{{parameters.signature_requests}}",
+            "signing_order": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0; parameters.signing_order; undefined)}}",
+            "send_email": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0; parameters.send_email != 'self'; undefined)}}",
+            "email_subject": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self'; parameters.email_subject; undefined)}}",
+            "email_message": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self'; parameters.email_message; undefined)}}",
+            "cc": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self' && length(ifempty(parameters.cc; emptyarray)) > 0; distinct(parameters.cc); undefined)}}",
+            "reminders": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self' && (parameters.reminders.interval_days || parameters.reminders.max_count); parameters.reminders; undefined)}}",
+            "reply_to": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self'; parameters.reply_to; undefined)}}",
+            "notification_emails": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self' && length(ifempty(parameters.notification_emails; emptyarray)) > 0; distinct(parameters.notification_emails); undefined)}}",
+            "notify_when_signed": "{{if(length(ifempty(parameters.signature_requests; emptyarray)) > 0 && parameters.send_email != 'self' && parameters.notify_when_signed; true; undefined)}}"
         },
         "response": {
             "output": "{{body}}"

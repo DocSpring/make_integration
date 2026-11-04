@@ -47,6 +47,14 @@
                 "value": "signature_request.updated"
             },
             {
+                "label": "Signature request sent",
+                "value": "signature_request.sent"
+            },
+            {
+                "label": "Signature request email bounced",
+                "value": "signature_request.email_bounced"
+            },
+            {
                 "label": "Combined PDF processed",
                 "value": "combined_pdf.processed"
             },

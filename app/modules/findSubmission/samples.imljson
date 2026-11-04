@@ -12,15 +12,7 @@
     "data_errors": [],
     "error_message": null,
     "metadata": {},
-    "has_password": false,
-    "signature_requests": [],
-    "actions": [],
-    "truncated_text": null,
-    "output_formats": [
-        "pdf"
-    ],
     "files": {},
-    "preview_generated_at": null,
     "expired": false,
     "expires_at": null,
     "processed_at": null,
