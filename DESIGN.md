@@ -22,9 +22,9 @@ only Make's built-in IML functions.
 
 ## Requests
 
-- **Hosts.** Generate a PDF, Generate a batch of PDFs, Combine PDFs, Generate files for a submission, Create a
+- **Hosts.** Create a submission, Create a submission batch, Combine PDFs, Generate files for a submission, Create a
   template and Replace a template's PDF go to the sync host (`sync.api.docspring.com`, `sync.api-eu.docspring.com`, or
-  the self-hosted host) with `?wait=true`, or `wait=false` when the user turns off "Wait for the PDF". They use an
+  the self-hosted host) with `?wait=true`, or `wait=false` when the user turns off the module's "Wait for ..." input. They use an
   absolute URL, so they set the auth headers themselves. Everything else uses the base URL.
 - **Bodies** are flat JSON. `version` and `wait` are query parameters.
 - **Empty values.** The app uses manifest 2 processing: an empty input becomes `undefined` and Make leaves it out of
@@ -38,6 +38,14 @@ only Make's built-in IML functions.
   JSON for objects and arrays such as image fields), `required` from the schema, and help: `YYYY-MM-DD` for a date
   field, the enum values, the description, or a JSON example. Check data for a template and Create a signature request
   load the same fields as optional.
+- **JSON inputs and Data (JSON).** Make turns a `json` input's text into JSON before the request only when the
+  scenario has saved that input's type, which it does once the user picks a template in the editor. Tried 15 Nov
+  2026 through the Make API: a template field typed as JSON (a list of objects, a list of text) reached DocSpring as a
+  real list with its type saved, and as a string (a 422, "must be an array") without it. With the template ID mapped
+  from an earlier module, no template fields load at all, so Create a submission, Check data for a template and
+  Create a signature request also take **Data (JSON)** (`data_json`), a top-level `json` input whose type is always
+  saved. The module merges it into the template fields' `data` with `toArray()`, `merge()` and `toCollection()` (IML
+  has no object merge, and a `{{...}}` spread can appear once per object); a key in both takes Data (JSON)'s value.
 - **Dates.** v2 takes `YYYY-MM-DD` for date fields. Make converts a `date` input to a UTC timestamp, which can move
   the day, so date fields are text inputs whose help says `YYYY-MM-DD` and suggests `formatDate()` for a mapped
   date. Search submissions' `created_after` and `created_before` are Make `date` inputs: the API takes timestamps
@@ -73,8 +81,8 @@ only Make's built-in IML functions.
 
 | Group | Modules |
 |---|---|
-| PDFs | Generate a PDF, Generate a batch of PDFs, Get a submission batch, Check data for a template, Combine PDFs, Get a combined PDF |
-| Submissions | Get a submission, Search submissions, Generate files for a submission, Expire a submission |
+| Submissions | Create a submission, Create a submission batch, Get a submission batch, Check data for a template, Get a submission, Search submissions, Generate files for a submission, Expire a submission |
+| Combined PDFs | Combine PDFs, Get a combined PDF |
 | Signature requests | Create a signature request, Create a signing link, Get a signature request |
 | Templates | Search templates, Get a template, Create a template, Replace a template's PDF, Copy a template, Move a template, Publish a template version, Get a template's page images |
 | Template fields | List template fields, Add fields to a template, Update fields in a template, Remove fields from a template |
@@ -122,10 +130,22 @@ One instant trigger on a dedicated webhook, as in v1.
 - **Output:** the version 4 event as delivered (`id` = the event ID, `event_type`, `created_at`, `data` = the v2
   resource) plus `resource_type` (the event name before the first dot) and `resource_id` (`data.id`).
 
+## Naming and inputs
+
+The rules every DocSpring integration follows (Shortcut 7286 and its follow-ups):
+
+- Name modules for what the API creates: a submission, not a PDF. A Word template's submission makes a Word document
+  or an OpenDocument file. The module IDs (`generatePdf`, `generatePdfBatch`) stay, since scenarios store them; only
+  the labels in Make change.
+- A module that sends submission data accepts everything the API accepts: lists, nested objects, numbers and booleans
+  as well as text, whether or not the template's fields could load. Test a list of objects end to end in Make, not
+  just the IML.
+- Signature requests (never "data requests"), combined PDFs (never "combined submissions") and IDs (never "UIDs").
+
 ## Where this differs from the spec, and why
 
 - **Labels follow Make's naming conventions**, not the spec's names: an action is a verb and an item with "a" or "an"
-  ("Generate a PDF", "Create a signature request"), a search a plural without one ("Search templates", "List
+  ("Create a submission", "Create a signature request"), a search a plural without one ("Search templates", "List
   folders"), all in sentence case. The v1 review asked for it. The module IDs keep the spec's names (`findTemplate`).
 - **Signing links are a separate `signing_links` list**, not a `signing_url` added to each signature request. IML
   can't merge a value into each item of a list without custom IML functions. `first_signing_url` and
@@ -139,7 +159,7 @@ One instant trigger on a dedicated webhook, as in v1.
 ## Make limits that shape the app
 
 - A module times out after 40 seconds (Make's default; Make support can raise it for an app). A PDF that takes
-  longer fails in Make, not with DocSpring's 504; turning off "Wait for the PDF" avoids it.
+  longer fails in Make, not with DocSpring's 504; turning off "Wait for the submission" avoids it.
 - A request URL can be at most 512 characters and an error message 1,024. `scripts/check.py` checks both.
 - A module makes at most 100 requests, 50 of them pages. Create a signature request's link loop stops at 100 signers.
 

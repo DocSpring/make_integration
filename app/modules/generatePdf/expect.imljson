@@ -32,6 +32,12 @@
         }
     },
     {
+        "name": "data_json",
+        "type": "json",
+        "label": "Data (JSON)",
+        "help": "The data as one JSON object, such as {\"name\": \"Jane Doe\", \"items\": [{\"description\": \"Widget\", \"qty\": 2}]}. Use it when the template is mapped from an earlier module, so Template fields can't load, or to send data built elsewhere. A field in both takes the value from here."
+    },
+    {
         "name": "test",
         "type": "boolean",
         "label": "Test",
@@ -112,9 +118,9 @@
     {
         "name": "wait",
         "type": "boolean",
-        "label": "Wait for the PDF",
+        "label": "Wait for the submission",
         "default": true,
         "advanced": true,
-        "help": "Yes waits until the PDF is ready. No returns straight away: get it later, or use the Watch events trigger."
+        "help": "Yes waits until the submission's files are ready. No returns straight away: get it later, or use the Watch events trigger."
     }
 ]

@@ -1,6 +1,6 @@
 [
-    {"label": "PDFs", "modules": ["generatePdf", "generatePdfBatch", "getSubmissionBatch", "checkData", "combinePdfs", "getCombinedPdf"]},
-    {"label": "Submissions", "modules": ["getSubmission", "findSubmission", "generateSubmissionFiles", "expireSubmission"]},
+    {"label": "Submissions", "modules": ["generatePdf", "generatePdfBatch", "getSubmissionBatch", "checkData", "getSubmission", "findSubmission", "generateSubmissionFiles", "expireSubmission"]},
+    {"label": "Combined PDFs", "modules": ["combinePdfs", "getCombinedPdf"]},
     {"label": "Signature requests", "modules": ["createSignatureRequest", "createSigningLink", "getSignatureRequest"]},
     {"label": "Templates", "modules": ["findTemplate", "getTemplate", "createTemplate", "replaceTemplatePdf", "copyTemplate", "moveTemplate", "publishTemplateVersion", "getTemplatePageImages"]},
     {"label": "Template fields", "modules": ["listTemplateFields", "addTemplateFields", "updateTemplateFields", "removeTemplateFields"]},

@@ -117,9 +117,9 @@
     {
         "name": "wait",
         "type": "boolean",
-        "label": "Wait for the PDFs",
+        "label": "Wait for the submissions",
         "default": true,
         "advanced": true,
-        "help": "Yes waits until the PDFs are ready. No returns straight away: get them later, or use the Watch events trigger."
+        "help": "Yes waits until every submission's files are ready. No returns straight away: get them later, or use the Watch events trigger."
     }
 ]

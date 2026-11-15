@@ -194,10 +194,10 @@ the webhook from step 5. Every module is public (visible) once its sections are 
 
 | Make ID | Type (`typeId`) | Label | Description | `crud` | Binding | In the live app |
 |---|---|---|---|---|---|---|
-| `generatePdf` | Action (4) | Generate a PDF | Generates a PDF from a template with your data, and waits until it's ready. | create | connection `docspring-sspkqt` | changed |
-| `generatePdfBatch` | Action (4) | Generate a batch of PDFs | Generates up to 50 PDFs in one request, and waits until they're ready. | create | connection `docspring-sspkqt` | new |
+| `generatePdf` | Action (4) | Create a submission | Creates a submission: fills a template with your data to make a PDF, or a Word template's Word document or OpenDocument file, and waits until it's ready. | create | connection `docspring-sspkqt` | changed |
+| `generatePdfBatch` | Action (4) | Create a submission batch | Creates up to 50 submissions in one request, and waits until they're ready. | create | connection `docspring-sspkqt` | changed |
 | `getSubmissionBatch` | Action (4) | Get a submission batch | Returns a batch of submissions by its ID, with each submission's state and files. | read | connection `docspring-sspkqt` | new |
-| `checkData` | Action (4) | Check data for a template | Checks data against a template's fields without generating a PDF, and returns whether it's valid and why not. | read | connection `docspring-sspkqt` | new |
+| `checkData` | Action (4) | Check data for a template | Checks data against a template's fields without creating a submission, and returns whether it's valid and why not. | read | connection `docspring-sspkqt` | new |
 | `combinePdfs` | Action (4) | Combine PDFs | Merges PDFs from submissions, templates, combined PDFs, custom files or URLs into one PDF. | create | connection `docspring-sspkqt` | changed |
 | `getCombinedPdf` | Action (4) | Get a combined PDF | Returns a combined PDF by its ID, with its state and files. | read | connection `docspring-sspkqt` | new |
 | `getSubmission` | Action (4) | Get a submission | Returns a submission by its ID, with its data and files. | read | connection `docspring-sspkqt` | new |
@@ -331,8 +331,13 @@ The icon (`app/icon.png`, `PUT /{app}/{version}/icon`) hasn't changed.
 With a DocSpring **test** API token on our own account (test PDFs are free), in a Make scenario:
 
 - The connection: a valid token connects; a wrong secret says the token isn't valid.
-- Each module once. Generate a PDF and Check data for a template with a template that has a date, a number, a checkbox
+- Each module once. Create a submission and Check data for a template with a template that has a date, a number, a checkbox
   and an image field: the Template fields collection shows typed inputs (date fields as text asking for YYYY-MM-DD).
+- Lists: Create a submission with a template that has a list of objects (fields named like `items/0/name`) and a list
+  of text (`tags/0`). With the template picked, type each list as JSON in Template fields: the submission succeeds.
+  Then map the template ID from an earlier module and send the same data in Data (JSON): it succeeds too. Without
+  Data (JSON), the same JSON typed in a template field that Make hasn't saved the type of reaches DocSpring as a
+  string, and the 422 says the field "must be an array" (tried 15 Nov 2026).
 - Create a signature request with two signers: one link per signer in Signing links, and `first_signing_url`. Each
   link must belong to its signer: `signing_links[1].signature_request_id` equals `signature_requests[1].id`, and
   `signing_links[2].signature_request_id` equals `signature_requests[2].id`. If both links have signer 1's ID, Make
@@ -352,7 +357,7 @@ With a DocSpring **test** API token on our own account (test PDFs are free), in 
   succeed. Fields is a list of names, not a picker: an RPC called from inside the Signers list gets only that item's
   inputs, so it can't read the module's template (tried 27 Oct 2026: DocSpring was asked for a template with ID
   `fields`). The live app had a `templateFieldNames` RPC for that picker until then; it was deleted.
-- Errors: Generate a PDF with a wrong value for a field. The message reads
+- Errors: Create a submission with a wrong value for a field. The message reads
   `DocSpring API error 422 invalid_data: ...`, a line per field, `Submission: sub_...` and `Request ID: req_...`.
   Then a dropdown (or radio) field set to a value that isn't one of its options: its line reads
   `/data/<field>: must be one of: "Red", "Blue"`, with the field and every option.
@@ -390,4 +395,4 @@ Make behaviour these files rely on that hasn't been tried yet (each is from Make
 - Remove fields from a template' `spec: {"type": "number"}` on a multiple select converts each typed ID to a number.
 - A select's `placeholder` (Move a template's "Root folder (/)"), and `null` from `ifempty(...; null)` for the root.
 - Modules give up after Make's 40-second timeout (Make's default). A PDF that takes longer fails in Make, not with
-  DocSpring's 504; turning off Wait for the PDF avoids it. Make support can raise the timeout for an app.
+  DocSpring's 504; turning off Wait for the submission avoids it. Make support can raise the timeout for an app.

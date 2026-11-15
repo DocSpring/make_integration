@@ -224,7 +224,27 @@ def fn_get(value, path):
     return value
 
 
+def fn_to_array(value):
+    """toArray(): a collection becomes a list of {key, value} collections; a list stays a list."""
+    if isinstance(value, dict):
+        return [{"key": k, "value": v} for k, v in value.items()]
+    if isinstance(value, list):
+        return value
+    raise IMLError(f"toArray() of {value!r}")
+
+
+def fn_to_collection(array, key, value):
+    """toCollection(): a list of collections becomes one collection; a key that repeats takes its last value."""
+    out = {}
+    for item in array or []:
+        out[to_string(item.get(key))] = item.get(value)
+    return out
+
+
 FUNCTIONS = {
+    "toArray": fn_to_array,
+    "toCollection": fn_to_collection,
+    "merge": lambda *arrays: [x for array in arrays for x in array or []],
     "contains": lambda haystack, needle: haystack is not None and needle in haystack,
     "get": fn_get,
     "length": fn_length,

@@ -17,7 +17,7 @@
         },
         "body": {
             "data": {
-                "{{...}}": "{{parameters.data}}"
+                "{{...}}": "{{if(parameters.data_json; toCollection(merge(toArray(ifempty(parameters.data; emptyarray)); toArray(parameters.data_json)); 'key'; 'value'); parameters.data)}}"
             },
             "test": "{{if(parameters.test; true; undefined)}}",
             "signature_requests": "{{parameters.signature_requests}}",

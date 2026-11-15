@@ -2,6 +2,23 @@
 
 The app's version in Make stays 1: Make changes a public app in place.
 
+## Submission names and Data (JSON) (sc-7291; uploaded 15 Nov 2026)
+
+### Changed
+
+- Generate a PDF is **Create a submission** and Generate a batch of PDFs is **Create a submission batch**: a
+  submission can make a Word document or an OpenDocument file as well as a PDF. Their module IDs (`generatePdf`,
+  `generatePdfBatch`) stay, so scenarios keep working. Their Wait inputs are Wait for the submission and Wait for the
+  submissions, and their error messages say the submission couldn't be processed.
+- The PDFs group is gone: Create a submission, Create a submission batch, Get a submission batch and Check data for a
+  template join the Submissions group, and Combine PDFs and Get a combined PDF are a new Combined PDFs group.
+
+### Added
+
+- Create a submission, Check data for a template and Create a signature request take **Data (JSON)**: the data as one
+  JSON object, merged into the template fields (a key in both takes Data (JSON)'s value). With a template ID mapped
+  from an earlier module, no template fields load, so before this there was no way to send any data.
+
 ## Emails to signers (sc-2878, sc-6806, sc-6829; uploaded 4 Nov 2026)
 
 Uploaded once the DocSpring release that emails signers was live in the US and the EU (a self-hosted server needs that
