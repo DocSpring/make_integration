@@ -23,7 +23,7 @@
         },
         "body": {
             "data": {
-                "{{...}}": "{{parameters.data}}"
+                "{{...}}": "{{if(parameters.data_json; toCollection(merge(toArray(ifempty(parameters.data; emptyarray)); toArray(parameters.data_json)); 'key'; 'value'); parameters.data)}}"
             },
             "test": "{{if(parameters.test; true; undefined)}}",
             "metadata": "{{if(parameters.metadata; toCollection(parameters.metadata; 'key'; 'value'); undefined)}}",
@@ -36,7 +36,7 @@
         "response": {
             "valid": {
                 "condition": "{{body.state != 'error' && body.state != 'syntax_error' && body.state != 'image_download_failed' && body.state != 'image_processing_failed'}}",
-                "message": "DocSpring couldn't generate the PDF (state: {{body.state}}): {{body.error_message}}\nSubmission: {{body.id}}"
+                "message": "DocSpring couldn't process the submission (state: {{body.state}}): {{body.error_message}}\nSubmission: {{body.id}}"
             },
             "output": "{{body}}"
         },

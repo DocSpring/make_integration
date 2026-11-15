@@ -479,9 +479,39 @@ def test_signer_email_events():
     return [f"webhooks/parameters.imljson: Events doesn't offer {missing}"] if missing else []
 
 
+# 15. Data (JSON) merges into the template fields, and wins on a key in both: with a mapped template ID no fields load,
+# and only a top-level json input reaches the API as JSON (template fields typed as JSON stay text when Make hasn't
+# saved their types; tried 15 Nov 2026).
+def test_data_json():
+    errors = []
+    items = [{"description": "Widget", "qty": 2}]
+    cases = [
+        ({"data": {"name": "Jane"}}, {"name": "Jane"}),
+        ({"data_json": {"name": "Jane", "items": items}}, {"name": "Jane", "items": items}),
+        ({"data": {"name": "Jane", "city": "Paris"}, "data_json": {"name": "John", "items": items}},
+         {"name": "John", "city": "Paris", "items": items}),
+        ({}, None),
+    ]
+    for module in ("generatePdf", "checkData", "createSignatureRequest"):
+        rel = f"modules/{module}/api.imljson"
+        request = next(r for r in requests_of(load(rel)) if isinstance(r.get("body"), dict) and "data" in r["body"])
+        spread = request["body"]["data"]
+        if list(spread) != ["{{...}}"]:
+            errors.append(f"{rel}: data isn't one spread of the merged data: {spread}")
+            continue
+        for parameters, expected in cases:
+            got = evaluate(spread["{{...}}"], {"parameters": parameters})
+            if got != expected:
+                errors.append(f"{rel}: data {parameters} sent {got}, not {expected}")
+        expect = load(f"modules/{module}/expect.imljson")
+        if not any(f["name"] == "data_json" and f["type"] == "json" for f in expect):
+            errors.append(f"modules/{module}/expect.imljson: no Data (JSON) input of type json")
+    return errors
+
+
 TESTS = [test_error_details, test_ids_in_paths, test_id_values, test_no_rpc_inside_arrays,
          test_watch_events_templates, test_remove_field_ids, test_detach_paging, test_signature_request_emails,
-         test_check_data_emails, test_api_call_methods, test_word_outputs, test_signer_email_events]
+         test_check_data_emails, test_api_call_methods, test_word_outputs, test_signer_email_events, test_data_json]
 
 
 def run():

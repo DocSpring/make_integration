@@ -17,21 +17,21 @@ Your token is sent over HTTPS and never written to execution logs. A test API to
 
 ## Modules
 
-### PDFs
-
-- **Generate a PDF**: fills a template's fields with your data and generates a PDF. Choose a template and version, and its fields appear as inputs. Waits until the PDF is ready, then returns the submission with its download URL.
-- **Generate a batch of PDFs**: generates up to 50 PDFs in one request, from one template or several.
-- **Get a submission batch**: returns a batch and each of its submissions.
-- **Check data for a template**: checks your data against a template's fields without generating a PDF, and says what's wrong.
-- **Combine PDFs**: merges PDFs from submissions, templates, other combined PDFs, custom files or URLs into one PDF.
-- **Get a combined PDF**: returns a combined PDF by its ID.
-
 ### Submissions
 
+- **Create a submission**: fills a template's fields with your data to make a PDF, or a Word template's Word document or OpenDocument file. Choose a template and version, and its fields appear as inputs. Waits until the files are ready, then returns the submission with their download URLs. When you map the template from an earlier module, its fields can't load: put the data in **Data (JSON)** instead, as one JSON object. Data (JSON) also takes lists and nested objects as they are.
+- **Create a submission batch**: creates up to 50 submissions in one request, from one template or several.
+- **Get a submission batch**: returns a batch and each of its submissions.
+- **Check data for a template**: checks your data against a template's fields without creating a submission, and says what's wrong.
 - **Get a submission**: returns a submission by its ID, with its data and files.
 - **Search submissions**: finds submissions by template, live or test mode, and when they were created.
 - **Generate files for a submission**: generates more files for a submission: a PNG image of each page, or a Word template submission's PDF, Word document or OpenDocument file.
 - **Expire a submission**: deletes a submission's data and files. This can't be undone.
+
+### Combined PDFs
+
+- **Combine PDFs**: merges PDFs from submissions, templates, other combined PDFs, custom files or URLs into one PDF.
+- **Get a combined PDF**: returns a combined PDF by its ID.
 
 ### Signature requests
 

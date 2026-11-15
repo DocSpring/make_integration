@@ -20,7 +20,7 @@
     "response": {
         "valid": {
             "condition": "{{body.state != 'error'}}",
-            "message": "{{body.error_count}} of the batch's {{body.total_count}} PDFs couldn't be generated. Get each one's error with Get submission batch.\nSubmission batch: {{body.id}}"
+            "message": "{{body.error_count}} of the batch's {{body.total_count}} submissions couldn't be processed. Get each one's error with Get submission batch.\nSubmission batch: {{body.id}}"
         },
         "output": "{{body}}"
     },

@@ -12,7 +12,7 @@ spec. A self-hosted DocSpring server needs a release with API v2.
 
 The API v2 version is live in Make: it was uploaded with `app/UPLOAD.md` on 27 Oct 2026, tested live, and its 29
 modules are public. The signer email settings and Word outputs (`CHANGELOG.md`) were uploaded and tested live on 4 Nov
-2026. Anyone can install it from its public link,
+2026, and the submission names and Data (JSON) on 15 Nov 2026. Anyone can install it from its public link,
 https://www.make.com/en/hq/app-invitation/68c6ec31b2b25382cfa7ad917caa7420, which docspring.com/integrations/make
 links to. Make's review, requested in September 2026 for the v1 app (`DESIGN.md`), is still pending, so the app isn't
 in Make's app directory yet.
